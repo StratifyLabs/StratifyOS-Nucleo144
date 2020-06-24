@@ -1,0 +1,19 @@
+{
+   "description": "This BSP can be used to run Stratify OS on the STM32F Nucleo-F412ZG board.",
+   "github": "https://github.com/StratifyLabs/Nucleo-F412ZG",
+   "name": "Nucleo-F412ZG",
+   "permissions": "public",
+   "publisher": "Stratify Labs, Inc",
+   "tags": "stm32,arm,cortex-m4",
+   "type": "os",
+   "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
+   "version": "0.11",
+   "hardwareId": "0x00000011",
+   "timestamp": 1551496292,
+   "documentId": "Loy74Ukm6dVsLMqQ7T6g",
+   "buildList": {
+      "Gj1gC4Pfp4RL77AHXb2G": "0.9",
+      "9x2ALOooWuBjstyeEXgA": "0.10",
+      "Sg5SHIi9LnbgQbyH6UjR": "0.11"
+   }
+}
