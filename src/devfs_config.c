@@ -22,6 +22,11 @@
 #include "sl_config.h"
 #include "link_config.h"
 
+#if _ETHERNET
+#include "ethernet/netif_lan8742a.h"
+#include "ethernet/lwip_config.h"
+#endif
+
 //--------------------------------------------Device Filesystem-------------------------------------------------
 
 
@@ -215,6 +220,56 @@ const stm32_spi_dma_config_t spi2_dma_config = {
 	}
 };
 
+#if _ETHERNET
+
+u8 eth_tx_buffer[STM32_ETH_DMA_BUFFER_SIZE]; //these use DMA and can't be tightly coupled
+u8 eth_rx_buffer[STM32_ETH_DMA_BUFFER_SIZE];
+
+const stm32_eth_dma_config_t eth0_config = {
+	.eth_config = {
+		.attr = {
+			.o_flags = ETH_FLAG_SET_INTERFACE |
+			ETH_FLAG_START |
+			ETH_FLAG_IS_RMII |
+			ETH_FLAG_IS_AUTONEGOTIATION_ENABLED,
+			.pin_assignment = {
+				.rmii = {
+					.clk = {0, 1}, //PA1
+					.txd0 = {6, 13}, //PG13
+					.txd1 = {1, 13}, //PB13
+					.tx_en = {6, 11}, //PG11
+					.rxd0 = {2, 4}, //PC4
+					.rxd1 = {2, 5}, //PC5
+					.crs_dv = {0, 7}, //PA7
+					.rx_er = {0xff, 0xff}, //??
+					.unused[0] = {0xff, 0xff},
+					.unused[1] = {0xff, 0xff},
+					.unused[2] = {0xff, 0xff},
+					.unused[3] = {0xff, 0xff},
+					.unused[4] = {0xff, 0xff},
+					.unused[5] = {0xff, 0xff},
+					.unused[6] = {0xff, 0xff},
+					.unused[7] = {0xff, 0xff}
+				},
+				.mdio = {0, 2}, //PA2
+				.mdc = {2, 1} //PC1
+			},
+			.mac_address[0] = 0x00,
+			.mac_address[1] = 0x80,
+			.mac_address[2] = 0xe1,
+			.mac_address[3] = 0x00,
+			.mac_address[4] = 0x00,
+			.mac_address[5] = 0x00,
+			.mac_address[6] = 0x00, //unused
+			.mac_address[7] = 0x00, //unused
+			.phy_address = 0 //address of PHY CHIP
+		}
+	},
+	.tx_buffer = eth_tx_buffer,
+	.rx_buffer = eth_rx_buffer
+};
+#endif
+
 //Coming Soon
 //SD Card as DMA
 //I2S2
@@ -246,6 +301,12 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
+
+	#if _ETHERNET
+	DEVFS_DEVICE("eth0", netif_lan8742a, 0, &eth0_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
+
+
 	DEVFS_DEVICE("i2c0", mcu_i2c, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("i2c1", mcu_i2c, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("i2c2", mcu_i2c, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
@@ -265,15 +326,43 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("spi2", mcu_spi, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("spi3", mcu_spi, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
-	DEVFS_DEVICE("tmr0", mcu_tmr, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM1
-	DEVFS_DEVICE("tmr1", mcu_tmr, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM2
+	DEVFS_DEVICE("tmr0", mcu_tmr, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	DEVFS_DEVICE("tmr1", mcu_tmr, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("tmr2", mcu_tmr, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("tmr3", mcu_tmr, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("tmr4", mcu_tmr, 4, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("tmr5", mcu_tmr, 5, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("tmr6", mcu_tmr, 6, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("tmr7", mcu_tmr, 7, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM8
-	//Does this chip have more timers?
+	#if MCU_TMR_PORTS >= 7
+	DEVFS_DEVICE("tmr7", mcu_tmr, 7, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
+	#if MCU_TMR_PORTS >= 8
+	DEVFS_DEVICE("tmr8", mcu_tmr, 8, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
+	#if MCU_TMR_PORTS >= 9
+	DEVFS_DEVICE("tmr9", mcu_tmr, 9, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
+	#if MCU_TMR_PORTS >= 10
+	DEVFS_DEVICE("tmr10", mcu_tmr, 10, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
+	#if MCU_TMR_PORTS >= 11
+	DEVFS_DEVICE("tmr11", mcu_tmr, 11, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
+	#if MCU_TMR_PORTS >= 12
+	DEVFS_DEVICE("tmr12", mcu_tmr, 12, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
+	#if MCU_TMR_PORTS >= 13
+	DEVFS_DEVICE("tmr13", mcu_tmr, 13, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
+	#if MCU_TMR_PORTS >= 14
+	DEVFS_DEVICE("tmr14", mcu_tmr, 14, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
+	#if MCU_TMR_PORTS >= 15
+	DEVFS_DEVICE("tmr10", mcu_tmr, 15, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
+	#if MCU_TMR_PORTS >= 16
+	DEVFS_DEVICE("tmr10", mcu_tmr, 16, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	#endif
 
 	//
 	DEVFS_DEVICE("uart1", mcu_uart_dma, 1, &uart1_dma_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),

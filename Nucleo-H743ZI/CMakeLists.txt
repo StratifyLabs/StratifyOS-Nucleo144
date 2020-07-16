@@ -19,6 +19,7 @@ project(${SOS_NAME} CXX C)
 
 #Add sources to the project
 sos_sdk_add_out_of_source_directory(SOS_KERNEL_SOURCELIST ../src src)
+sos_sdk_add_out_of_source_directory(SOS_KERNEL_SOURCELIST ../src/ethernet src/ethernet)
 list(APPEND SOS_KERNEL_SOURCELIST
 	${CMAKE_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_SOURCE_DIR}/src/SystemClock_Config.c
@@ -37,9 +38,9 @@ set(SOS_ARCH v7em_f5dh)
 set(SOS_DEVICE stm32h743zi)
 set(SOS_DEVICE_FAMILY stm32h743xx)
 set(SOS_HARDWARD_ID 0x00000021)
-set(SOS_LIBRARIES mbedtls_kernel arm_dsp_sos_kernel)
-set(SOS_INCLUDE_DIRECTORIES ${TOOLCHAIN_INC_DIR}/mcu/arch/stm32/cmsis)
-
+set(SOS_LIBRARIES	mbedtls_kernel lwip_kernel jansson_kernel)
+set(SOS_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/src ${TOOLCHAIN_INC_DIR}/mcu/arch/stm32/cmsis)
+set(SOS_DEFINITIONS _ETHERNET=1)
 set(SOS_KERNEL_START_ADDRESS 0x08100000)
 set(SOS_BOOT_START_ADDRESS 0x08000000)
 include(${SOS_TOOLCHAIN_CMAKE_PATH}/sos-bsp-std.cmake)

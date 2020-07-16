@@ -22,6 +22,13 @@
 #include "sl_config.h"
 #include "link_config.h"
 
+#if _ETHERNET
+#include "ethernet/lwip_config.h"
+#define SOCKET_API &lwip_api
+#else
+#define SOCKET_API NULL
+#endif
+
 #if !defined SOS_BOARD_FLAGS
 #define SOS_BOARD_FLAGS 0
 #endif
@@ -41,7 +48,7 @@ const sos_board_config_t sos_board_config = {
 	.start = sos_default_thread,
 	.start_args = &link_transport,
 	.start_stack_size = SOS_DEFAULT_START_STACK_SIZE,
-	.socket_api = 0,
+	.socket_api = SOCKET_API,
 	.request = 0,
 	.trace_dev = "/dev/trace",
 	.trace_event = SOS_BOARD_TRACE_EVENT,

@@ -6,14 +6,9 @@
 
 #include "board_config.h"
 
-//openocd -f interface/stlink-v2-1.cfg -f target/stm32f4x_stlink.cfg
-//openocd -f interface/stlink-v2-1.cfg -f target/stm32f4x_stlink.cfg -c "program ./Nucleo-F446ZE/build_debug_boot/Nucleo-F446ZE.bin 0x08000000; reset run; exit;"
-#define SOS_BOARD_DEBUG_FLAGS (MCU_DEBUG_INFO | MCU_DEBUG_SYS)
 
-
-#define SOS_BOARD_SYSTEM_CLOCK 168000000
+#define SOS_BOARD_DEBUG_FLAGS (MCU_DEBUG_INFO | MCU_DEBUG_SYS | MCU_DEBUG_SCHEDULER)
 #define SOS_BOARD_SYSTEM_MEMORY_SIZE (8192*3)
-
 #define SOS_BOARD_USB_RX_BUFFER_SIZE 512
 #define SOS_BOARD_STDIO_BUFFER_SIZE 512
 #define SOS_BOARD_TMR 1
@@ -22,18 +17,6 @@
 #define SOS_BOARD_TASK_TOTAL 10
 #define SOS_BOARD_EVENT_HANDLER board_event_handler
 #define SOS_BOARD_TRACE_EVENT board_trace_event
-
-#define STM32_ARCH_O_FLAGS STM32_CONFIG_FLAG_IS_HSE_ON
-#define STM32_ARCH_CLOCK_PLLM 4
-#define STM32_ARCH_CLOCK_PLLN 168
-#define STM32_ARCH_CLOCK_PLLP 2
-#define STM32_ARCH_CLOCK_PLLQ 7
-#define STM32_ARCH_CLOCK_PLLR 2
-#define STM32_ARCH_CLOCK_AHB_CLOCK_DIVIDER 1
-#define STM32_ARCH_CLOCK_APB1_CLOCK_DIVIDER 4
-#define STM32_ARCH_CLOCK_APB2_CLOCK_DIVIDER 2
-#define STM32_ARCH_CLOCK_VOLTAGE_SCALE 1
-#define STM32_ARCH_CLOCK_FLASH_LATENCY 5
 
 //--------------------------------------------Symbols-------------------------------------------------
 
