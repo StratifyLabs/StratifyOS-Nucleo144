@@ -20,9 +20,14 @@ int netif_lan8742a_ioctl(const devfs_handle_t * handle, int request, void * ctl)
         o_flags = netif_attr->o_flags;
 		  if(o_flags & NETIF_FLAG_INIT ){
             //initialize the interface
-            result = mcu_eth_setattr(handle, 0);
+						result = mcu_eth_setattr(handle, NULL);
             if( result < 0 ){
-					 mcu_debug_log_error(MCU_DEBUG_USER0, "Failed to initialize ethernet (%d, %d)", SYSFS_GET_RETURN(result), SYSFS_GET_RETURN_ERRNO(result));
+					 mcu_debug_log_error(
+								 MCU_DEBUG_USER0,
+								 "Failed to initialize ethernet (%d, %d)",
+								 SYSFS_GET_RETURN(result),
+								 SYSFS_GET_RETURN_ERRNO(result)
+								 );
                 return result;
             }
             return 0;

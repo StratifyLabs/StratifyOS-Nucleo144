@@ -8,7 +8,6 @@
 
 #include <arm_dsp_api_declaration.h>
 
-
 int kernel_request(int req, void * arg){
 	return -1;
 }
@@ -16,10 +15,12 @@ int kernel_request(int req, void * arg){
 const void * kernel_request_api(u32 request){
 	switch(request){
 		case CRYPT_SHA256_API_REQUEST: return &mbedtls_crypt_sha256_api;
-#if _ETHERNET
-		case MBEDTLS_API_REQUEST: return &mbedtls_api;
+#if 0
+//#if INCLUDE_ETHERNET
+		case MBEDTLS_API_REQUEST: return &mbedtls_api; //about 200KB
 #endif
-#if INCLUDE_JANSSON_API
+#if 0
+//#if INCLUDE_JANSSON_API
 		case JANSSON_API_REQUEST: return &jansson_api; //about 20KB
 #endif
 	}

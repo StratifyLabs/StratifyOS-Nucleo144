@@ -22,7 +22,7 @@
 #include "sl_config.h"
 #include "link_config.h"
 
-#if _ETHERNET
+#if INCLUDE_ETHERNET
 #include "ethernet/netif_lan8742a.h"
 #include "ethernet/lwip_config.h"
 #endif
@@ -220,7 +220,7 @@ const stm32_spi_dma_config_t spi2_dma_config = {
 	}
 };
 
-#if _ETHERNET
+#if INCLUDE_ETHERNET
 
 u8 eth_tx_buffer[STM32_ETH_DMA_BUFFER_SIZE]; //these use DMA and can't be tightly coupled
 u8 eth_rx_buffer[STM32_ETH_DMA_BUFFER_SIZE];
@@ -302,7 +302,7 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
 
-	#if _ETHERNET
+	#if INCLUDE_ETHERNET
 	DEVFS_DEVICE("eth0", netif_lan8742a, 0, &eth0_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	#endif
 

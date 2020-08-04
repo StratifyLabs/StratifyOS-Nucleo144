@@ -7,6 +7,8 @@
 #include <sos/link/types.h>
 #include "board_config.h"
 
+#include "ethernet/lwip_config.h"
+
 #define TRACE_COUNT 16
 #define TRACE_FRAME_SIZE sizeof(link_trace_event_t)
 #define TRACE_BUFFER_SIZE (sizeof(link_trace_event_t)*TRACE_COUNT)
@@ -61,6 +63,15 @@ void board_event_handler(int event, void * args){
 			break;
 
 		case MCU_BOARD_CONFIG_EVENT_START_LINK:
+
+#if INCLUDE_ETHERNET
+			//start LWIP
+			mcu_debug_log_info(MCU_DEBUG_USER0, "Start LWIP");
+
+			usleep(500*1000);
+			lwip_api.startup(&lwip_api);
+#endif
+
 			mcu_debug_log_info(MCU_DEBUG_USER1, "Start LED %d");
 			sos_led_startup();
 			break;

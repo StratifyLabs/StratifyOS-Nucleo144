@@ -22,7 +22,7 @@
 #include "sl_config.h"
 #include "link_config.h"
 
-#if _ETHERNET
+#if INCLUDE_ETHERNET
 #include "ethernet/lwip_config.h"
 #define SOCKET_API &lwip_api
 #else
@@ -44,6 +44,7 @@ const sos_board_config_t sos_board_config = {
 	.sys_name = SL_CONFIG_NAME,
 	.sys_version = SL_CONFIG_VERSION_STRING,
 	.sys_id = SL_CONFIG_DOCUMENT_ID,
+	.team_id = SL_CONFIG_TEAM_ID,
 	.sys_memory_size = SOS_BOARD_SYSTEM_MEMORY_SIZE,
 	.start = sos_default_thread,
 	.start_args = &link_transport,
