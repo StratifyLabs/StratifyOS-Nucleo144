@@ -2,6 +2,8 @@
 #include <sos/dev/netif.h>
 #include "lwip_config.h"
 
+#if INCLUDE_ETHERNET
+
 #define NETWORK_INTERFACE_COUNT 1
 
 extern const sysfs_t sysfs_list[];
@@ -33,3 +35,5 @@ const lwip_api_config_t lwip_config = {
 };
 
 LWIP_DECLARE_SOCKET_API(lwip, &lwip_config, &lwip_state);
+
+#endif

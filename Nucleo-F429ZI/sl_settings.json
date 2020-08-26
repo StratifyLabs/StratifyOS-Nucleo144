@@ -1,6 +1,6 @@
 {
    "description": "This BSP can be used to run Stratify OS on the STM32F Nucleo-F429ZI board.",
-   "github": "https://github.com/StratifyLabs/Nucleo-F429ZI",
+	 "github": "https://github.com/StratifyLabs/StratifyOS-Nucleo144",
    "name": "Nucleo-F429ZI",
    "permissions": "public",
    "publisher": "Stratify Labs, Inc",

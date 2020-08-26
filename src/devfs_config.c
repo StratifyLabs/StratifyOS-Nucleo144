@@ -17,6 +17,7 @@
 #include <sos/fs/devfs.h>
 #include <sos/fs/sffs.h>
 #include <sos/sos.h>
+#include <device/auth.h>
 
 #include "config.h"
 #include "sl_config.h"
@@ -295,6 +296,7 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("stdio-in", fifo, 0, &stdio_in_config, &stdio_in_state, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("link-phy-usb", usbfifo, SOS_BOARD_USB_PORT, &sos_link_transport_usb_fifo_cfg, &sos_link_transport_usb_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("sys", sys, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	DEVFS_DEVICE("auth", auth, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	//DEVFS_DEVICE("rtc", mcu_rtc, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
 	//MCU peripherals

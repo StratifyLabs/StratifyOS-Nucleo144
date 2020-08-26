@@ -1,13 +1,12 @@
 {
    "description": "This BSP can be used to run Stratify OS on the Nucleo-F722ZE board.",
-   "github": "https://github.com/StratifyLabs/Nucleo-F722ZE",
+	 "github": "https://github.com/StratifyLabs/StratifyOS-Nucleo144",
    "name": "Nucleo-F722ZE",
    "permissions": "public",
    "publisher": "Stratify Labs, Inc",
-   "tags": "stm32,arm,cortex-m7",
    "type": "os",
    "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
-   "version": "0.14",
+	 "version": "0.15",
    "mbedMountName": "NODE_F722ZE",
    "documentId": "s61eUqIGIdpmv1hJkhBH",
    "buildList": {
@@ -15,8 +14,15 @@
       "Qgm9Lxy2iHmr9EEqebnm": "0.10",
       "vTa5C9IhUxubnXeJvVNM": "0.12",
       "ceTtDXLIE9s5cKMzuKIk": "0.13",
-      "g4mBbHIpp4GPcEVDNcqL": "0.14"
+      "g4mBbHIpp4GPcEVDNcqL": "0.14",
+      "7euyzqLmLtbzEOssuFKa": "0.15"
    },
-   "timestamp": 1545025803,
-   "hardwareId": "0x00000018"
+   "timestamp": 1598328463,
+   "hardwareId": "0x00000018",
+   "tagList": [
+      "stm32",
+      "arm",
+      "cortex-m7"
+   ],
+   "team": ""
 }
