@@ -21,6 +21,10 @@ limitations under the License.
 
 #include <device/netif_eth.h>
 
+typedef struct {
+	u32 is_initialized;
+} netif_lan8742a_state_t;
+
 
 int netif_lan8742a_open(const devfs_handle_t * handle);
 int netif_lan8742a_ioctl(const devfs_handle_t * handle, int request, void * ctl);

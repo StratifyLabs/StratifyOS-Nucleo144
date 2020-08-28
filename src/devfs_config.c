@@ -269,6 +269,8 @@ const stm32_eth_dma_config_t eth0_config = {
 	.tx_buffer = eth_tx_buffer,
 	.rx_buffer = eth_rx_buffer
 };
+
+netif_lan8742a_state_t netif_lan8742a_state MCU_SYS_MEM;
 #endif
 
 //Coming Soon
@@ -305,7 +307,7 @@ const devfs_device_t devfs_list[] = {
 
 
 	#if INCLUDE_ETHERNET
-	DEVFS_DEVICE("eth0", netif_lan8742a, 0, &eth0_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	DEVFS_DEVICE("eth0", netif_lan8742a, 0, &eth0_config, &netif_lan8742a_state, 0666, SOS_USER_ROOT, S_IFCHR),
 	#endif
 
 
