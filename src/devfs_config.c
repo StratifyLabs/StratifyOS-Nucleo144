@@ -263,6 +263,8 @@ const stm32_eth_dma_config_t eth0_config = {
 			.mac_address[5] = 0x00,
 			.mac_address[6] = 0x00, //unused
 			.mac_address[7] = 0x00, //unused
+			.mac_address[8] = 0x00, //unused
+			.mac_address[9] = 0x00, //unused
 			.phy_address = 0 //address of PHY CHIP
 		}
 	},

@@ -35,7 +35,6 @@ static int initialize_ethernet(const devfs_handle_t * handle){
 		if( result < 0 ){
 			return result;
 		}
-		mcu_debug_printf("chip is up\n");
 		state->is_initialized = STATE_CHIP_UP;
 	}
 
@@ -69,6 +68,7 @@ int netif_lan8742a_ioctl(const devfs_handle_t * handle, int request, void * ctl)
 	netif_attr_t * netif_attr = ctl;
 	netif_info_t * netif_info = ctl;
 	netif_lan8742a_state_t * state = handle->state;
+	const eth_config_t * eth_config = handle->config;
 	mcu_channel_t eth_register;
 	eth_attr_t attr;
 	u32 o_flags;
@@ -146,15 +146,24 @@ int netif_lan8742a_ioctl(const devfs_handle_t * handle, int request, void * ctl)
 
 		case I_NETIF_GETINFO:
 
+			memset(netif_info, 0, sizeof(netif_info_t));
+			memcpy(netif_info->mac_address, eth_config->attr.mac_address, 6);
+
 			netif_info->o_flags = NETIF_FLAG_INIT |
 					NETIF_FLAG_DEINIT |
 					NETIF_FLAG_IS_LINK_UP |
 					NETIF_FLAG_SET_LINK_DOWN |
+					NETIF_FLAG_IS_BROADCAST |
+					NETIF_FLAG_IS_ETHERNET |
+					NETIF_FLAG_IS_ETHERNET_ARP |
 					NETIF_FLAG_SET_LINK_UP;
+			mcu_debug_printf("get lan info 0x%X\n", netif_info->o_flags);
 
 			netif_info->o_events = MCU_EVENT_FLAG_DATA_READY | MCU_EVENT_FLAG_WRITE_COMPLETE;
+			netif_info->mtu = 1500;
 
-			break;
+			//get the system mac address
+			return SYSFS_RETURN_SUCCESS;
 	}
 
 

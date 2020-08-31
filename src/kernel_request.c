@@ -15,11 +15,9 @@ int kernel_request(int req, void * arg){
 const void * kernel_request_api(u32 request){
 	switch(request){
 		case CRYPT_SHA256_API_REQUEST: return &mbedtls_crypt_sha256_api;
-//#if 0
-#if INCLUDE_ETHERNET
+#if INCLUDE_ETHERNET && INCLUDE_TLS
 		case MBEDTLS_API_REQUEST: return &mbedtls_api; //about 200KB
 #endif
-//#if 0
 #if INCLUDE_JANSSON_API
 		case JANSSON_API_REQUEST: return &jansson_api; //about 20KB
 #endif

@@ -4,15 +4,21 @@
    "name": "Nucleo-F746ZG",
    "permissions": "public",
    "publisher": "Stratify Labs, Inc",
-   "tags": "stm32,arm,cortex-m7",
    "type": "os",
    "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
-   "version": "0.10",
-   "timestamp": 1545023085,
+   "version": "0.11",
+   "timestamp": 1598658043,
    "documentId": "XCw1jMjiObLMUDKZFRG2",
    "buildList": {
       "IZHKrNj8E5yUFo74pQqW": "0.9",
-      "sZ6r5HS3B8RgQT6eAfBN": "0.10"
+      "sZ6r5HS3B8RgQT6eAfBN": "0.10",
+      "qWyJrKSpiwS1ofrveiCD": "0.11"
    },
-   "hardwareId": "0x00000013"
+   "hardwareId": "0x00000013",
+   "tagList": [
+      "stm32",
+      "arm",
+      "cortex-m7"
+   ],
+   "team": ""
 }
