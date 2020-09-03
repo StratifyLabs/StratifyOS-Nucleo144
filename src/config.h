@@ -41,8 +41,10 @@
 #define SYMBOLS_IGNORE_DCOMPLEX 1
 #define SYMBOLS_IGNORE_POSIX_TRACE 1 //Always ignore -- deprecated
 #define SYMBOLS_IGNORE_SG 1 //Stratify Graphics -- ignore if board will not support displays
+
+#if !defined INCLUDE_ETHERNET
 #define SYMBOLS_IGNORE_SOCKET 1
-#define SYMBOLS_IGNORE_LWIP 1
+#endif
 
 //other ignore switches
 #if 0

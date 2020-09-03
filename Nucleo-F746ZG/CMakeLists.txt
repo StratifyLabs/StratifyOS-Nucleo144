@@ -51,7 +51,7 @@ set(SOS_ARCH v7em_f5sh)
 set(SOS_DEVICE stm32f746zg)
 set(SOS_DEVICE_FAMILY stm32f746xx)
 set(SOS_HARDWARD_ID 0x00000013)
-set(SOS_LIBRARIES	mbedtls_kernel lwip_kernel_nocrc_debug jansson_kernel)
+set(SOS_LIBRARIES	mbedtls_kernel lwip_kernel_nocrc jansson_kernel)
 set(SOS_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/src ${TOOLCHAIN_INC_DIR}/mcu/arch/stm32/cmsis)
 math(EXPR BOARD_SYSTEM_MEMORY 64*1024)
 set(SOS_DEFINITIONS
