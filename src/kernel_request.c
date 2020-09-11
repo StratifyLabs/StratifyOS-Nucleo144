@@ -6,7 +6,6 @@
 
 #include "config.h"
 
-#include <arm_dsp_api_declaration.h>
 
 int kernel_request(int req, void * arg){
 	return -1;

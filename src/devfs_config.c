@@ -18,6 +18,8 @@
 #include <sos/sos.h>
 #include <sys/lock.h>
 
+#include <mcu/arch/stm32/stm32_dev_local.h>
+
 #include "config.h"
 #include "link_config.h"
 #include "sl_config.h"
@@ -326,6 +328,7 @@ const devfs_device_t devfs_list[] = {
     DEVFS_DEVICE("tmr4", mcu_tmr, 4, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("tmr5", mcu_tmr, 5, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("tmr6", mcu_tmr, 6, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+#if 0
 #if MCU_TMR_PORTS >= 7
     DEVFS_DEVICE("tmr7", mcu_tmr, 7, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 #endif
@@ -355,6 +358,7 @@ const devfs_device_t devfs_list[] = {
 #endif
 #if MCU_TMR_PORTS >= 16
     DEVFS_DEVICE("tmr10", mcu_tmr, 16, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+#endif
 #endif
 
     //
