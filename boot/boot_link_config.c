@@ -88,8 +88,8 @@ link_transport_phy_t link_transport_open(const char * name, const void * options
 #endif
 	usb_attr.pin_assignment.dp = SOS_BOARD_USB_DP_PIN;
 	usb_attr.pin_assignment.dm = SOS_BOARD_USB_DM_PIN;
-	usb_attr.freq = mcu_board_config.core_osc_freq;
-	memset(usb_attr.tx_fifo_word_size, 0, USB_TX_FIFO_WORD_SIZE_COUNT);
+        // usb_attr.freq = mcu_board_config.core_osc_freq;
+        memset(usb_attr.tx_fifo_word_size, 0, USB_TX_FIFO_WORD_SIZE_COUNT);
 	usb_attr.rx_fifo_word_size = SOS_BOARD_RX_FIFO_WORDS; //RX fifo for all endpoints
 	usb_attr.tx_fifo_word_size[0] = SOS_BOARD_TX0_FIFO_WORDS; //TX endpoint 0
 	usb_attr.tx_fifo_word_size[1] = SOS_BOARD_TX1_FIFO_WORDS; //TX endpoint 1

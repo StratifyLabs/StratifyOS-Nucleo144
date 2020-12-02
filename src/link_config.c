@@ -1,11 +1,14 @@
 
-#include "link_config.h"
-#include "config.h"
+
 #include <fcntl.h>
-#include <mcu/debug.h>
+#include <sos/debug.h>
 #include <sos/dev/pio.h>
+#include <sos/sos_config.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "config.h"
+#include "link_config.h"
 
 #if !defined SOS_BOARD_RX_FIFO_WORDS
 #define SOS_BOARD_RX_FIFO_WORDS 128
@@ -89,7 +92,7 @@ link_transport_phy_t link_transport_open(const char *name,
 #endif
   usb_attr.pin_assignment.dp = SOS_BOARD_USB_DP_PIN;
   usb_attr.pin_assignment.dm = SOS_BOARD_USB_DM_PIN;
-  usb_attr.freq = mcu_board_config.core_osc_freq;
+  usb_attr.freq = sos_config.clock.frequency;
   memset(usb_attr.tx_fifo_word_size, 0, USB_TX_FIFO_WORD_SIZE_COUNT);
   usb_attr.rx_fifo_word_size =
       SOS_BOARD_RX_FIFO_WORDS; // RX fifo for all endpoints
@@ -100,14 +103,14 @@ link_transport_phy_t link_transport_open(const char *name,
   usb_attr.tx_fifo_word_size[4] = SOS_BOARD_TX4_FIFO_WORDS; // TX endpoint 4
   usb_attr.tx_fifo_word_size[5] = SOS_BOARD_TX5_FIFO_WORDS; // TX endpoint 5
 
-  mcu_debug_log_info(MCU_DEBUG_USER1, "Open USB");
+  sos_debug_log_info(SOS_DEBUG_USER1, "Open USB");
 
   fd = sos_link_transport_usb_open(name, &m_usb_control,
                                    &link_transport_usb_constants, &usb_attr,
                                    mcu_pin(0xff, 0xff),
                                    1); // USB pin is active high
 
-  mcu_debug_log_info(MCU_DEBUG_USER1, "Returned %d", fd);
+  sos_debug_log_info(SOS_DEBUG_USER1, "Returned %d", fd);
 
   return fd;
 }

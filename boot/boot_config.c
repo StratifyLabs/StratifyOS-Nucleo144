@@ -20,10 +20,12 @@ extern void boot_main();
 //Execute the Stratify OS default bootloader
 void _main(){ boot_main(); }
 
-void board_event_handler(int event, void * args){
+void board_event_handler(int event, void *args) {
+#if 0
     switch(event){
-    case MCU_BOARD_CONFIG_EVENT_ROOT_INITIALIZE_CLOCK:
+    case SOS_EVENT_ROOT_STARTUP:
         SystemClock_Config();
         break;
     }
+#endif
 }

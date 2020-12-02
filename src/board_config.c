@@ -2,7 +2,7 @@
 #include "board_config.h"
 #include <cortexm/task.h>
 #include <fcntl.h>
-#include <mcu/debug.h>
+#include <sos/debug.h>
 #include <sos/link/types.h>
 #include <sos/sos.h>
 #include <string.h>
@@ -24,7 +24,7 @@ extern void SystemClock_Config();
 void board_trace_event(void *event) {
   link_trace_event_header_t *header = event;
   devfs_async_t async;
-  const devfs_device_t *trace_dev = &(devfs_list[0]);
+  const devfs_device_t *trace_dev = &(sos_config.fs.devfs_list[0]);
 
   // write the event to the fifo
   memset(&async, 0, sizeof(devfs_async_t));
@@ -35,46 +35,47 @@ void board_trace_event(void *event) {
   trace_dev->driver.write(&(trace_dev->handle), &async);
 }
 
+void board_initialize() {
+  SystemClock_Config();
+
+  // enable serial debugging output
+}
+
 void board_event_handler(int event, void *args) {
   switch (event) {
-  case MCU_BOARD_CONFIG_EVENT_ROOT_TASK_INIT:
+  case SOS_EVENT_ROOT_RESET:
+
     break;
 
-  case MCU_BOARD_CONFIG_EVENT_ROOT_FATAL:
+  case SOS_EVENT_ROOT_FATAL:
     // start the bootloader on a fatal event
     // mcu_core_invokebootloader(0, 0);
+    sos_debug_printf("Fatal\n");
     if (args != 0) {
-      mcu_debug_log_error(MCU_DEBUG_SYS, "Fatal Error %s", (const char *)args);
+      sos_debug_log_error(SOS_DEBUG_SYS, "Fatal Error %s", (const char *)args);
     } else {
-      mcu_debug_log_error(MCU_DEBUG_SYS, "Fatal Error unknown");
+      sos_debug_log_error(SOS_DEBUG_SYS, "Fatal Error unknown");
     }
     while (1) {
       ;
     }
     break;
 
-  case MCU_BOARD_CONFIG_EVENT_ROOT_INITIALIZE_CLOCK:
-    SystemClock_Config();
+  case SOS_EVENT_TASK_INITIALIZED:
     break;
 
-  case MCU_BOARD_CONFIG_EVENT_START_INIT:
-    break;
-
-  case MCU_BOARD_CONFIG_EVENT_START_LINK:
+  case SOS_EVENT_START_LINK:
 
 #if INCLUDE_ETHERNET
     // start LWIP
-    mcu_debug_log_info(MCU_DEBUG_USER0, "Start LWIP");
+    sos_debug_log_info(SOS_DEBUG_USER0, "Start LWIP");
 
     usleep(500 * 1000);
     lwip_api.startup(&lwip_api);
 #endif
 
-    mcu_debug_log_info(MCU_DEBUG_USER1, "Start LED %d");
+    sos_debug_log_info(SOS_DEBUG_USER1, "Start LED %d");
     sos_led_startup();
-    break;
-
-  case MCU_BOARD_CONFIG_EVENT_START_FILESYSTEM:
     break;
   }
 }

@@ -1,11 +1,18 @@
 
 set(SOURCES
+	fs_config.c
+	sleep_config.c
+	cache_config.c
+	debug_config.c
+	usb_config.c
+	sys_config.c
+	clock_config.c
+	mcu_config.c
 	board_config.c
 	board_config.h
 	config.h
 	link_config.c
 	link_config.h
-	mcu_config.c
 	devfs_config.c
 	sos_config.c
 	board_symbols.c

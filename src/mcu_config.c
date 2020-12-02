@@ -2,6 +2,8 @@
 #include <mcu/arch.h>
 #include <mcu/mcu.h>
 
+#include <mcu/arch/stm32/stm32_config.h>
+
 #include "config.h"
 
 //--------------------------------------------MCU
@@ -9,11 +11,20 @@
 
 static char stm32_usb_rx_buffer[SOS_BOARD_USB_RX_BUFFER_SIZE] MCU_SYS_MEM;
 
-const stm32_config_t stm32_config = {.flash_program_millivolts = 3300,
-                                     .usb_rx_buffer = stm32_usb_rx_buffer,
-                                     .usb_rx_buffer_size =
-                                         SOS_BOARD_USB_RX_BUFFER_SIZE};
-
+const stm32_config_t stm32_config = {
+    .flash_program_millivolts = 3300,
+    .usb_rx_buffer = stm32_usb_rx_buffer,
+    .usb_rx_buffer_size = SOS_BOARD_USB_RX_BUFFER_SIZE,
+    .debug_uart_config = {.port = 2,
+                          .attr = {.pin_assignment = {.rx = {3, 9},
+                                                      .tx = {3, 8},
+                                                      .cts = {0xff, 0xff},
+                                                      .rts = {0xff, 0xff}},
+                                   .freq = 115200,
+                                   .o_flags = UART_FLAG_SET_LINE_CODING_DEFAULT,
+                                   .width = 8}},
+};
+#if 0
 MCU_DECLARE_SECRET_KEY_32(secret_key)
 
 const mcu_board_config_t mcu_board_config = {
@@ -34,3 +45,4 @@ const mcu_board_config_t mcu_board_config = {
     .led = {1, 7},
     .arch_config = &stm32_config,
     .o_mcu_debug = SOS_BOARD_DEBUG_FLAGS};
+#endif

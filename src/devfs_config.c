@@ -7,9 +7,9 @@
 #include <device/usbfifo.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <mcu/debug.h>
 #include <mcu/mcu.h>
 #include <mcu/periph.h>
+#include <sos/debug.h>
 #include <sos/fs/appfs.h>
 #include <sos/fs/devfs.h>
 #include <sos/fs/sffs.h>
@@ -45,25 +45,6 @@
  *
  *
  */
-// USART2
-#if 0
-UARTFIFO_DECLARE_CONFIG_STATE(uart1_fifo, 1024, 32,
-										UART_FLAG_SET_LINE_CODING_DEFAULT, 8, 115200,
-										SOS_BOARD_USART2_RX_PORT, SOS_BOARD_USART2_RX_PIN, //RX
-										SOS_BOARD_USART2_TX_PORT, SOS_BOARD_USART2_TX_PIN, //TX
-										0xff, 0xff,
-										0xff, 0xff);
-#endif
-#if !defined __debug
-// USART3
-UARTFIFO_DECLARE_CONFIG_STATE(uart2_fifo, 1024, 32,
-                              UART_FLAG_SET_LINE_CODING_DEFAULT, 8, 115200,
-                              SOS_BOARD_USART3_RX_PORT,
-                              SOS_BOARD_USART3_RX_PIN, // RX
-                              SOS_BOARD_USART3_TX_PORT,
-                              SOS_BOARD_USART3_TX_PIN, // TX
-                              0xff, 0xff, 0xff, 0xff);
-#endif
 
 char uart1_fifo_buffer[64];
 fifo_config_t uart1_fifo_config = {.size = 64, .buffer = uart1_fifo_buffer};
@@ -259,7 +240,6 @@ netif_lan8742a_state_t netif_lan8742a_state MCU_SYS_MEM;
 
 FIFO_DECLARE_CONFIG_STATE(stdio_in, SOS_BOARD_STDIO_BUFFER_SIZE);
 FIFO_DECLARE_CONFIG_STATE(stdio_out, SOS_BOARD_STDIO_BUFFER_SIZE);
-CFIFO_DECLARE_CONFIG_STATE_4(board_fifo, 256);
 
 #if !defined SOS_BOARD_USB_PORT
 #define SOS_BOARD_USB_PORT 0
@@ -271,8 +251,6 @@ const devfs_device_t devfs_list[] = {
     // System devices
     DEVFS_DEVICE("trace", ffifo, 0, &board_trace_config, &board_trace_state,
                  0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("fifo", cfifo, 0, &board_fifo_config, &board_fifo_state, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("stdio-out", fifo, 0, &stdio_out_config, &stdio_out_state,
                  0666, SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("stdio-in", fifo, 0, &stdio_in_config, &stdio_in_state, 0666,
@@ -287,7 +265,6 @@ const devfs_device_t devfs_list[] = {
 
     // MCU peripherals
     DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
 #if INCLUDE_ETHERNET
     DEVFS_DEVICE("eth0", netif_lan8742a, 0, &eth0_config, &netif_lan8742a_state,
@@ -296,8 +273,6 @@ const devfs_device_t devfs_list[] = {
 
     DEVFS_DEVICE("i2c0", mcu_i2c, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("i2c1", mcu_i2c, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("i2c2", mcu_i2c, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("i2c3", mcu_i2c, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
     DEVFS_DEVICE("pio0", mcu_pio, 0, 0, 0, 0666, SOS_USER_ROOT,
                  S_IFCHR), // GPIOA
@@ -317,58 +292,11 @@ const devfs_device_t devfs_list[] = {
                  S_IFCHR), // GPIOH
 
     DEVFS_DEVICE("spi0", mcu_spi, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("spi1", mcu_spi, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("spi2", mcu_spi, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("spi3", mcu_spi, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("spi1", mcu_spi, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
     DEVFS_DEVICE("tmr0", mcu_tmr, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("tmr1", mcu_tmr, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("tmr2", mcu_tmr, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("tmr3", mcu_tmr, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("tmr4", mcu_tmr, 4, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("tmr5", mcu_tmr, 5, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("tmr6", mcu_tmr, 6, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#if 0
-#if MCU_TMR_PORTS >= 7
-    DEVFS_DEVICE("tmr7", mcu_tmr, 7, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-#if MCU_TMR_PORTS >= 8
-    DEVFS_DEVICE("tmr8", mcu_tmr, 8, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-#if MCU_TMR_PORTS >= 9
-    DEVFS_DEVICE("tmr9", mcu_tmr, 9, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-#if MCU_TMR_PORTS >= 10
-    DEVFS_DEVICE("tmr10", mcu_tmr, 10, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-#if MCU_TMR_PORTS >= 11
-    DEVFS_DEVICE("tmr11", mcu_tmr, 11, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-#if MCU_TMR_PORTS >= 12
-    DEVFS_DEVICE("tmr12", mcu_tmr, 12, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-#if MCU_TMR_PORTS >= 13
-    DEVFS_DEVICE("tmr13", mcu_tmr, 13, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-#if MCU_TMR_PORTS >= 14
-    DEVFS_DEVICE("tmr14", mcu_tmr, 14, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-#if MCU_TMR_PORTS >= 15
-    DEVFS_DEVICE("tmr10", mcu_tmr, 15, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-#if MCU_TMR_PORTS >= 16
-    DEVFS_DEVICE("tmr10", mcu_tmr, 16, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-#endif
 
-    //
-    DEVFS_DEVICE("uart1", mcu_uart_dma, 1, &uart1_dma_config, 0, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
-
-#if !defined __debug
-// DEVFS_DEVICE("uart2", uartfifo, 2, &uart2_fifo_config, &uart2_fifo_state,
-// 0666, SOS_USER_ROOT, S_IFCHR),
-#endif
-    DEVFS_DEVICE("uart5", uartfifo, 5, &uart5_fifo_config, &uart5_fifo_state,
-                 0666, SOS_USER_ROOT, S_IFCHR),
     DEVFS_TERMINATOR};
