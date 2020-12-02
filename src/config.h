@@ -7,8 +7,8 @@
 #include "board_config.h"
 
 #define SOS_BOARD_DEBUG_FLAGS                                                  \
-  (MCU_DEBUG_LINK | MCU_DEBUG_INFO | MCU_DEBUG_SYS | MCU_DEBUG_SCHEDULER |     \
-   MCU_DEBUG_USER0 | MCU_DEBUG_DEVICE)
+  (MCU_DEBUG_INFO | MCU_DEBUG_SYS | MCU_DEBUG_SCHEDULER | MCU_DEBUG_USER0 |    \
+   MCU_DEBUG_APPFS)
 
 #if !defined SOS_BOARD_SYSTEM_MEMORY_SIZE
 #define SOS_BOARD_SYSTEM_MEMORY_SIZE (8192*3)
