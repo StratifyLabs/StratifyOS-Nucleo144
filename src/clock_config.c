@@ -11,8 +11,13 @@ void clock_initialize(
                          handle_overflow);
 }
 
-void clock_enable() { stm32_clock_enable(); }
-u32 clock_disable() { stm32_clock_disable(); }
+void clock_enable() {
+  stm32_clock_enable();
+}
+u32 clock_disable() {
+  u32 result = stm32_clock_disable();
+  return result;
+}
 
 void clock_set_channel(const mcu_channel_t *channel) {
   stm32_clock_set_channel(channel);

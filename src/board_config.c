@@ -74,6 +74,7 @@ void board_event_handler(int event, void *args) {
     lwip_api.startup(&lwip_api);
 #endif
 
+    sos_debug_printf("SOS_EVENT_START_LINK\n");
     sos_debug_log_info(SOS_DEBUG_USER1, "Start LED %d");
     sos_led_startup();
     break;
