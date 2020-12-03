@@ -11,6 +11,10 @@ void sys_initialize() {
   stm32_initialize_systick();
 }
 
+void sys_get_serial_number(mcu_sn_t *serial_number) {
+  stm32_get_serial_number(serial_number);
+}
+
 int sys_kernel_request(int req, void *arg) { return -1; }
 
 const void *sys_kernel_request_api(u32 request) {

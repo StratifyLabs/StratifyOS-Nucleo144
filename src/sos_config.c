@@ -61,10 +61,16 @@ const sos_config_t sos_config = {
     .sleep = {.idle = sleep_idle,
               .hibernate = sleep_hibernate,
               .powerdown = sleep_powerdown},
+
+    .usb = {.set_attributes = usb_set_attributes,
+            .set_action = usb_set_action,
+            .write_endpoint = usb_write_endpoint,
+            .read_endpoint = usb_read_endpoint},
     .sys =
         {
             .initialize = sys_initialize,
             .memory_size = SOS_BOARD_SYSTEM_MEMORY_SIZE,
+            .get_serial_number = sys_get_serial_number,
             .os_mpu_text_mask = 0,
             .flags =
                 SYS_FLAG_IS_STDIO_FIFO | SYS_FLAG_IS_TRACE | SOS_BOARD_FLAGS,

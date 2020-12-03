@@ -1,4 +1,7 @@
 {
    "sdkDirectory": "StratifySDK",
-   "creationTimestamp": 1592969744
+   "creationTimestamp": 1592969744,
+   "shortcuts": {
+      "buildInstallF446": "fs.execute:command='touch src/board_config.c' fs.execute:directory=Nucleo-F446ZE/cmake_arm,command='make -j12 all_Nucleo-F446ZE_debug.elf' os.install:build=debug,path=Nucleo-F446ZE "
+   }
 }

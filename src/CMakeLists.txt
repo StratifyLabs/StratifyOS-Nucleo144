@@ -6,6 +6,7 @@ set(SOURCES
 	debug_config.c
 	usb_config.c
 	sys_config.c
+	usb_config.c
 	clock_config.c
 	mcu_config.c
 	board_config.c

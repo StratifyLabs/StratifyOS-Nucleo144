@@ -47,6 +47,7 @@ void debug_trace_event(void *event);
 void sys_initialize();
 int sys_kernel_request(int req, void *arg);
 const void *sys_kernel_request_api(u32 request);
+void sys_get_serial_number(mcu_sn_t *serial_number);
 
 // cache
 void cache_enable();
@@ -59,6 +60,14 @@ void cache_invalidate_data();
 void cache_invalidate_data_block(u32 address, u32 size);
 void cache_clean_data();
 void cache_clean_data_block(u32 address, u32 size);
+
+// usb
+int usb_set_attributes(const devfs_handle_t *handle, void *ctl);
+int usb_set_action(const devfs_handle_t *handle, mcu_action_t *action);
+void usb_write_endpoint(const devfs_handle_t *handle, u32 endpoint_num,
+                        const void *src, u32 size);
+int usb_read_endpoint(const devfs_handle_t *handle, u32 endpoint_num,
+                      void *dest);
 
 int board_kernel_request(int req, void *arg);
 const void *board_kernel_request_api(u32 request);

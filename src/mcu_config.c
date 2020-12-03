@@ -13,6 +13,7 @@ static char stm32_usb_rx_buffer[SOS_BOARD_USB_RX_BUFFER_SIZE] MCU_SYS_MEM;
 
 const stm32_config_t stm32_config = {
     .flash_program_millivolts = 3300,
+    .usb_max_packet_zero = 64,
     .usb_rx_buffer = stm32_usb_rx_buffer,
     .usb_rx_buffer_size = SOS_BOARD_USB_RX_BUFFER_SIZE,
     .debug_uart_config = {.port = 2,
