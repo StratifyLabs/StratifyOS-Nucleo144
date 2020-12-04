@@ -1,10 +1,12 @@
 
 #include <device/auth.h>
 #include <device/cfifo.h>
+#include <device/device_fifo.h>
 #include <device/fifo.h>
 #include <device/sys.h>
 #include <device/uartfifo.h>
 #include <device/usbfifo.h>
+
 #include <errno.h>
 #include <fcntl.h>
 #include <mcu/mcu.h>
@@ -232,6 +234,23 @@ const stm32_eth_dma_config_t
 netif_lan8742a_state_t netif_lan8742a_state MCU_SYS_MEM;
 #endif
 
+#define USB_DEVICE_FIFO_BUFFER_SIZE 64
+u8 usb_device_fifo_buffer[USB_DEVICE_FIFO_BUFFER_SIZE] MCU_SYS_MEM;
+u8 usb_device_fifo_read_buffer[USB_DEVICE_FIFO_BUFFER_SIZE] MCU_SYS_MEM;
+device_fifo_state_t usb_device_fifo_state MCU_SYS_MEM;
+const device_fifo_config_t usb_device_fifo_config = {
+    .device =
+        DEVFS_DEVICE("usb", mcu_usb, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+    .location = SOS_LINK_TRANSPORT_USB_BULK_ENDPOINT,
+    .fifo =
+        {
+            .buffer = usb_device_fifo_buffer,
+            .size = USB_DEVICE_FIFO_BUFFER_SIZE,
+        },
+    .read_buffer = usb_device_fifo_read_buffer,
+    .read_buffer_size = USB_DEVICE_FIFO_BUFFER_SIZE,
+};
+
 // Coming Soon
 // SD Card as DMA
 // I2S2
@@ -259,6 +278,9 @@ const devfs_device_t devfs_list[] = {
                  &sos_link_transport_usb_fifo_cfg,
                  &sos_link_transport_usb_fifo_state, 0666, SOS_USER_ROOT,
                  S_IFCHR),
+    DEVFS_DEVICE("link-phy-usb2", device_fifo, SOS_BOARD_USB_PORT,
+                 &usb_device_fifo_config, &usb_device_fifo_state, 0666,
+                 SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("sys", sys, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("auth", auth, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
     // DEVFS_DEVICE("rtc", mcu_rtc, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
