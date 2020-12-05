@@ -234,14 +234,21 @@ const stm32_eth_dma_config_t
 netif_lan8742a_state_t netif_lan8742a_state MCU_SYS_MEM;
 #endif
 
+#if !defined SOS_BOARD_USB_PORT
+#define SOS_BOARD_USB_PORT 0
+#endif
+
 #define USB_DEVICE_FIFO_BUFFER_SIZE 64
 u8 usb_device_fifo_buffer[USB_DEVICE_FIFO_BUFFER_SIZE] MCU_SYS_MEM;
 u8 usb_device_fifo_read_buffer[USB_DEVICE_FIFO_BUFFER_SIZE] MCU_SYS_MEM;
 device_fifo_state_t usb_device_fifo_state MCU_SYS_MEM;
+usb_local_t usb_device_state MCU_SYS_MEM;
+const usb_config_t usb_device_config = {.port = SOS_BOARD_USB_PORT, .attr = {}};
 const device_fifo_config_t usb_device_fifo_config = {
-    .device =
-        DEVFS_DEVICE("usb", mcu_usb, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    .location = SOS_LINK_TRANSPORT_USB_BULK_ENDPOINT,
+    .device = DEVFS_DEVICE("usb", mcu_usb, 0, &usb_device_config,
+                           &usb_device_state, 0666, SOS_USER_ROOT, S_IFCHR),
+    .read_location = SOS_LINK_TRANSPORT_USB_BULK_ENDPOINT,
+    .write_location = SOS_LINK_TRANSPORT_USB_BULK_ENDPOINT | 0x80,
     .fifo =
         {
             .buffer = usb_device_fifo_buffer,
@@ -260,10 +267,6 @@ const device_fifo_config_t usb_device_fifo_config = {
 FIFO_DECLARE_CONFIG_STATE(stdio_in, SOS_BOARD_STDIO_BUFFER_SIZE);
 FIFO_DECLARE_CONFIG_STATE(stdio_out, SOS_BOARD_STDIO_BUFFER_SIZE);
 
-#if !defined SOS_BOARD_USB_PORT
-#define SOS_BOARD_USB_PORT 0
-#endif
-
 /* This is the list of devices that will show up in the /dev folder.
  */
 const devfs_device_t devfs_list[] = {
@@ -274,11 +277,7 @@ const devfs_device_t devfs_list[] = {
                  0666, SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("stdio-in", fifo, 0, &stdio_in_config, &stdio_in_state, 0666,
                  SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("link-phy-usb", usbfifo, SOS_BOARD_USB_PORT,
-                 &sos_link_transport_usb_fifo_cfg,
-                 &sos_link_transport_usb_fifo_state, 0666, SOS_USER_ROOT,
-                 S_IFCHR),
-    DEVFS_DEVICE("link-phy-usb2", device_fifo, SOS_BOARD_USB_PORT,
+    DEVFS_DEVICE("link-phy-usb", device_fifo, SOS_BOARD_USB_PORT,
                  &usb_device_fifo_config, &usb_device_fifo_state, 0666,
                  SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("sys", sys, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),

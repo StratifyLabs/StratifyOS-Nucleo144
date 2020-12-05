@@ -1,5 +1,6 @@
 
 
+#include <device/device_fifo.h>
 #include <fcntl.h>
 #include <sos/debug.h>
 #include <sos/dev/pio.h>
@@ -9,6 +10,8 @@
 
 #include "config.h"
 #include "link_config.h"
+
+extern const device_fifo_config_t usb_device_fifo_config;
 
 #if !defined SOS_BOARD_USB_DP_PIN
 #define SOS_BOARD_USB_DP_PIN mcu_pin(0, 11)
@@ -69,9 +72,9 @@ link_transport_phy_t link_transport_open(const char *name,
   sos_debug_log_info(SOS_DEBUG_USER1, "Open USB");
 
   fd = sos_link_transport_usb_open(name, &m_usb_control,
-                                   &link_transport_usb_constants, &usb_attr,
-                                   mcu_pin(0xff, 0xff),
-                                   1); // USB pin is active high
+                                   &link_transport_usb_constants,
+                                   &usb_device_fifo_config.device.handle,
+                                   &usb_attr); // USB pin is active high
 
   sos_debug_log_info(SOS_DEBUG_USER1, "Returned %d", fd);
 
