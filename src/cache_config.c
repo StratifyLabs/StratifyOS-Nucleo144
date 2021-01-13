@@ -29,9 +29,9 @@ void cache_invalidate_data() {
   SCB_InvalidateDCache();
 #endif
 }
-void cache_invalidate_data_block(u32 address, u32 size) {
+void cache_invalidate_data_block(void *address, size_t size) {
 #if USE_CACHE
-  SCB_InvalidateDCache_by_Addr(addr, size);
+  SCB_InvalidateDCache_by_Addr(address, size);
 #endif
 }
 void cache_clean_data() {
@@ -39,7 +39,7 @@ void cache_clean_data() {
     SCB_CleanDCache();
 #endif
 }
-void cache_clean_data_block(u32 address, u32 size) {
+void cache_clean_data_block(void *address, size_t size) {
 #if USE_CACHE
   if (mcu_board_config.o_flags & MCU_BOARD_CONFIG_FLAG_ENABLE_CACHE) {
     SCB_CleanDCache_by_Addr(addr, size);

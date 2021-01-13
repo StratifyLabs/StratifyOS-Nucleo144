@@ -36,6 +36,9 @@
 #endif
 
 // Stratify OS Configuration-------------------------------------------
+
+SOS_DECLARE_SECRET_KEY_32(secret_key)
+
 const sos_config_t sos_config = {
     .fs = {.devfs_list = devfs_list,
            .rootfs_list = sysfs_list,
@@ -62,7 +65,8 @@ const sos_config_t sos_config = {
               .hibernate = sleep_hibernate,
               .powerdown = sleep_powerdown},
 
-    .usb = {.set_attributes = usb_set_attributes,
+    .usb = {.control_endpoint_max_size = 64,
+            .set_attributes = usb_set_attributes,
             .set_action = usb_set_action,
             .write_endpoint = usb_write_endpoint,
             .read_endpoint = usb_read_endpoint},
@@ -77,10 +81,11 @@ const sos_config_t sos_config = {
             .name = SL_CONFIG_NAME,
             .version = SL_CONFIG_VERSION_STRING,
             .git_hash = SOS_GIT_HASH,
+            .mcu_git_hash = NULL,
             .id = SL_CONFIG_DOCUMENT_ID,
             .team_id = SL_CONFIG_TEAM_ID,
-            .secret_key_size = 0,
-            .secret_key_address = 0,
+            .secret_key_size = 32,
+            .secret_key_address = secret_key,
             .kernel_request = sys_kernel_request,
             .kernel_request_api = sys_kernel_request_api,
         },

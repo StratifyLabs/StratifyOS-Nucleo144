@@ -53,13 +53,10 @@ void sys_get_serial_number(mcu_sn_t *serial_number);
 void cache_enable();
 void cache_disable();
 void cache_invalidate_instruction();
-void cache_invalidate_instruction_block(u32 address, u32 size);
-void cache_clean_instruction();
-void cache_clean_instruction_block(u32 address, u32 size);
 void cache_invalidate_data();
-void cache_invalidate_data_block(u32 address, u32 size);
+void cache_invalidate_data_block(void *address, size_t size);
 void cache_clean_data();
-void cache_clean_data_block(u32 address, u32 size);
+void cache_clean_data_block(void *address, size_t size);
 
 // usb
 int usb_set_attributes(const devfs_handle_t *handle, void *ctl);

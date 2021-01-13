@@ -67,6 +67,7 @@ uart_config_t uart1_config = {
   STM32_DMA_FLAG_IS_MEMORY_SINGLE | STM32_DMA_FLAG_IS_PERIPH_SINGLE |          \
       STM32_DMA_FLAG_IS_PERIPH_BYTE | STM32_DMA_FLAG_IS_MEMORY_BYTE
 
+uart_state_t uart1_state MCU_SYS_MEM;
 stm32_uart_dma_config_t uart1_dma_config = {
     .uart_config = {.attr = {.o_flags = UART_FLAG_SET_LINE_CODING_DEFAULT,
                              .freq = 115200,
@@ -92,37 +93,36 @@ stm32_uart_dma_config_t uart1_dma_config = {
                .o_flags = STM32_DMA_FLAG_IS_MEMORY_TO_PERIPH | UART_DMA_FLAGS |
                           STM32_DMA_FLAG_IS_NORMAL}}};
 
-// USART6
-UARTFIFO_DECLARE_CONFIG_STATE(uart5_fifo, 1024, 32,
-                              UART_FLAG_SET_LINE_CODING_DEFAULT, 8, 115200,
-                              SOS_BOARD_USART6_RX_PORT,
-                              SOS_BOARD_USART6_RX_PIN, // RX
-                              SOS_BOARD_USART6_TX_PORT,
-                              SOS_BOARD_USART6_TX_PIN, // TX
-                              0xff, 0xff, 0xff, 0xff);
-
 // I2C1
-I2C_DECLARE_CONFIG_MASTER(i2c0, I2C_FLAG_SET_MASTER, 100000,
-                          SOS_BOARD_I2C1_SDA_PORT,
-                          SOS_BOARD_I2C1_SDA_PIN, // SDA
-                          SOS_BOARD_I2C1_SCL_PORT,
-                          SOS_BOARD_I2C1_SCL_PIN); // SCL
+i2c_state_t i2c0_state MCU_SYS_MEM;
+const i2c_config_t i2c0_config = {
+    .port = 0,
+    .attr = {.o_flags = I2C_FLAG_SET_MASTER,
+             .freq = 100000,
+             .pin_assignment = {
+                 .scl = {SOS_BOARD_I2C1_SCL_PORT, SOS_BOARD_I2C1_SCL_PIN},
+                 .sda = {SOS_BOARD_I2C1_SDA_PORT, SOS_BOARD_I2C1_SDA_PIN}}}};
 
 // I2C2
-I2C_DECLARE_CONFIG_MASTER(i2c1, I2C_FLAG_SET_MASTER, 100000,
-                          SOS_BOARD_I2C2_SDA_PORT,
-                          SOS_BOARD_I2C2_SDA_PIN, // SDA
-                          SOS_BOARD_I2C2_SCL_PORT,
-                          SOS_BOARD_I2C2_SCL_PIN); // SCL
+i2c_state_t i2c1_state MCU_SYS_MEM;
+const i2c_config_t i2c1_config = {
+    .port = 0,
+    .attr = {.o_flags = I2C_FLAG_SET_MASTER,
+             .freq = 100000,
+             .pin_assignment = {
+                 .scl = {SOS_BOARD_I2C2_SCL_PORT, SOS_BOARD_I2C2_SCL_PIN},
+                 .sda = {SOS_BOARD_I2C2_SDA_PORT, SOS_BOARD_I2C2_SDA_PIN}}}};
 
 #define SPI_DMA_FLAGS                                                          \
   STM32_DMA_FLAG_IS_NORMAL | STM32_DMA_FLAG_IS_MEMORY_SINGLE |                 \
       STM32_DMA_FLAG_IS_PERIPH_SINGLE | STM32_DMA_FLAG_IS_PERIPH_BYTE |        \
       STM32_DMA_FLAG_IS_MEMORY_BYTE
 
+spi_state_t spi0_state MCU_SYS_MEM;
 const stm32_spi_dma_config_t spi0_dma_config =
     {.spi_config =
-         {.attr = {.o_flags = SPI_FLAG_SET_MASTER | SPI_FLAG_IS_FORMAT_SPI |
+         {.port = 0,
+          .attr = {.o_flags = SPI_FLAG_SET_MASTER | SPI_FLAG_IS_FORMAT_SPI |
                               SPI_FLAG_IS_MODE0 | SPI_FLAG_IS_FULL_DUPLEX,
                    .width = 8,
                    .freq = 1000000UL,
@@ -150,9 +150,11 @@ const stm32_spi_dma_config_t spi0_dma_config =
                            .o_flags = STM32_DMA_FLAG_IS_MEMORY_TO_PERIPH |
                                       SPI_DMA_FLAGS}}};
 
+spi_state_t spi2_state MCU_SYS_MEM;
 const stm32_spi_dma_config_t spi2_dma_config =
     {.spi_config =
-         {.attr = {.o_flags = SPI_FLAG_SET_MASTER | SPI_FLAG_IS_FORMAT_SPI |
+         {.port = 2,
+          .attr = {.o_flags = SPI_FLAG_SET_MASTER | SPI_FLAG_IS_FORMAT_SPI |
                               SPI_FLAG_IS_MODE0 | SPI_FLAG_IS_FULL_DUPLEX,
                    .width = 8,
                    .freq = 1000000UL,
@@ -182,10 +184,11 @@ const stm32_spi_dma_config_t spi2_dma_config =
 
 #if INCLUDE_ETHERNET
 
-u8 eth_tx_buffer[STM32_ETH_DMA_BUFFER_SIZE]; // these use DMA and can't be
-                                             // tightly coupled
+// these use DMA and can't be tightly coupled
+u8 eth_tx_buffer[STM32_ETH_DMA_BUFFER_SIZE];
 u8 eth_rx_buffer[STM32_ETH_DMA_BUFFER_SIZE];
 
+eth_state_t eth0_state MCU_SYS_MEM;
 const stm32_eth_dma_config_t
     eth0_config =
         {
@@ -242,7 +245,7 @@ netif_lan8742a_state_t netif_lan8742a_state MCU_SYS_MEM;
 u8 usb_device_fifo_buffer[USB_DEVICE_FIFO_BUFFER_SIZE] MCU_SYS_MEM;
 u8 usb_device_fifo_read_buffer[USB_DEVICE_FIFO_BUFFER_SIZE] MCU_SYS_MEM;
 device_fifo_state_t usb_device_fifo_state MCU_SYS_MEM;
-usb_local_t usb_device_state MCU_SYS_MEM;
+usb_state_t usb_device_state MCU_SYS_MEM;
 const usb_config_t usb_device_config = {.port = SOS_BOARD_USB_PORT, .attr = {}};
 const device_fifo_config_t usb_device_fifo_config = {
     .device = DEVFS_DEVICE("usb", mcu_usb, 0, &usb_device_config,
@@ -266,6 +269,18 @@ const device_fifo_config_t usb_device_fifo_config = {
 
 FIFO_DECLARE_CONFIG_STATE(stdio_in, SOS_BOARD_STDIO_BUFFER_SIZE);
 FIFO_DECLARE_CONFIG_STATE(stdio_out, SOS_BOARD_STDIO_BUFFER_SIZE);
+
+pio_state_t pio_state[8] MCU_SYS_MEM;
+const pio_config_t pio_config[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+
+tmr_state_t tmr0_state MCU_SYS_MEM;
+const tmr_config_t tmr0_config = {.port = 0};
+
+tmr_state_t tmr3_state MCU_SYS_MEM;
+const tmr_config_t tmr3_config = {.port = 3};
+
+tmr_state_t tmr4_state MCU_SYS_MEM;
+const tmr_config_t tmr4_config = {.port = 4};
 
 /* This is the list of devices that will show up in the /dev folder.
  */
@@ -292,32 +307,46 @@ const devfs_device_t devfs_list[] = {
                  0666, SOS_USER_ROOT, S_IFCHR),
 #endif
 
-    DEVFS_DEVICE("i2c0", mcu_i2c, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("i2c1", mcu_i2c, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("i2c0", mcu_i2c, 0, &i2c0_config, &i2c0_state, 0666,
+                 SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("i2c1", mcu_i2c, 1, &i2c1_config, &i2c1_state, 0666,
+                 SOS_USER_ROOT, S_IFCHR),
 
-    DEVFS_DEVICE("pio0", mcu_pio, 0, 0, 0, 0666, SOS_USER_ROOT,
+    DEVFS_DEVICE("pio0", mcu_pio, 0, pio_config + 0, pio_state + 0, 0666,
+                 SOS_USER_ROOT,
                  S_IFCHR), // GPIOA
-    DEVFS_DEVICE("pio1", mcu_pio, 1, 0, 0, 0666, SOS_USER_ROOT,
+    DEVFS_DEVICE("pio1", mcu_pio, 1, pio_config + 1, pio_state + 1, 0666,
+                 SOS_USER_ROOT,
                  S_IFCHR), // GPIOB
-    DEVFS_DEVICE("pio2", mcu_pio, 2, 0, 0, 0666, SOS_USER_ROOT,
+    DEVFS_DEVICE("pio2", mcu_pio, 2, pio_config + 2, pio_state + 2, 0666,
+                 SOS_USER_ROOT,
                  S_IFCHR), // GPIOC
-    DEVFS_DEVICE("pio3", mcu_pio, 3, 0, 0, 0666, SOS_USER_ROOT,
+    DEVFS_DEVICE("pio3", mcu_pio, 3, pio_config + 3, pio_state + 3, 0666,
+                 SOS_USER_ROOT,
                  S_IFCHR), // GPIOD
-    DEVFS_DEVICE("pio4", mcu_pio, 4, 0, 0, 0666, SOS_USER_ROOT,
+    DEVFS_DEVICE("pio4", mcu_pio, 4, pio_config + 4, pio_state + 4, 0666,
+                 SOS_USER_ROOT,
                  S_IFCHR), // GPIOE
-    DEVFS_DEVICE("pio5", mcu_pio, 5, 0, 0, 0666, SOS_USER_ROOT,
+    DEVFS_DEVICE("pio5", mcu_pio, 5, pio_config + 5, pio_state + 5, 0666,
+                 SOS_USER_ROOT,
                  S_IFCHR), // GPIOF
-    DEVFS_DEVICE("pio6", mcu_pio, 6, 0, 0, 0666, SOS_USER_ROOT,
+    DEVFS_DEVICE("pio6", mcu_pio, 6, pio_config + 6, pio_state + 6, 0666,
+                 SOS_USER_ROOT,
                  S_IFCHR), // GPIOG
-    DEVFS_DEVICE("pio7", mcu_pio, 7, 0, 0, 0666, SOS_USER_ROOT,
+    DEVFS_DEVICE("pio7", mcu_pio, 7, pio_config + 7, pio_state + 7, 0666,
+                 SOS_USER_ROOT,
                  S_IFCHR), // GPIOH
 
-    DEVFS_DEVICE("spi0", mcu_spi, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("spi1", mcu_spi, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("spi0", mcu_spi, 0, &spi0_dma_config, &spi0_state, 0666,
+                 SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("spi2", mcu_spi, 0, &spi2_dma_config, &spi2_state, 0666,
+                 SOS_USER_ROOT, S_IFCHR),
 
-    DEVFS_DEVICE("tmr0", mcu_tmr, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("tmr2", mcu_tmr, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("tmr3", mcu_tmr, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("tmr4", mcu_tmr, 4, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("tmr0", mcu_tmr, 0, &tmr0_config, &tmr0_state, 0666,
+                 SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("tmr3", mcu_tmr, 3, &tmr3_config, &tmr3_state, 0666,
+                 SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("tmr4", mcu_tmr, 4, &tmr4_config, &tmr4_state, 0666,
+                 SOS_USER_ROOT, S_IFCHR),
 
     DEVFS_TERMINATOR};
