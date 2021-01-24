@@ -5,9 +5,9 @@
 
 #include "config.h"
 
-int board_kernel_request(int req, void *arg) { return -1; }
+int os_kernel_request(int req, void *arg) { return -1; }
 
-const void *board_kernel_request_api(u32 request) {
+const void *os_kernel_request_api(u32 request) {
   switch (request) {
 #if INCLUDE_AUTH
   case CRYPT_SHA256_API_REQUEST:

@@ -1,7 +1,7 @@
 
-#include <mcu/arch/stm32/stm32_config.h>
+#include <stm32/stm32_config.h>
 
-#include "board_config.h"
+#include "config.h"
 
 void clock_initialize(
     int (*handle_match_channel0)(void *context, const mcu_event_t *data),

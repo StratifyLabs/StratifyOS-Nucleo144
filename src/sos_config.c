@@ -15,24 +15,24 @@
 #include <sos/fs/sysfs.h>
 #include <sos/link.h>
 #include <sos/sos.h>
+#include <sos/symbols.h>
 #include <sys/lock.h>
 
-#include <mcu/arch/stm32/stm32_config.h>
+#include <stm32/stm32_config.h>
 
-#include "board_config.h"
 #include "config.h"
+#if _IS_BOOT
+#include "../boot/boot_link_config.h"
+#else
 #include "link_config.h"
+#endif
 #include "sl_config.h"
 
-#if INCLUDE_ETHERNET
+#if INCLUDE_ETHERNET && !_IS_BOOT
 #include "ethernet/lwip_config.h"
 #define SOCKET_API &lwip_api
 #else
 #define SOCKET_API NULL
-#endif
-
-#if !defined SOS_BOARD_FLAGS
-#define SOS_BOARD_FLAGS 0
 #endif
 
 // Stratify OS Configuration-------------------------------------------
@@ -40,6 +40,7 @@
 SOS_DECLARE_SECRET_KEY_32(secret_key)
 
 const sos_config_t sos_config = {
+#if !_IS_BOOT
     .fs = {.devfs_list = devfs_list,
            .rootfs_list = sysfs_list,
            .stdin_dev = "/dev/stdio-in",
@@ -53,8 +54,7 @@ const sos_config_t sos_config = {
               .set_channel = clock_set_channel,
               .get_channel = clock_get_channel,
               .microseconds = clock_microseconds,
-              .nanoseconds = NULL,
-              .frequency = SOS_BOARD_SYSTEM_CLOCK},
+              .nanoseconds = NULL},
 
     .task = {.task_total = SOS_BOARD_TASK_TOTAL,
              .start_stack_size = SOS_DEFAULT_START_STACK_SIZE,
@@ -65,15 +65,31 @@ const sos_config_t sos_config = {
               .hibernate = sleep_hibernate,
               .powerdown = sleep_powerdown},
 
+#endif
     .usb = {.control_endpoint_max_size = 64,
             .set_attributes = usb_set_attributes,
             .set_action = usb_set_action,
             .write_endpoint = usb_write_endpoint,
             .read_endpoint = usb_read_endpoint},
-    .sys =
-        {
-            .initialize = sys_initialize,
-            .memory_size = SOS_BOARD_SYSTEM_MEMORY_SIZE,
+
+    .cache = {.enable = cache_enable,
+              .disable = cache_disable,
+              .invalidate_instruction = cache_invalidate_instruction,
+              .invalidate_data = cache_invalidate_data,
+              .invalidate_data_block = cache_invalidate_data_block,
+              .clean_data = cache_clean_data,
+              .clean_data_block = cache_clean_data_block},
+
+    .mcu = {.interrupt_request_total = MCU_LAST_IRQ + 1,
+            .interrupt_middle_priority = MCU_MIDDLE_IRQ_PRIORITY,
+            .set_interrupt_priority = mcu_set_interrupt_priority,
+            .reset_watchdog_timer = mcu_reset_watchdog_timer,
+            .set_pin_function = mcu_set_pin_function},
+
+    .sys = {.initialize = sys_initialize,
+            .hardware_id = __HARDWARE_ID,
+            .bootloader_start_address = __BOOT_START_ADDRESS,
+            .memory_size = SYSTEM_MEMORY_SIZE * 1024UL,
             .get_serial_number = sys_get_serial_number,
             .os_mpu_text_mask = 0,
             .flags =
@@ -86,17 +102,16 @@ const sos_config_t sos_config = {
             .team_id = SL_CONFIG_TEAM_ID,
             .secret_key_size = 32,
             .secret_key_address = secret_key,
+            .vector_table = (void *)(VECTOR_TABLE_ADDRESS),
+            .pio_write = sys_pio_write,
+            .pio_read = sys_pio_read,
+            .pio_set_attributes = sys_pio_set_attributes,
+            .core_clock_frequency = SOS_BOARD_SYSTEM_CLOCK,
+#if !_IS_BOOT
             .kernel_request = sys_kernel_request,
-            .kernel_request_api = sys_kernel_request_api,
-        },
-
-    .cache = {.enable = cache_enable,
-              .disable = cache_disable,
-              .invalidate_instruction = cache_invalidate_instruction,
-              .invalidate_data = cache_invalidate_data,
-              .invalidate_data_block = cache_invalidate_data_block,
-              .clean_data = cache_clean_data,
-              .clean_data_block = cache_clean_data_block},
+            .kernel_request_api = sys_kernel_request_api
+#endif
+    },
 
     .debug = {.initialize = debug_initialize,
               .write = debug_write,
@@ -105,8 +120,23 @@ const sos_config_t sos_config = {
               .enable_led = debug_enable_led,
               .flags = SOS_BOARD_DEBUG_FLAGS},
 
-    .socket_api = SOCKET_API,
-    .event_handler = board_event_handler};
+#if _IS_BOOT
+    .boot = {.api = {.code_size = (u32)&_etext,
+                     .exec = boot_invoke_bootloader,
+                     .event = boot_event_handler},
+             .program_start_address = __KERNEL_START_ADDRESS,
+             .software_bootloader_request_address = 0x20004000,
+             .software_bootloader_request_value = 0x55AA55AA,
+             .is_bootloader_requested = boot_is_bootloader_requested,
+             .flash_handle = {.port = 0},
+             .flash_erase_page = mcu_flash_erasepage,
+             .flash_write_page = mcu_flash_writepage,
+             .link_transport_driver = &boot_link_usb_transport},
+    .event_handler = boot_event_handler,
+#else
+    .event_handler = os_event_handler,
+#endif
+    .socket_api = SOCKET_API};
 
 // This declares the task tables required by Stratify OS for applications and
 // threads

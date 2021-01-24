@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.6)
+cmake_minimum_required (VERSION 3.12)
 
 if(NOT SOS_SDK_PATH)
 	set(SOS_SDK_PATH $ENV{SOS_SDK_PATH})
@@ -29,6 +29,7 @@ set(NUCLEO_DEFINITIONS
 	__stm32f446xx
 	STM32F446xx=1
 	SOS_BOARD_SYSTEM_CLOCK=168000000
+	SYSTEM_MEMORY_SIZE=32
 	)
 set(NUCLEO_LINKER_FILE ldscripts/stm32f446ze-rom.ld)
 set(NUCLEO_MCU_LIBRARY StratifyOS_stm32f446xx)
@@ -50,8 +51,8 @@ list(APPEND NUCLEO_BOOT_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
 	)
 
-set(BOOT_LIBRARIES StratifyOS_boot StratifyOS_stm32f446xx newlib_libc newlib_libm StratifyOS_boot StratifyOS_stm32f446xx compiler_rt)
-set(KERNEL_LIBRARIES StratifyOS_sys StratifyOS_stm32f446xx newlib_libc newlib_libm StratifyOS_sys StratifyOS_stm32f446xx compiler_rt)
+set(BOOT_LIBRARIES StratifyOS_stm32f446xx StratifyOS_boot StratifyOS_usbd)
+set(KERNEL_LIBRARIES StratifyOS_stm32f446xx StratifyOS_sys StratifyOS_usbd newlib_libc newlib_libm StratifyOS_sys)
 
 nucleo_target(
 	${NUCLEO_BOOT_START_ADDRESS} "${NUCLEO_BOOT_SOURCELIST}" ${NUCLEO_LINKER_FILE} "${BOOT_LIBRARIES}"

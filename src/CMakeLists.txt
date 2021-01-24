@@ -8,14 +8,14 @@ set(SOURCES
 	sys_config.c
 	usb_config.c
 	clock_config.c
+	stm32_config.c
 	mcu_config.c
-	board_config.c
-	board_config.h
+	os_config.c
+	symbols_config.c
 	config.h
 	link_config.c
 	link_config.h
 	devfs_config.c
 	sos_config.c
-	board_symbols.c
 	kernel_request.c
   PARENT_SCOPE)

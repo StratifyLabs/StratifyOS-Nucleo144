@@ -1,8 +1,9 @@
 
-#include "board_config.h"
+#include "config.h"
 #include <cortexm/task.h>
 #include <fcntl.h>
 #include <sos/debug.h>
+#include <sos/led.h>
 #include <sos/link/types.h>
 #include <sos/sos.h>
 #include <string.h>
@@ -35,13 +36,7 @@ void board_trace_event(void *event) {
   trace_dev->driver.write(&(trace_dev->handle), &async);
 }
 
-void board_initialize() {
-  SystemClock_Config();
-
-  // enable serial debugging output
-}
-
-void board_event_handler(int event, void *args) {
+void os_event_handler(int event, void *args) {
   switch (event) {
   case SOS_EVENT_ROOT_RESET:
 

@@ -4,3 +4,5 @@
 */src/
 */CMakeLists.txt.user
 */cmake_*_arm/
+cmake_arm/
+*.user

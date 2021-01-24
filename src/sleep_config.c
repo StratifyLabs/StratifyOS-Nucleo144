@@ -1,6 +1,6 @@
 
 
-#include "board_config.h"
+#include "config.h"
 
 void sleep_idle() { __WFI(); }
 

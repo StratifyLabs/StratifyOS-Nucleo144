@@ -17,7 +17,7 @@
       "uqM6QAqBiwnbk9hnRiyn": "0.15"
    },
    "timestamp": 1598397473,
-   "hardwareId": "0x00000008",
+	 "hardwareId": "0x00000008",
    "team": "",
    "tagList": [
       "stm32",

@@ -1,6 +1,6 @@
 
 
-#include "board_config.h"
+#include "config.h"
 
 #if defined STM32F7 || defined STM32H7
 #define USE_CACHE 1
@@ -41,8 +41,6 @@ void cache_clean_data() {
 }
 void cache_clean_data_block(void *address, size_t size) {
 #if USE_CACHE
-  if (mcu_board_config.o_flags & MCU_BOARD_CONFIG_FLAG_ENABLE_CACHE) {
-    SCB_CleanDCache_by_Addr(addr, size);
-  }
+  SCB_CleanDCache_by_Addr(addr, size);
 #endif
 }

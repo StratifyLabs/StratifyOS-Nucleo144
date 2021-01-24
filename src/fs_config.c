@@ -1,5 +1,8 @@
 
-#include "board_config.h"
+#include "config.h"
+
+const devfs_device_t mem0 = DEVFS_DEVICE(
+    "mem0", appfs_mem, 0, &appfs_mem_config, 0, 0666, SYSFS_ROOT, S_IFBLK);
 
 // Root Filesystem---------------------------------------------------
 
@@ -16,7 +19,7 @@
 
 const sysfs_t sysfs_list[] = {
     // managing applications
-    // APPFS_MOUNT("/app", &mem0, 0777, SYSFS_ROOT),
+    APPFS_MOUNT("/app", &mem0, 0777, SYSFS_ROOT),
     // the list of devices
     DEVFS_MOUNT("/dev", devfs_list, 0777, SYSFS_ROOT),
     // root mount

@@ -8,7 +8,7 @@
 #ifndef BOARD_CONFIG_H_
 #define BOARD_CONFIG_H_
 
-#include <mcu/types.h>
+#include <sdk/types.h>
 
 #define USBDEV_PORT 0
 #define USBDEV_CONNECT_PORT 1

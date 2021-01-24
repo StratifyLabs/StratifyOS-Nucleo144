@@ -20,7 +20,7 @@
 #include <sos/sos.h>
 #include <sys/lock.h>
 
-#include <mcu/arch/stm32/stm32_dev_local.h>
+#include <stm32/stm32_dev_local.h>
 
 #include "config.h"
 #include "link_config.h"
@@ -123,7 +123,7 @@ const stm32_spi_dma_config_t spi0_dma_config =
     {.spi_config =
          {.port = 0,
           .attr = {.o_flags = SPI_FLAG_SET_MASTER | SPI_FLAG_IS_FORMAT_SPI |
-                              SPI_FLAG_IS_MODE0 | SPI_FLAG_IS_FULL_DUPLEX,
+                              SPI_FLAG_IS_MODE0 | SPI_FLAG_SET_FULL_DUPLEX,
                    .width = 8,
                    .freq = 1000000UL,
                    .pin_assignment =
@@ -155,7 +155,7 @@ const stm32_spi_dma_config_t spi2_dma_config =
     {.spi_config =
          {.port = 2,
           .attr = {.o_flags = SPI_FLAG_SET_MASTER | SPI_FLAG_IS_FORMAT_SPI |
-                              SPI_FLAG_IS_MODE0 | SPI_FLAG_IS_FULL_DUPLEX,
+                              SPI_FLAG_IS_MODE0 | SPI_FLAG_SET_FULL_DUPLEX,
                    .width = 8,
                    .freq = 1000000UL,
                    .pin_assignment =

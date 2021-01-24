@@ -1,7 +1,7 @@
 
-#include <mcu/arch/stm32/stm32_config.h>
+#include <stm32/stm32_config.h>
 
-#include "board_config.h"
+#include "config.h"
 
 extern void SystemClock_Config();
 
@@ -34,3 +34,13 @@ const void *sys_kernel_request_api(u32 request) {
   }
   return 0;
 }
+
+void sys_pio_set_attributes(int port, const pio_attr_t *attr) {
+  stm32_pio_set_attributes(port, attr);
+}
+
+void sys_pio_write(int port, u32 mask, int value) {
+  stm32_pio_write(port, mask, value);
+}
+
+u32 sys_pio_read(int port, u32 mask) { return stm32_pio_read(port, mask); }

@@ -2,25 +2,37 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-#include <mcu/arch.h>
+#include <sos/arch.h>
 
-#include "board_config.h"
+#include <device/appfs.h>
+#include <device/ffifo.h>
+#include <sos/dev/appfs.h>
+#include <sos/dev/mem.h>
+#include <sos/dev/pio.h>
+#include <sos/fs/appfs.h>
 
 #define SOS_BOARD_DEBUG_FLAGS                                                  \
   (SOS_DEBUG_INFO | SOS_DEBUG_SYS | SOS_DEBUG_SCHEDULER | SOS_DEBUG_USER0 |    \
    SOS_DEBUG_APPFS)
 
-#if !defined SOS_BOARD_SYSTEM_MEMORY_SIZE
-#define SOS_BOARD_SYSTEM_MEMORY_SIZE (8192*3)
-#endif
 #define SOS_BOARD_USB_RX_BUFFER_SIZE 512
 #define SOS_BOARD_STDIO_BUFFER_SIZE 512
 #define SOS_BOARD_TMR 1
+#define SOS_BOARD_FLAGS 0
 
 //Total number of tasks (threads) for the entire system
 #define SOS_BOARD_TASK_TOTAL 10
 #define SOS_BOARD_EVENT_HANDLER board_event_handler
 #define SOS_BOARD_TRACE_EVENT board_trace_event
+
+#define SOS_BOARD_USB_DP_PIN mcu_pin(0, 11)
+#define SOS_BOARD_USB_DM_PIN mcu_pin(0, 12)
+
+#if _IS_BOOT
+#define VECTOR_TABLE_ADDRESS __BOOT_START_ADDRESS
+#else
+#define VECTOR_TABLE_ADDRESS __KERNEL_START_ADDRESS
+#endif
 
 //--------------------------------------------Symbols-------------------------------------------------
 
@@ -153,5 +165,83 @@
 #define SOS_BOARD_SD_CLK_PIN 12
 #define SOS_BOARD_SD_CMD_PORT 3 //PD2
 #define SOS_BOARD_SD_CMD_PIN 2
+
+void board_trace_event(void *event);
+
+extern const ffifo_config_t board_trace_config;
+extern ffifo_state_t board_trace_state;
+
+void os_event_handler(int event, void *args); // optional event handler
+
+// clock
+void clock_initialize(
+    int (*handle_match_channel0)(void *context, const mcu_event_t *data),
+    int (*handle_match_channel1)(void *context, const mcu_event_t *data),
+    int (*handle_overflow)(void *context, const mcu_event_t *data));
+void clock_enable();
+u32 clock_disable();
+void clock_set_channel(const mcu_channel_t *channel);
+void clock_get_channel(mcu_channel_t *channel);
+u32 clock_microseconds();
+u32 clock_nanoseconds();
+
+// sleep
+void sleep_idle();
+void sleep_hibernate(int seconds);
+void sleep_powerdown();
+
+// fs
+extern const devfs_device_t devfs_list[];
+extern const sysfs_t sysfs_list[];
+
+// debug
+void debug_initialize();
+void debug_write(const void *buf, int nbyte);
+void debug_enable_led();
+void debug_disable_led();
+void debug_trace_event(void *event);
+
+// sys
+void sys_initialize();
+int sys_kernel_request(int req, void *arg);
+const void *sys_kernel_request_api(u32 request);
+void sys_get_serial_number(mcu_sn_t *serial_number);
+void sys_pio_set_attributes(int port, const pio_attr_t *attr);
+void sys_pio_write(int port, u32 mask, int value);
+u32 sys_pio_read(int port, u32 mask);
+
+// mcu
+void mcu_reset_watchdog_timer();
+void mcu_set_interrupt_priority(int number, int priority);
+int mcu_set_pin_function(const mcu_pin_t *pin, int function, int periph_port);
+
+// cache
+void cache_enable();
+void cache_disable();
+void cache_invalidate_instruction();
+void cache_invalidate_data();
+void cache_invalidate_data_block(void *address, size_t size);
+void cache_clean_data();
+void cache_clean_data_block(void *address, size_t size);
+
+// usb
+int usb_set_attributes(const devfs_handle_t *handle, void *ctl);
+int usb_set_action(const devfs_handle_t *handle, mcu_action_t *action);
+void usb_write_endpoint(const devfs_handle_t *handle, u32 endpoint_num,
+                        const void *src, u32 size);
+int usb_read_endpoint(const devfs_handle_t *handle, u32 endpoint_num,
+                      void *dest);
+
+int os_kernel_request(int req, void *arg);
+const void *os_kernel_request_api(u32 request);
+
+void os_event_handler(int event, void *args);
+
+void boot_event_handler(int event, void *args);
+int boot_is_bootloader_requested();
+int boot_flash_erase_page(const devfs_handle_t *handle, void *ctl);
+int boot_flash_write_page(const devfs_handle_t *handle, void *ctl);
+
+extern const appfs_mem_config_t appfs_mem_config;
 
 #endif /* CONFIG_H_ */
