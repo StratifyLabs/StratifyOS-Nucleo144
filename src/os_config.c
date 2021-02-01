@@ -56,6 +56,12 @@ void os_event_handler(int event, void *args) {
     }
     break;
 
+  case SOS_EVENT_ROOT_INVALID_PIN_ASSIGNMENT: {
+    const mcu_pin_t *pin = args;
+    sos_debug_log_error(SOS_DEBUG_SYS, "bad pin assignment %d.%d", pin->port,
+                        pin->pin);
+  } break;
+
   case SOS_EVENT_TASK_INITIALIZED:
     break;
 
@@ -69,7 +75,6 @@ void os_event_handler(int event, void *args) {
     lwip_api.startup(&lwip_api);
 #endif
 
-    sos_debug_printf("SOS_EVENT_START_LINK\n");
     sos_debug_log_info(SOS_DEBUG_USER1, "Start LED %d");
     sos_led_startup();
     break;

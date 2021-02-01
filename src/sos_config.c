@@ -87,9 +87,8 @@ const sos_config_t sos_config = {
             .set_pin_function = mcu_set_pin_function},
 
     .sys = {.initialize = sys_initialize,
-            .hardware_id = __HARDWARE_ID,
             .bootloader_start_address = __BOOT_START_ADDRESS,
-            .memory_size = SYSTEM_MEMORY_SIZE * 1024UL,
+            .memory_size = SYSTEM_MEMORY_SIZE,
             .get_serial_number = sys_get_serial_number,
             .os_mpu_text_mask = 0,
             .flags =

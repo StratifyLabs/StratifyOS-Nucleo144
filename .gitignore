@@ -1,8 +1,7 @@
 
-*/cmake_arm/
+*/cmake*_arm/
 */build_*
 */src/
 */CMakeLists.txt.user
-*/cmake_*_arm/
-cmake_arm/
+cmake*_arm/
 *.user

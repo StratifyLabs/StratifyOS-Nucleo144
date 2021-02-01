@@ -3,6 +3,7 @@
 #include <device/cfifo.h>
 #include <device/device_fifo.h>
 #include <device/fifo.h>
+#include <device/stream_ffifo.h>
 #include <device/sys.h>
 #include <device/uartfifo.h>
 #include <device/usbfifo.h>
@@ -20,7 +21,7 @@
 #include <sos/sos.h>
 #include <sys/lock.h>
 
-#include <stm32/stm32_dev_local.h>
+#include <stm32_types.h>
 
 #include "config.h"
 #include "link_config.h"
@@ -47,6 +48,55 @@
  *
  *
  */
+
+adc_state_t adc0_dma_state MCU_SYS_MEM;
+const stm32_adc_dma_config_t adc0_dma_config = {
+    .adc_config = {.attr =
+                       {
+                           .o_flags =
+                               ADC_FLAG_SET_CONVERTER | ADC_FLAG_SET_CHANNELS |
+                               ADC_FLAG_IS_SCAN_MODE | ADC_FLAG_IS_TRIGGER_TMR,
+                           .pin_assignment =
+                               {
+                                   .channel[0] = {0, 3},      // PA3 ADC0-IN3
+                                   .channel[1] = {2, 0},      // PC0 ADC0-IN10
+                                   .channel[2] = {2, 3},      // PC3 ADC0-IN13
+                                   .channel[3] = {0xff, 0xff} // Not used
+                               },
+                           .freq = 0,
+                           // Trigger on timer3 TRGO (/dev/tim2)
+                           .trigger = {2, 0},
+                           .width = 12,
+                           .channel_count = 3, // used with scan mode
+                           // these are used for individual channel config
+                           .channel = 0,      // not used for default config
+                           .rank = 0,         // not used
+                           .sampling_time = 0 // not used
+                       }},
+    .dma_config = {.dma_number = STM32_DMA2,        // 2 for ADC1
+                   .stream_number = 0,              // 0 for ADC1
+                   .channel_number = DMA_CHANNEL_0, // 0 for ADC1
+                   .o_flags = STM32_DMA_FLAG_IS_CIRCULAR |
+                              STM32_DMA_FLAG_IS_FIFO |
+                              STM32_DMA_FLAG_IS_PERIPH_TO_MEMORY |
+                              STM32_DMA_FLAG_IS_MEMORY_HALFWORD |
+                              STM32_DMA_FLAG_IS_PERIPH_HALFWORD |
+                              STM32_DMA_FLAG_IS_MEMORY_SINGLE,
+                   .priority = STM32_DMA_PRIORITY_HIGH}};
+
+#define ADC_PACKET_SIZE 64
+
+char adc0_stream_ffifo_rx_buffer[2 * ADC_PACKET_SIZE];
+stream_ffifo_state_t adc0_stream_ffifo_state MCU_SYS_MEM;
+const stream_ffifo_config_t adc0_stream_ffifo_config = {
+    .device = DEVFS_DEVICE("adc0", mcu_adc_dma, 0, &adc0_dma_config,
+                           &adc0_dma_state, 0777, SYSFS_ROOT, S_IFCHR),
+    .tx_loc = 0,
+    .rx_loc = ADC_LOC_IS_GROUP,
+    .tx = {.frame_count = 0, .frame_size = 0, .buffer = 0},
+    .rx = {.frame_count = 2,
+           .frame_size = ADC_PACKET_SIZE,
+           .buffer = adc0_stream_ffifo_rx_buffer}};
 
 char uart1_fifo_buffer[64];
 fifo_config_t uart1_fifo_config = {.size = 64, .buffer = uart1_fifo_buffer};
@@ -249,7 +299,7 @@ usb_state_t usb_device_state MCU_SYS_MEM;
 const usb_config_t usb_device_config = {.port = SOS_BOARD_USB_PORT, .attr = {}};
 const device_fifo_config_t usb_device_fifo_config = {
     .device = DEVFS_DEVICE("usb", mcu_usb, 0, &usb_device_config,
-                           &usb_device_state, 0666, SOS_USER_ROOT, S_IFCHR),
+                           &usb_device_state, 0666, SYSFS_ROOT, S_IFCHR),
     .read_location = SOS_LINK_TRANSPORT_USB_BULK_ENDPOINT,
     .write_location = SOS_LINK_TRANSPORT_USB_BULK_ENDPOINT | 0x80,
     .fifo =
@@ -274,79 +324,111 @@ pio_state_t pio_state[8] MCU_SYS_MEM;
 const pio_config_t pio_config[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 
 tmr_state_t tmr0_state MCU_SYS_MEM;
-const tmr_config_t tmr0_config = {.port = 0};
+const tmr_config_t tmr0_config = {
+    .port = 0,
+    .attr = {.pin_assignment = {.channel[0] = {0xff, 0xff},
+                                .channel[1] = {0xff, 0xff},
+                                .channel[2] = {0xff, 0xff},
+                                .channel[3] = {0xff, 0xff}}}};
+
+tmr_state_t tmr2_state MCU_SYS_MEM;
+const tmr_config_t tmr2_config = {
+    .port = 2,
+    .attr = {.pin_assignment = {.channel[0] = {0xff, 0xff},
+                                .channel[1] = {0xff, 0xff},
+                                .channel[2] = {0xff, 0xff},
+                                .channel[3] = {0xff, 0xff}}}};
 
 tmr_state_t tmr3_state MCU_SYS_MEM;
-const tmr_config_t tmr3_config = {.port = 3};
+const tmr_config_t tmr3_config = {
+    .port = 3,
+    .attr = {.pin_assignment = {.channel[0] = {0xff, 0xff},
+                                .channel[1] = {0xff, 0xff},
+                                .channel[2] = {0xff, 0xff},
+                                .channel[3] = {0xff, 0xff}}}};
 
 tmr_state_t tmr4_state MCU_SYS_MEM;
-const tmr_config_t tmr4_config = {.port = 4};
+const tmr_config_t tmr4_config = {
+    .port = 4,
+    .attr = {.pin_assignment = {.channel[0] = {0xff, 0xff},
+                                .channel[1] = {0xff, 0xff},
+                                .channel[2] = {0xff, 0xff},
+                                .channel[3] = {0xff, 0xff}}}};
 
 /* This is the list of devices that will show up in the /dev folder.
  */
 const devfs_device_t devfs_list[] = {
     // System devices
     DEVFS_DEVICE("trace", ffifo, 0, &board_trace_config, &board_trace_state,
-                 0666, SOS_USER_ROOT, S_IFCHR),
+                 0666, SYSFS_ROOT, S_IFCHR),
     DEVFS_DEVICE("stdio-out", fifo, 0, &stdio_out_config, &stdio_out_state,
-                 0666, SOS_USER_ROOT, S_IFCHR),
+                 0666, SYSFS_ROOT, S_IFCHR),
     DEVFS_DEVICE("stdio-in", fifo, 0, &stdio_in_config, &stdio_in_state, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
+                 SYSFS_ROOT, S_IFCHR),
     DEVFS_DEVICE("link-phy-usb", device_fifo, SOS_BOARD_USB_PORT,
                  &usb_device_fifo_config, &usb_device_fifo_state, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("sys", sys, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    DEVFS_DEVICE("auth", auth, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-    // DEVFS_DEVICE("rtc", mcu_rtc, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+                 SYSFS_ROOT, S_IFCHR),
+    DEVFS_DEVICE("sys", sys, 0, 0, 0, 0666, SYSFS_ROOT, S_IFCHR),
+    DEVFS_DEVICE("auth", auth, 0, 0, 0, 0666, SYSFS_ROOT, S_IFCHR),
+    // DEVFS_DEVICE("rtc", mcu_rtc, 0, 0, 0, 0666, SYSFS_ROOT, S_IFCHR),
 
     // MCU peripherals
-    DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("adc0", stream_ffifo, 0, &adc0_stream_ffifo_config,
+                 &adc0_stream_ffifo_state, 0666, SYSFS_ROOT, S_IFCHR),
+
+    DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, SYSFS_ROOT, S_IFCHR),
 
 #if INCLUDE_ETHERNET
     DEVFS_DEVICE("eth0", netif_lan8742a, 0, &eth0_config, &netif_lan8742a_state,
-                 0666, SOS_USER_ROOT, S_IFCHR),
+                 0666, SYSFS_ROOT, S_IFCHR),
 #endif
 
     DEVFS_DEVICE("i2c0", mcu_i2c, 0, &i2c0_config, &i2c0_state, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
+                 SYSFS_ROOT, S_IFCHR),
     DEVFS_DEVICE("i2c1", mcu_i2c, 1, &i2c1_config, &i2c1_state, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
+                 SYSFS_ROOT, S_IFCHR),
 
     DEVFS_DEVICE("pio0", mcu_pio, 0, pio_config + 0, pio_state + 0, 0666,
-                 SOS_USER_ROOT,
+                 SYSFS_ROOT,
                  S_IFCHR), // GPIOA
     DEVFS_DEVICE("pio1", mcu_pio, 1, pio_config + 1, pio_state + 1, 0666,
-                 SOS_USER_ROOT,
+                 SYSFS_ROOT,
                  S_IFCHR), // GPIOB
     DEVFS_DEVICE("pio2", mcu_pio, 2, pio_config + 2, pio_state + 2, 0666,
-                 SOS_USER_ROOT,
+                 SYSFS_ROOT,
                  S_IFCHR), // GPIOC
     DEVFS_DEVICE("pio3", mcu_pio, 3, pio_config + 3, pio_state + 3, 0666,
-                 SOS_USER_ROOT,
+                 SYSFS_ROOT,
                  S_IFCHR), // GPIOD
     DEVFS_DEVICE("pio4", mcu_pio, 4, pio_config + 4, pio_state + 4, 0666,
-                 SOS_USER_ROOT,
+                 SYSFS_ROOT,
                  S_IFCHR), // GPIOE
     DEVFS_DEVICE("pio5", mcu_pio, 5, pio_config + 5, pio_state + 5, 0666,
-                 SOS_USER_ROOT,
+                 SYSFS_ROOT,
                  S_IFCHR), // GPIOF
     DEVFS_DEVICE("pio6", mcu_pio, 6, pio_config + 6, pio_state + 6, 0666,
-                 SOS_USER_ROOT,
+                 SYSFS_ROOT,
                  S_IFCHR), // GPIOG
     DEVFS_DEVICE("pio7", mcu_pio, 7, pio_config + 7, pio_state + 7, 0666,
-                 SOS_USER_ROOT,
+                 SYSFS_ROOT,
                  S_IFCHR), // GPIOH
 
     DEVFS_DEVICE("spi0", mcu_spi, 0, &spi0_dma_config, &spi0_state, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
+                 SYSFS_ROOT, S_IFCHR),
     DEVFS_DEVICE("spi2", mcu_spi, 0, &spi2_dma_config, &spi2_state, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
+                 SYSFS_ROOT, S_IFCHR),
 
+    // TIM1
     DEVFS_DEVICE("tmr0", mcu_tmr, 0, &tmr0_config, &tmr0_state, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
+                 SYSFS_ROOT, S_IFCHR),
+    // TIM3
+    DEVFS_DEVICE("tmr2", mcu_tmr, 2, &tmr2_config, &tmr2_state, 0666,
+                 SYSFS_ROOT, S_IFCHR),
+    // TIM4
     DEVFS_DEVICE("tmr3", mcu_tmr, 3, &tmr3_config, &tmr3_state, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
+                 SYSFS_ROOT, S_IFCHR),
+    // TIM5
     DEVFS_DEVICE("tmr4", mcu_tmr, 4, &tmr4_config, &tmr4_state, 0666,
-                 SOS_USER_ROOT, S_IFCHR),
+                 SYSFS_ROOT, S_IFCHR),
 
     DEVFS_TERMINATOR};
