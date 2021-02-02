@@ -2,6 +2,6 @@
    "sdkDirectory": "StratifySDK",
    "creationTimestamp": 1592969744,
    "shortcuts": {
-      "buildInstallDebug": "fs.execute:command='touch src/board_config.c' fs.execute:directory=cmake_arm,command='make -j12 all_?1_debug.elf' os.install:build=debug,path=?1 "
+      "buildInstallDebug": "fs.execute:command='touch src/board_config.c' fs.execute:directory=cmake_gcc9_arm,command='ninja all_?1_debug.elf' os.install:build=debug,path=?1 "
    }
 }
