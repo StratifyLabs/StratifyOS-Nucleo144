@@ -5,3 +5,4 @@
 */CMakeLists.txt.user
 cmake*_arm/
 *.user
+sl_report.txt
