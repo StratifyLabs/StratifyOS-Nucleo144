@@ -1,7 +1,0 @@
-mmd/app:0.000269:graph LR
-mmd/app:0.016311:  n0(main)-->|0|n1(App.initialize)
-mmd/app:0.016342:  n1(App.initialize)-->|1|n2(App.load_credentials)
-mmd/app:0.016559:  n0(main)-->|2|n3(initialize)
-mmd/app:0.016576:  n0(main)-->|3|n4(execute_cli_arguments)
-mmd/app:0.016594:  n4(execute_cli_arguments)-->|4|n5(handle_switches)
-mmd/app:0.016730:  n0(main)-->|5|n6(App.finalize)
