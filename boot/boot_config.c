@@ -16,9 +16,6 @@ const struct __sFILE_fake __sf_fake_stderr;
 
 #include "../src/config.h"
 
-extern void SystemClock_Config();
-extern void boot_main();
-
 void boot_event_handler(int event, void *args) {}
 
 int boot_is_bootloader_requested() {

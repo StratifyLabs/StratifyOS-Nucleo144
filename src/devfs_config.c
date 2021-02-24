@@ -84,7 +84,7 @@ const stm32_adc_dma_config_t adc0_dma_config = {
                               STM32_DMA_FLAG_IS_MEMORY_SINGLE,
                    .priority = STM32_DMA_PRIORITY_HIGH}};
 
-#define ADC_PACKET_SIZE 64
+#define ADC_PACKET_SIZE 512
 
 char adc0_stream_ffifo_rx_buffer[2 * ADC_PACKET_SIZE];
 stream_ffifo_state_t adc0_stream_ffifo_state MCU_SYS_MEM;
