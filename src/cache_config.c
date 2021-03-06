@@ -41,6 +41,6 @@ void cache_clean_data() {
 }
 void cache_clean_data_block(void *address, size_t size) {
 #if USE_CACHE
-  SCB_CleanDCache_by_Addr(addr, size);
+  SCB_CleanDCache_by_Addr(address, size);
 #endif
 }
