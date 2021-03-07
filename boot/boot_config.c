@@ -16,7 +16,9 @@ const struct __sFILE_fake __sf_fake_stderr;
 
 #include "../src/config.h"
 
-void boot_event_handler(int event, void *args) {}
+void boot_event_handler(int event, void *args) {
+  dstr("event:"); dint(event); dstr("\n");
+}
 
 int boot_is_bootloader_requested() {
   // check HW pin for bootloader request
