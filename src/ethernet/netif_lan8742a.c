@@ -1,5 +1,5 @@
 
-#include <mcu/debug.h>
+#include <sos/debug.h>
 
 #include "netif_lan8742a.h"
 
@@ -20,7 +20,7 @@ static int initialize_ethernet(const devfs_handle_t *handle) {
   const eth_config_t *eth_config = handle->config;
 
   if (eth_config == NULL) {
-    mcu_debug_log_fatal(MCU_DEBUG_DEVICE, "ethernet not configured");
+    sos_debug_log_fatal(SOS_DEBUG_DEVICE, "ethernet not configured");
     return SYSFS_SET_RETURN(ENOTSUP);
   }
 
@@ -34,7 +34,7 @@ static int initialize_ethernet(const devfs_handle_t *handle) {
     attr.o_flags &= ~ETH_FLAG_IS_AUTONEGOTIATION_ENABLED;
     result = mcu_eth_setattr(handle, &attr);
     if (result < 0) {
-      mcu_debug_printf("no up (%d,%d)\n", SYSFS_GET_RETURN(result),
+      sos_debug_printf("no up (%d,%d)\n", SYSFS_GET_RETURN(result),
                        SYSFS_GET_RETURN_ERRNO(result));
       return result;
     }
@@ -96,7 +96,7 @@ int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl) {
       if (mcu_eth_getregister(handle, &eth_register) < 0) {
         return SYSFS_SET_RETURN(EIO);
       }
-      eth_register.value &= ~1 << 11; // Set power down mode
+      eth_register.value &= ~(1 << 11); // Set power down mode
       if (mcu_eth_setregister(handle, &eth_register) < 0) {
         return SYSFS_SET_RETURN(EIO);
       }
@@ -115,7 +115,7 @@ int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl) {
       }
 
       if (state->is_initialized == 0) {
-        mcu_debug_log_info(MCU_DEBUG_USER2, "Not initialized");
+        sos_debug_log_info(SOS_DEBUG_USER2, "Not initialized");
         return 0;
       }
 
@@ -125,7 +125,7 @@ int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl) {
         return SYSFS_SET_RETURN(EIO);
       }
 
-      // mcu_debug_log_info(MCU_DEBUG_USER2, "Status register 0x%lX",
+      // sos_debug_log_info(sos_debug_USER2, "Status register 0x%lX",
       // eth_register.value);
       return (eth_register.value & (1 << 2)) != 0;
     }
@@ -137,7 +137,7 @@ int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl) {
         state->is_initialized = 0;
         return SYSFS_SET_RETURN(EIO);
       }
-      eth_register.value |= ~1 << 11; // Set power down mode
+      eth_register.value |= ~(1 << 11); // Set power down mode
       if (mcu_eth_setregister(handle, &eth_register) < 0) {
         state->is_initialized = 0;
         return SYSFS_SET_RETURN(EIO);
@@ -161,7 +161,7 @@ int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl) {
                           NETIF_FLAG_IS_LINK_UP | NETIF_FLAG_SET_LINK_DOWN |
                           NETIF_FLAG_IS_BROADCAST | NETIF_FLAG_IS_ETHERNET |
                           NETIF_FLAG_IS_ETHERNET_ARP | NETIF_FLAG_SET_LINK_UP;
-    mcu_debug_printf("get lan info 0x%X\n", netif_info->o_flags);
+    sos_debug_printf("get lan info 0x%X\n", netif_info->o_flags);
 
     netif_info->o_events =
         MCU_EVENT_FLAG_DATA_READY | MCU_EVENT_FLAG_WRITE_COMPLETE;

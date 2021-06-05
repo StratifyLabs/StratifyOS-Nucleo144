@@ -4,6 +4,7 @@
 #include <sdk/types.h>
 #include <sos/arch.h>
 #include <sos/boot/bootloader.h>
+#include <sos/boot/boot_debug.h>
 #include <sos/config.h>
 #include <sos/events.h>
 #include <stm32/stm32_config.h>

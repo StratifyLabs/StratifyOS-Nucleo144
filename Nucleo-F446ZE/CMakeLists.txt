@@ -50,7 +50,13 @@ list(APPEND NUCLEO_BOOT_SOURCELIST
 	)
 
 set(BOOT_LIBRARIES StratifyOS_stm32f446xx StratifyOS_boot StratifyOS_usbd)
-set(KERNEL_LIBRARIES StratifyOS_stm32f446xx StratifyOS_sys StratifyOS_usbd newlib_libc newlib_libm StratifyOS_sys)
+set(KERNEL_LIBRARIES
+	StratifyOS_stm32f446xx
+	StratifyOS_sys
+	StratifyOS_usbd
+	newlib_libc
+	newlib_libm
+	StratifyOS_sys)
 
 nucleo_target(
 	${NUCLEO_BOOT_START_ADDRESS} "${NUCLEO_BOOT_SOURCELIST}" ${NUCLEO_LINKER_FILE} "${BOOT_LIBRARIES}"

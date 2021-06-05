@@ -239,50 +239,49 @@ u8 eth_tx_buffer[STM32_ETH_DMA_BUFFER_SIZE];
 u8 eth_rx_buffer[STM32_ETH_DMA_BUFFER_SIZE];
 
 eth_state_t eth0_state MCU_SYS_MEM;
-const stm32_eth_dma_config_t
-    eth0_config =
-        {
-            .eth_config = {.attr =
-                               {
-                                   .o_flags =
-                                       ETH_FLAG_SET_INTERFACE | ETH_FLAG_START |
-                                       ETH_FLAG_IS_RMII |
-                                       ETH_FLAG_IS_AUTONEGOTIATION_ENABLED,
-                                   .pin_assignment =
-                                       {
-                                           .rmii = {.clk = {0, 1},    // PA1
-                                                    .txd0 = {6, 13},  // PG13
-                                                    .txd1 = {1, 13},  // PB13
-                                                    .tx_en = {6, 11}, // PG11
-                                                    .rxd0 = {2, 4},   // PC4
-                                                    .rxd1 = {2, 5},   // PC5
-                                                    .crs_dv = {0, 7}, // PA7
-                                                    .rx_er = {0xff, 0xff}, //??
-                                                    .unused[0] = {0xff, 0xff},
-                                                    .unused[1] = {0xff, 0xff},
-                                                    .unused[2] = {0xff, 0xff},
-                                                    .unused[3] = {0xff, 0xff},
-                                                    .unused[4] = {0xff, 0xff},
-                                                    .unused[5] = {0xff, 0xff},
-                                                    .unused[6] = {0xff, 0xff},
-                                                    .unused[7] = {0xff, 0xff}},
-                                           .mdio = {0, 2}, // PA2
-                                           .mdc = {2, 1}   // PC1
-                                       },
-                                   .mac_address[0] = 0x00,
-                                   .mac_address[1] = 0x80,
-                                   .mac_address[2] = 0xe1,
-                                   .mac_address[3] = 0x00,
-                                   .mac_address[4] = 0x00,
-                                   .mac_address[5] = 0x00,
-                                   .mac_address[6] = 0x00, // unused
-                                   .mac_address[7] = 0x00, // unused
-                                   .mac_address[8] = 0x00, // unused
-                                   .mac_address[9] = 0x00, // unused
-                                   .phy_address = 0 // address of PHY CHIP
-                               }},
-            .tx_buffer = eth_tx_buffer,
-            .rx_buffer = eth_rx_buffer};
+const stm32_eth_dma_config_t eth0_config =
+    {
+        .eth_config = {.attr =
+                           {
+                               .o_flags =
+                                   ETH_FLAG_SET_INTERFACE | ETH_FLAG_START |
+                                   ETH_FLAG_IS_RMII |
+                                   ETH_FLAG_IS_AUTONEGOTIATION_ENABLED,
+                               .pin_assignment =
+                                   {
+                                       .rmii = {.clk = {0, 1},    // PA1
+                                                .txd0 = {6, 13},  // PG13
+                                                .txd1 = {1, 13},  // PB13
+                                                .tx_en = {6, 11}, // PG11
+                                                .rxd0 = {2, 4},   // PC4
+                                                .rxd1 = {2, 5},   // PC5
+                                                .crs_dv = {0, 7}, // PA7
+                                                .rx_er = {0xff, 0xff}, //??
+                                                .unused[0] = {0xff, 0xff},
+                                                .unused[1] = {0xff, 0xff},
+                                                .unused[2] = {0xff, 0xff},
+                                                .unused[3] = {0xff, 0xff},
+                                                .unused[4] = {0xff, 0xff},
+                                                .unused[5] = {0xff, 0xff},
+                                                .unused[6] = {0xff, 0xff},
+                                                .unused[7] = {0xff, 0xff}},
+                                       .mdio = {0, 2}, // PA2
+                                       .mdc = {2, 1}   // PC1
+                                   },
+                               .mac_address[0] = 0x00,
+                               .mac_address[1] = 0x80,
+                               .mac_address[2] = 0xe1,
+                               .mac_address[3] = 0x00,
+                               .mac_address[4] = 0x00,
+                               .mac_address[5] = 0x00,
+                               .mac_address[6] = 0x00, // unused
+                               .mac_address[7] = 0x00, // unused
+                               .mac_address[8] = 0x00, // unused
+                               .mac_address[9] = 0x00, // unused
+                               .phy_address = 0 // address of PHY CHIP
+                           }},
+        .tx_buffer = eth_tx_buffer,
+        .rx_buffer = eth_rx_buffer};
 
 netif_lan8742a_state_t netif_lan8742a_state MCU_SYS_MEM;
 #endif
@@ -292,7 +291,7 @@ netif_lan8742a_state_t netif_lan8742a_state MCU_SYS_MEM;
 #endif
 
 #define USB_DEVICE_FIFO_BUFFER_SIZE 64
-u8 usb_device_fifo_buffer[USB_DEVICE_FIFO_BUFFER_SIZE] MCU_SYS_MEM;
+char usb_device_fifo_buffer[USB_DEVICE_FIFO_BUFFER_SIZE] MCU_SYS_MEM;
 u8 usb_device_fifo_read_buffer[USB_DEVICE_FIFO_BUFFER_SIZE] MCU_SYS_MEM;
 device_fifo_state_t usb_device_fifo_state MCU_SYS_MEM;
 usb_state_t usb_device_state MCU_SYS_MEM;
@@ -321,7 +320,7 @@ FIFO_DECLARE_CONFIG_STATE(stdio_in, SOS_BOARD_STDIO_BUFFER_SIZE);
 FIFO_DECLARE_CONFIG_STATE(stdio_out, SOS_BOARD_STDIO_BUFFER_SIZE);
 
 pio_state_t pio_state[8] MCU_SYS_MEM;
-const pio_config_t pio_config[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+const pio_config_t pio_config[8] = {{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}};
 
 tmr_state_t tmr0_state MCU_SYS_MEM;
 const tmr_config_t tmr0_config = {

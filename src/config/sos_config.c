@@ -28,6 +28,11 @@
 #endif
 #include "sl_config.h"
 
+#define WRITE_BACK_NO_WRITE_ALLOCATE                                           \
+  ((0 << 21) | (0 << 20) | (0 << 19) | (0 << 18) | (1 << 17) | (1 << 16))
+#define WRITE_BACK_READ_WRITE_ALLOCATE                                         \
+  ((0 << 21) | (0 << 20) | (1 << 19) | (0 << 18) | (1 << 17) | (1 << 16))
+
 #if INCLUDE_ETHERNET && !_IS_BOOT
 #include "ethernet/lwip_config.h"
 #define SOCKET_API &lwip_api
@@ -78,7 +83,12 @@ const sos_config_t sos_config = {
               .invalidate_data = cache_invalidate_data,
               .invalidate_data_block = cache_invalidate_data_block,
               .clean_data = cache_clean_data,
-              .clean_data_block = cache_clean_data_block},
+              .clean_data_block = cache_clean_data_block,
+              .external_sram_policy = SOS_CACHE_DEFAULT_POLICY,
+              .sram_policy = WRITE_BACK_READ_WRITE_ALLOCATE,
+              .flash_policy= WRITE_BACK_NO_WRITE_ALLOCATE,
+              .peripherals_policy= SOS_CACHE_PERIPHERALS_POLICY,
+              .lcd_policy= SOS_CACHE_PERIPHERALS_POLICY},
 
     .mcu = {.interrupt_request_total = MCU_LAST_IRQ + 1,
             .interrupt_middle_priority = MCU_MIDDLE_IRQ_PRIORITY,
@@ -122,7 +132,8 @@ const sos_config_t sos_config = {
 #if _IS_BOOT
     .boot = {.api = {.code_size = (u32)&_etext,
                      .exec = boot_invoke_bootloader,
-                     .event = boot_event_handler},
+                     .event = boot_event_handler,
+                     .hardware_id = __HARDWARE_ID},
              .program_start_address = __KERNEL_START_ADDRESS,
              .software_bootloader_request_address = 0x20004000,
              .software_bootloader_request_value = 0x55AA55AA,

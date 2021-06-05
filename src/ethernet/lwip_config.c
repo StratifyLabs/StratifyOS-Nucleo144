@@ -1,6 +1,11 @@
 
-#include "lwip_config.h"
 #include <sos/dev/netif.h>
+#include <sos/fs/sysfs.h>
+
+#include <lwip/lwip_api.h>
+
+#include "lwip_config.h"
+
 
 #define LWIP_MAX_PACKET_SIZE 1520
 #define NETWORK_INTERFACE_COUNT 1

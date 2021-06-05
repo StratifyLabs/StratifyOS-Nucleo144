@@ -3,7 +3,7 @@
 
 #if INCLUDE_ETHERNET
 
-#include <lwip_api.h>
+#include <lwip/lwip_api.h>
 #include <sos/sos.h>
 
 const sos_socket_api_t lwip_api;

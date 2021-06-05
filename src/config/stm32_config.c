@@ -31,15 +31,7 @@ const stm32_config_t stm32_config = {
             .tx_fifo_word_size[3] = SOS_BOARD_TX3_FIFO_WORDS, // TX endpoint 3
             .tx_fifo_word_size[4] = SOS_BOARD_TX4_FIFO_WORDS, // TX endpoint 4
             .tx_fifo_word_size[5] = SOS_BOARD_TX5_FIFO_WORDS  // TX endpoint 5
-        },
-    .debug_uart_config = {.port = 2,
-                          .attr = {.pin_assignment = {.rx = {3, 9},
-                                                      .tx = {3, 8},
-                                                      .cts = {0xff, 0xff},
-                                                      .rts = {0xff, 0xff}},
-                                   .freq = 115200,
-                                   .o_flags = UART_FLAG_SET_LINE_CODING_DEFAULT,
-                                   .width = 8}},
+        }
 };
 #if 0
 MCU_DECLARE_SECRET_KEY_32(secret_key)

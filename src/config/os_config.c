@@ -62,9 +62,6 @@ void os_event_handler(int event, void *args) {
                         pin->pin);
   } break;
 
-  case SOS_EVENT_TASK_INITIALIZED:
-    break;
-
   case SOS_EVENT_START_LINK:
 
 #if INCLUDE_ETHERNET

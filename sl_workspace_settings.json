@@ -3,5 +3,6 @@
    "creationTimestamp": 1592969744,
    "shortcuts": {
       "buildInstallDebug": "fs.execute:command='touch src/board_config.c' fs.execute:directory=cmake_gcc9_arm,command='ninja all_?1_debug.elf' os.install:build=debug,path=?1 "
-   }
+   },
+   "debugAnalyzeOs": "/Users/tgil/gitv4/StratifyOS-Nucleo144/Nucleo-F446ZE/build_debug/Nucleo-F446ZE_debug.elf"
 }

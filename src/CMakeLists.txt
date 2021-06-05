@@ -1,21 +1,29 @@
 
 set(SOURCES
-	fs_config.c
-	sleep_config.c
-	cache_config.c
-	debug_config.c
-	usb_config.c
-	sys_config.c
-	usb_config.c
-	clock_config.c
-	stm32_config.c
-	mcu_config.c
-	os_config.c
-	symbols_config.c
+	config/fs_config.c
+	config/fs_config.h
+	config/sleep_config.c
+	config/sleep_config.h
+	config/cache_config.c
+	config/cache_config.h
+	config/debug_config.c
+	config/debug_config.h
+	config/usb_config.c
+	config/sys_config.c
+	config/usb_config.c
+	config/clock_config.c
+	config/clock_config.h
+	config/stm32_config.c
+	config/mcu_config.c
+	config/mcu_config.h
+	config/os_config.c
+	config/symbols_config.c
+	config/link_config.c
+	config/link_config.h
+	config/devfs_config.c
+	config/devfs_config.h
+	config/sos_config.c
+	config/kernel_request.c
 	config.h
-	link_config.c
-	link_config.h
-	devfs_config.c
-	sos_config.c
-	kernel_request.c
-  PARENT_SCOPE)
+
+	PARENT_SCOPE)

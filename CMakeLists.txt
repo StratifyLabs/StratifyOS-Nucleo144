@@ -14,6 +14,7 @@ include(CTest)
 
 add_subdirectory(Nucleo-F446ZE Nucleo-F446ZE)
 add_subdirectory(Nucleo-F767ZI Nucleo-F767ZI)
+add_subdirectory(Nucleo-F746ZG Nucleo-F746ZG)
 
 
 

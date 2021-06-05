@@ -7,8 +7,6 @@
 
 #include "config.h"
 
-static const mcu_pin_t led_pin = {1, 7};
-
 #if ___debug
 static UART_HandleTypeDef m_huart3;
 #endif
