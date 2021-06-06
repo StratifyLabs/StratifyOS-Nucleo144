@@ -19,18 +19,19 @@ limitations under the License.
 #ifndef NETIF_LAN8742A_H_
 #define NETIF_LAN8742A_H_
 
+#include <stm32/stm32_types.h>
+
 #include <device/netif_eth.h>
 
 typedef struct {
-	u32 is_initialized;
+  eth_state_t eth_state;
+  u32 is_initialized;
 } netif_lan8742a_state_t;
 
-
-int netif_lan8742a_open(const devfs_handle_t * handle);
-int netif_lan8742a_ioctl(const devfs_handle_t * handle, int request, void * ctl);
-int netif_lan8742a_read(const devfs_handle_t * handle, devfs_async_t * rop);
-int netif_lan8742a_write(const devfs_handle_t * handle, devfs_async_t * wop);
-int netif_lan8742a_close(const devfs_handle_t * handle);
-
+int netif_lan8742a_open(const devfs_handle_t *handle);
+int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl);
+int netif_lan8742a_read(const devfs_handle_t *handle, devfs_async_t *async);
+int netif_lan8742a_write(const devfs_handle_t *handle, devfs_async_t *async);
+int netif_lan8742a_close(const devfs_handle_t *handle);
 
 #endif /* NETIF_LAN8742A_H_ */

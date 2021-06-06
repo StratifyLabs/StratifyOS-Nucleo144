@@ -19,6 +19,7 @@ static int initialize_ethernet(const devfs_handle_t *handle) {
 
   const eth_config_t *eth_config = handle->config;
 
+  SOS_DEBUG_LINE_TRACE();
   if (eth_config == NULL) {
     sos_debug_log_fatal(SOS_DEBUG_DEVICE, "ethernet not configured");
     return SYSFS_SET_RETURN(ENOTSUP);
@@ -27,8 +28,8 @@ static int initialize_ethernet(const devfs_handle_t *handle) {
   int result;
 
   if (state->is_initialized == STATE_UNINITIALIZED) {
-    eth_attr_t attr;
-    memcpy(&attr, &eth_config->attr, sizeof(eth_attr_t));
+    eth_attr_t attr = eth_config->attr;
+    SOS_DEBUG_LINE_TRACE();
 
     // first try without auto negociation
     attr.o_flags &= ~ETH_FLAG_IS_AUTONEGOTIATION_ENABLED;
@@ -36,29 +37,37 @@ static int initialize_ethernet(const devfs_handle_t *handle) {
     if (result < 0) {
       sos_debug_printf("no up (%d,%d)\n", SYSFS_GET_RETURN(result),
                        SYSFS_GET_RETURN_ERRNO(result));
+      SOS_DEBUG_LINE_TRACE();
       return result;
     }
     state->is_initialized = STATE_CHIP_UP;
   }
 
   // check it link is up
+  SOS_DEBUG_LINE_TRACE();
   mcu_channel_t eth_register;
   eth_register.loc = STATUS_REGISTER; // status regsiter
   if (mcu_eth_getregister(handle, &eth_register) < 0) {
+    SOS_DEBUG_LINE_TRACE();
     return SYSFS_SET_RETURN(EIO);
   }
 
+  SOS_DEBUG_LINE_TRACE();
   if (STATUS_IS_LINKED(eth_register.loc) == 0) {
     // can't connect now
+    sos_debug_log_info(SOS_DEBUG_SOCKET, "Cannot connect to ethernet right now");
+    SOS_DEBUG_LINE_TRACE();
     return 0;
   }
 
+  SOS_DEBUG_LINE_TRACE();
   result = mcu_eth_setattr(handle, NULL);
   if (result < 0) {
     return 0;
   }
 
   state->is_initialized = STATE_LINK_UP;
+  SOS_DEBUG_LINE_TRACE();
   return 0;
 }
 
@@ -74,13 +83,16 @@ int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl) {
   mcu_channel_t eth_register;
   eth_attr_t attr;
   u32 o_flags;
+  SOS_DEBUG_LINE_TRACE();
   switch (request) {
   case I_NETIF_GETVERSION:
     return NETIF_VERSION;
   case I_NETIF_SETATTR:
+    SOS_DEBUG_LINE_TRACE();
     o_flags = netif_attr->o_flags;
     if (o_flags & NETIF_FLAG_INIT) {
       // initialize the interface
+      SOS_DEBUG_LINE_TRACE();
       return initialize_ethernet(handle);
     }
 
@@ -161,13 +173,14 @@ int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl) {
                           NETIF_FLAG_IS_LINK_UP | NETIF_FLAG_SET_LINK_DOWN |
                           NETIF_FLAG_IS_BROADCAST | NETIF_FLAG_IS_ETHERNET |
                           NETIF_FLAG_IS_ETHERNET_ARP | NETIF_FLAG_SET_LINK_UP;
-    sos_debug_printf("get lan info 0x%X\n", netif_info->o_flags);
+    SOS_DEBUG_LINE_TRACE();
 
     netif_info->o_events =
         MCU_EVENT_FLAG_DATA_READY | MCU_EVENT_FLAG_WRITE_COMPLETE;
     netif_info->mtu = 1500;
 
     // get the system mac address
+    SOS_DEBUG_LINE_TRACE();
     return SYSFS_RETURN_SUCCESS;
   }
 

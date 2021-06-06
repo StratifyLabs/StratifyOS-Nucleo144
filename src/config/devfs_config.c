@@ -238,52 +238,54 @@ const stm32_spi_dma_config_t spi2_dma_config =
 u8 eth_tx_buffer[STM32_ETH_DMA_BUFFER_SIZE];
 u8 eth_rx_buffer[STM32_ETH_DMA_BUFFER_SIZE];
 
-eth_state_t eth0_state MCU_SYS_MEM;
+netif_lan8742a_state_t netif_lan8742a_state MCU_SYS_MEM;
 const stm32_eth_dma_config_t eth0_config =
     {
-        .eth_config = {.attr =
-                           {
-                               .o_flags =
-                                   ETH_FLAG_SET_INTERFACE | ETH_FLAG_START |
-                                   ETH_FLAG_IS_RMII |
-                                   ETH_FLAG_IS_AUTONEGOTIATION_ENABLED,
-                               .pin_assignment =
-                                   {
-                                       .rmii = {.clk = {0, 1},    // PA1
-                                                .txd0 = {6, 13},  // PG13
-                                                .txd1 = {1, 13},  // PB13
-                                                .tx_en = {6, 11}, // PG11
-                                                .rxd0 = {2, 4},   // PC4
-                                                .rxd1 = {2, 5},   // PC5
-                                                .crs_dv = {0, 7}, // PA7
-                                                .rx_er = {0xff, 0xff}, //??
-                                                .unused[0] = {0xff, 0xff},
-                                                .unused[1] = {0xff, 0xff},
-                                                .unused[2] = {0xff, 0xff},
-                                                .unused[3] = {0xff, 0xff},
-                                                .unused[4] = {0xff, 0xff},
-                                                .unused[5] = {0xff, 0xff},
-                                                .unused[6] = {0xff, 0xff},
-                                                .unused[7] = {0xff, 0xff}},
-                                       .mdio = {0, 2}, // PA2
-                                       .mdc = {2, 1}   // PC1
-                                   },
-                               .mac_address[0] = 0x00,
-                               .mac_address[1] = 0x80,
-                               .mac_address[2] = 0xe1,
-                               .mac_address[3] = 0x00,
-                               .mac_address[4] = 0x00,
-                               .mac_address[5] = 0x00,
-                               .mac_address[6] = 0x00, // unused
-                               .mac_address[7] = 0x00, // unused
-                               .mac_address[8] = 0x00, // unused
-                               .mac_address[9] = 0x00, // unused
-                               .phy_address = 0 // address of PHY CHIP
-                           }},
+        .eth_config = {
+            .port = 0,
+            .attr =
+                {
+                    .o_flags =
+                        ETH_FLAG_SET_INTERFACE | ETH_FLAG_START |
+                        ETH_FLAG_IS_RMII |
+                        ETH_FLAG_IS_AUTONEGOTIATION_ENABLED,
+                    .pin_assignment =
+                        {
+                            .rmii = {
+                                .clk = {0, 1},    // PA1
+                                .txd0 = {6, 13},  // PG13
+                                .txd1 = {1, 13},  // PB13
+                                .tx_en = {6, 11}, // PG11
+                                .rxd0 = {2, 4},   // PC4
+                                .rxd1 = {2, 5},   // PC5
+                                .crs_dv = {0, 7}, // PA7
+                                .rx_er = {0xff, 0xff}, //??
+                                .unused[0] = {0xff, 0xff},
+                                .unused[1] = {0xff, 0xff},
+                                .unused[2] = {0xff, 0xff},
+                                .unused[3] = {0xff, 0xff},
+                                .unused[4] = {0xff, 0xff},
+                                .unused[5] = {0xff, 0xff},
+                                .unused[6] = {0xff, 0xff},
+                                .unused[7] = {0xff, 0xff}},
+                            .mdio = {0, 2}, // PA2
+                            .mdc = {2, 1}   // PC1
+                        },
+                    .mac_address[0] = 0x00,
+                    .mac_address[1] = 0x80,
+                    .mac_address[2] = 0xe1,
+                    .mac_address[3] = 0x00,
+                    .mac_address[4] = 0x00,
+                    .mac_address[5] = 0x00,
+                    .mac_address[6] = 0x00, // unused
+                    .mac_address[7] = 0x00, // unused
+                    .mac_address[8] = 0x00, // unused
+                    .mac_address[9] = 0x00, // unused
+                    .phy_address = 0 // address of PHY CHIP
+                }},
         .tx_buffer = eth_tx_buffer,
         .rx_buffer = eth_rx_buffer};
 
-netif_lan8742a_state_t netif_lan8742a_state MCU_SYS_MEM;
 #endif
 
 #if !defined SOS_BOARD_USB_PORT
