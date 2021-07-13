@@ -17,6 +17,7 @@ set(STM32_CHIP stm32f746zg)
 
 include(compiler_rt)
 include(newlib)
+include(lwip)
 include(StratifyOS)
 include(jansson)
 include(StratifyOS_${STM32_CHIP_FAMILY}_debug_${ARCH})
@@ -30,7 +31,8 @@ set(NUCLEO_BOOT_START_ADDRESS 0x08000000)
 set(NUCLEO_HARDWARE_ID 0x00000013)
 set(NUCLEO_DEFINITIONS
 	SOS_BOARD_SYSTEM_CLOCK=216000000
-	SYSTEM_MEMORY_SIZE=32768
+	SYSTEM_MEMORY_SIZE=65536
+	INCLUDE_ETHERNET=1
 	)
 set(NUCLEO_LINKER_FILE ldscripts/${STM32_CHIP}-rom.ld)
 set(NUCLEO_MCU_LIBRARY StratifyOS_${STM32_CHIP_FAMILY})
@@ -38,10 +40,12 @@ set(NUCLEO_MCU_LIBRARY StratifyOS_${STM32_CHIP_FAMILY})
 
 #Add sources to the project list
 sos_sdk_add_out_of_source_directory(NUCLEO_KERNEL_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../src src)
+sos_sdk_add_out_of_source_directory(NUCLEO_ETHERNET_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../src/ethernet ethernet)
 list(APPEND NUCLEO_KERNEL_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SystemClock_Config.c
 	${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
+	${NUCLEO_ETHERNET_SOURCELIST}
 	)
 
 #Change to boot sources list
@@ -54,6 +58,7 @@ list(APPEND NUCLEO_BOOT_SOURCELIST
 
 set(BOOT_LIBRARIES ${NUCLEO_MCU_LIBRARY} StratifyOS_boot StratifyOS_usbd)
 set(KERNEL_LIBRARIES
+	lwip
 	${NUCLEO_MCU_LIBRARY}
 	StratifyOS_sys
 	StratifyOS_usbd

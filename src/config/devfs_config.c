@@ -247,7 +247,7 @@ const stm32_eth_dma_config_t eth0_config =
                 {
                     .o_flags =
                         ETH_FLAG_SET_INTERFACE | ETH_FLAG_START |
-                        ETH_FLAG_IS_RMII |
+                        ETH_FLAG_IS_RMII | ETH_FLAG_IS_FULLDUPLEX |
                         ETH_FLAG_IS_AUTONEGOTIATION_ENABLED,
                     .pin_assignment =
                         {
@@ -276,7 +276,7 @@ const stm32_eth_dma_config_t eth0_config =
                     .mac_address[2] = 0xe1,
                     .mac_address[3] = 0x00,
                     .mac_address[4] = 0x00,
-                    .mac_address[5] = 0x00,
+                    .mac_address[5] = 0x08,
                     .mac_address[6] = 0x00, // unused
                     .mac_address[7] = 0x00, // unused
                     .mac_address[8] = 0x00, // unused

@@ -13,11 +13,10 @@
 
 #define SOS_BOARD_DEBUG_FLAGS                                                  \
   (SOS_DEBUG_INFO | SOS_DEBUG_SYS | SOS_DEBUG_SCHEDULER | SOS_DEBUG_USER0 |    \
-   SOS_DEBUG_APPFS | SOS_DEBUG_DEVICE)
+   SOS_DEBUG_APPFS | SOS_DEBUG_DEVICE | SOS_DEBUG_SOCKET | SOS_DEBUG_USER2)
 
 #define SOS_BOARD_USB_RX_BUFFER_SIZE 512
 #define SOS_BOARD_STDIO_BUFFER_SIZE 512
-#define SOS_BOARD_TMR 1
 #define SOS_BOARD_FLAGS 0
 
 //Total number of tasks (threads) for the entire system

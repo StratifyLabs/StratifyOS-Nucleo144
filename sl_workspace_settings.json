@@ -4,5 +4,12 @@
    "shortcuts": {
       "buildInstallDebug": "fs.execute:command='touch src/board_config.c' fs.execute:directory=cmake_gcc9_arm,command='ninja all_?1_debug.elf' os.install:build=debug,path=?1 "
    },
-   "debugAnalyzeOs": "/Users/tgil/gitv4/StratifyOS-Nucleo144/Nucleo-F446ZE/build_debug/Nucleo-F446ZE_debug.elf"
+   "switches": {
+      "touchBuildInstallDebug": [
+         "fs.execute:command='touch src/config/os_config.c'",
+         "fs.execute:command='ninja',directory=cmake_arm",
+         "os.install:build=debug"
+      ]
+   },
+   "debugAnalyzeOs": "Nucleo-F746ZG/build_release/Nucleo-F746ZG_release.elf"
 }

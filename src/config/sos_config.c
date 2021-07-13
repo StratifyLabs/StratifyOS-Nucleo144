@@ -86,9 +86,9 @@ const sos_config_t sos_config = {
               .clean_data_block = cache_clean_data_block,
               .external_sram_policy = SOS_CACHE_DEFAULT_POLICY,
               .sram_policy = WRITE_BACK_READ_WRITE_ALLOCATE,
-              .flash_policy= WRITE_BACK_NO_WRITE_ALLOCATE,
-              .peripherals_policy= SOS_CACHE_PERIPHERALS_POLICY,
-              .lcd_policy= SOS_CACHE_PERIPHERALS_POLICY},
+              .flash_policy = WRITE_BACK_NO_WRITE_ALLOCATE,
+              .peripherals_policy = SOS_CACHE_PERIPHERALS_POLICY,
+              .lcd_policy = SOS_CACHE_PERIPHERALS_POLICY},
 
     .mcu = {.interrupt_request_total = MCU_LAST_IRQ + 1,
             .interrupt_middle_priority = MCU_MIDDLE_IRQ_PRIORITY,
@@ -101,8 +101,8 @@ const sos_config_t sos_config = {
             .memory_size = SYSTEM_MEMORY_SIZE,
             .get_serial_number = sys_get_serial_number,
             .os_mpu_text_mask = 0,
-            .flags =
-                SYS_FLAG_IS_STDIO_FIFO | SYS_FLAG_IS_TRACE | SOS_BOARD_FLAGS,
+            .flags = SYS_FLAG_IS_STDIO_FIFO | SYS_FLAG_IS_TRACE |
+                     SYS_FLAG_IS_FIRST_THREAD_AUTHENTICATED | SOS_BOARD_FLAGS,
             .name = SL_CONFIG_NAME,
             .version = SL_CONFIG_VERSION_STRING,
             .git_hash = SOS_GIT_HASH,
