@@ -1,13 +1,13 @@
 
 #include <sos/arch.h>
-#include <stm32/stm32_config.h>
+#include <stm32_config.h>
 
 #include "config.h"
 
 //--------------------------------------------MCU
 // Configuration-------------------------------------------------
 
-static char stm32_usb_rx_buffer[SOS_BOARD_USB_RX_BUFFER_SIZE] MCU_SYS_MEM;
+static char stm32_usb_rx_buffer[CONFIG_USB_RX_BUFFER_SIZE] MCU_SYS_MEM;
 
 #define SOS_BOARD_RX_FIFO_WORDS 128
 #define SOS_BOARD_TX0_FIFO_WORDS 32
@@ -22,7 +22,7 @@ const stm32_config_t stm32_config = {
     .usb =
         {
             .rx_buffer = stm32_usb_rx_buffer,
-            .rx_buffer_size = SOS_BOARD_USB_RX_BUFFER_SIZE,
+            .rx_buffer_size = CONFIG_USB_RX_BUFFER_SIZE,
             .rx_fifo_word_size =
                 SOS_BOARD_RX_FIFO_WORDS, // RX fifo for all endpoints
             .tx_fifo_word_size[0] = SOS_BOARD_TX0_FIFO_WORDS, // TX endpoint 0
@@ -50,8 +50,8 @@ const mcu_board_config_t mcu_board_config = {
     .secret_key_address = secret_key,
     .secret_key_size = 32,
     .o_flags = MCU_BOARD_CONFIG_FLAG_LED_ACTIVE_HIGH,
-    .event_handler = SOS_BOARD_EVENT_HANDLER,
+    .event_handler = CONFIG_EVENT_HANDLER,
     .led = {1, 7},
     .arch_config = &stm32_config,
-    .o_mcu_debug = SOS_BOARD_DEBUG_FLAGS};
+    .o_mcu_debug = CONFIG_DEBUG_FLAGS};
 #endif

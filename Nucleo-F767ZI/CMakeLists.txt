@@ -15,13 +15,6 @@ set(ARCH v7em_f5sh)
 set(STM32_CHIP_FAMILY stm32f767xx)
 set(STM32_CHIP stm32f767zi)
 
-include(compiler_rt)
-include(newlib)
-include(StratifyOS)
-include(jansson)
-include(StratifyOS_${STM32_CHIP_FAMILY}_debug_${ARCH})
-include(StratifyOS_${STM32_CHIP_FAMILY}_release_${ARCH})
-
 get_filename_component(SOS_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${SOS_NAME} CXX C)
 
@@ -33,7 +26,7 @@ set(NUCLEO_DEFINITIONS
 	SYSTEM_MEMORY_SIZE=65536
 	INCLUDE_ETHERNET=1
 	)
-set(NUCLEO_LINKER_FILE ldscripts/${STM32_CHIP}-rom.ld)
+set(NUCLEO_LINKER_FILE ${STM32_CHIP}-rom.ld)
 set(NUCLEO_MCU_LIBRARY StratifyOS_${STM32_CHIP_FAMILY})
 
 

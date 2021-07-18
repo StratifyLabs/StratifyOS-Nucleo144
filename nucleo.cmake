@@ -35,6 +35,9 @@ target_compile_definitions(${RELEASE_TARGET}
 	${DEFINITIONS}
 	)
 target_compile_options(${RELEASE_TARGET} PUBLIC -Os)
+target_link_directories(${RELEASE_TARGET}
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/ldscripts
+	)
 set_target_properties(${RELEASE_TARGET}
 	PROPERTIES
 	LINK_FLAGS
@@ -43,7 +46,6 @@ set_target_properties(${RELEASE_TARGET}
 
 add_executable(${DEBUG_TARGET})
 sos_sdk_copy_target(${RELEASE_TARGET} ${DEBUG_TARGET})
-
 
 sos_sdk_bsp_target(BOOT_RELEASE ${PROJECT_NAME} boot release ${ARCH})
 sos_sdk_bsp_target(BOOT_DEBUG ${PROJECT_NAME} boot debug ${ARCH})
@@ -61,6 +63,10 @@ target_include_directories(${BOOT_RELEASE_TARGET}
 	${CMAKE_CURRENT_SOURCE_DIR}/src
 	)
 
+target_link_directories(${BOOT_RELEASE_TARGET}
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/ldscripts
+	)
+
 target_compile_definitions(${BOOT_RELEASE_TARGET}
 	PUBLIC
 	${DEFINITIONS}
@@ -68,6 +74,7 @@ target_compile_definitions(${BOOT_RELEASE_TARGET}
 	__KERNEL_START_ADDRESS=${KERNEL_START_ADDRESS}
 	_IS_BOOT=1
 	)
+
 target_compile_options(${BOOT_RELEASE_TARGET} PUBLIC -Os)
 set_target_properties(${BOOT_RELEASE_TARGET}
 	PROPERTIES

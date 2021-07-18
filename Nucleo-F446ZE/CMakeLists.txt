@@ -12,13 +12,6 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../nucleo.cmake)
 
 set(ARCH v7em_f4sh)
 
-include(compiler_rt)
-include(newlib)
-include(StratifyOS)
-include(jansson)
-include(StratifyOS_stm32f446xx_debug_${ARCH})
-include(StratifyOS_stm32f446xx_release_${ARCH})
-
 get_filename_component(SOS_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${SOS_NAME} CXX C)
 
@@ -29,7 +22,7 @@ set(NUCLEO_DEFINITIONS
 	SOS_BOARD_SYSTEM_CLOCK=168000000
 	SYSTEM_MEMORY_SIZE=32768
 	)
-set(NUCLEO_LINKER_FILE ldscripts/stm32f446ze-rom.ld)
+set(NUCLEO_LINKER_FILE stm32f446ze-rom.ld)
 set(NUCLEO_MCU_LIBRARY StratifyOS_stm32f446xx)
 
 
@@ -39,6 +32,9 @@ list(APPEND NUCLEO_KERNEL_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SystemClock_Config.c
 	${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32-common.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f4xx.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f446ze-rom.ld
 	)
 
 #Change to boot sources list
@@ -47,6 +43,9 @@ list(APPEND NUCLEO_BOOT_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SystemClock_Config.c
 	${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32-common.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f4xx.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f446ze-rom.ld
 	)
 
 set(BOOT_LIBRARIES StratifyOS_stm32f446xx StratifyOS_boot StratifyOS_usbd)

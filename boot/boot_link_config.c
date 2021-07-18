@@ -3,7 +3,7 @@
 #include <device/device_fifo.h>
 #include <fcntl.h>
 #include <mcu/pio.h>
-#include <stm32/stm32_types.h>
+#include <stm32_types.h>
 #include <unistd.h>
 
 #include "boot_link_config.h"
@@ -40,8 +40,8 @@ link_transport_phy_t link_transport_open(const char *name,
   // initialize the USB
   memset(&(usb_attr.pin_assignment), 0xff, sizeof(usb_pin_assignment_t));
   usb_attr.o_flags = USB_FLAG_SET_DEVICE;
-  usb_attr.pin_assignment.dp = SOS_BOARD_USB_DP_PIN;
-  usb_attr.pin_assignment.dm = SOS_BOARD_USB_DM_PIN;
+  usb_attr.pin_assignment.dp = CONFIG_USB_DP_PIN;
+  usb_attr.pin_assignment.dm = CONFIG_USB_DM_PIN;
   // usb_attr.freq = mcu_board_config.core_osc_freq;
   fd = boot_link_transport_usb_open(name, &m_usb_control,
                                     &sos_link_transport_usb_link_constants,

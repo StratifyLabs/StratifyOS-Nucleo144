@@ -11,21 +11,21 @@
 #include <sos/dev/pio.h>
 #include <sos/fs/appfs.h>
 
-#define SOS_BOARD_DEBUG_FLAGS                                                  \
+#define CONFIG_DEBUG_FLAGS                                                  \
   (SOS_DEBUG_INFO | SOS_DEBUG_SYS | SOS_DEBUG_SCHEDULER | SOS_DEBUG_USER0 |    \
    SOS_DEBUG_APPFS | SOS_DEBUG_DEVICE | SOS_DEBUG_SOCKET | SOS_DEBUG_USER2)
 
-#define SOS_BOARD_USB_RX_BUFFER_SIZE 512
-#define SOS_BOARD_STDIO_BUFFER_SIZE 512
-#define SOS_BOARD_FLAGS 0
+#define CONFIG_USB_RX_BUFFER_SIZE 512
+#define CONFIG_STDIO_BUFFER_SIZE 512
+#define CONFIG_BOARD_FLAGS 0
 
 //Total number of tasks (threads) for the entire system
-#define SOS_BOARD_TASK_TOTAL 10
-#define SOS_BOARD_EVENT_HANDLER board_event_handler
-#define SOS_BOARD_TRACE_EVENT board_trace_event
+#define CONFIG_TASK_TOTAL 10
+#define CONFIG_EVENT_HANDLER board_event_handler
+#define CONFIG_TRACE_EVENT board_trace_event
 
-#define SOS_BOARD_USB_DP_PIN mcu_pin(0, 11)
-#define SOS_BOARD_USB_DM_PIN mcu_pin(0, 12)
+#define CONFIG_USB_DP_PIN mcu_pin(0, 11)
+#define CONFIG_USB_DM_PIN mcu_pin(0, 12)
 
 #if _IS_BOOT
 #define VECTOR_TABLE_ADDRESS __BOOT_START_ADDRESS

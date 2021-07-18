@@ -2,7 +2,7 @@
 #include <sos/dev/netif.h>
 #include <sos/fs/sysfs.h>
 
-#include <lwip/lwip_api.h>
+#include <lwip_api.h>
 
 #include "lwip_config.h"
 

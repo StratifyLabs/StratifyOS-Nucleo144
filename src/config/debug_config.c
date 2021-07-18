@@ -2,8 +2,8 @@
 #include <cortexm/task.h>
 #include <sos/debug.h>
 #include <sos/sos.h>
-#include <stm32/stm32_config.h>
-#include <stm32/stm32_types.h>
+#include <stm32_config.h>
+#include <stm32_types.h>
 
 #include "config.h"
 
@@ -54,7 +54,7 @@ void debug_write(const void *buf, int nbyte) {
 #if ___debug
   const char *cbuf = buf;
   for (int i = 0; i < nbyte; i++) {
-    char c = cbuf[i];
+    u8 c = cbuf[i];
     HAL_UART_Transmit(&m_huart3, &c, 1, HAL_MAX_DELAY);
   }
 #endif

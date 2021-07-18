@@ -19,7 +19,7 @@ limitations under the License.
 #ifndef NETIF_LAN8742A_H_
 #define NETIF_LAN8742A_H_
 
-#include <stm32/stm32_types.h>
+#include <stm32_types.h>
 
 #include <device/netif_eth.h>
 

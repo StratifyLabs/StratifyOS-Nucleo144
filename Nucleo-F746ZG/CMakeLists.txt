@@ -15,13 +15,6 @@ set(ARCH v7em_f5sh)
 set(STM32_CHIP_FAMILY stm32f746xx)
 set(STM32_CHIP stm32f746zg)
 
-include(compiler_rt)
-include(newlib)
-include(lwip)
-include(StratifyOS)
-include(jansson)
-include(StratifyOS_${STM32_CHIP_FAMILY}_debug_${ARCH})
-include(StratifyOS_${STM32_CHIP_FAMILY}_release_${ARCH})
 
 get_filename_component(SOS_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${SOS_NAME} CXX C)
@@ -34,7 +27,7 @@ set(NUCLEO_DEFINITIONS
 	SYSTEM_MEMORY_SIZE=65536
 	INCLUDE_ETHERNET=1
 	)
-set(NUCLEO_LINKER_FILE ldscripts/${STM32_CHIP}-rom.ld)
+set(NUCLEO_LINKER_FILE ${STM32_CHIP}-rom.ld)
 set(NUCLEO_MCU_LIBRARY StratifyOS_${STM32_CHIP_FAMILY})
 
 
@@ -45,6 +38,10 @@ list(APPEND NUCLEO_KERNEL_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SystemClock_Config.c
 	${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/${STM32_CHIP}-rom.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f746xg-rom.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32-common.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f7xx.ld
 	${NUCLEO_ETHERNET_SOURCELIST}
 	)
 
@@ -58,6 +55,7 @@ list(APPEND NUCLEO_BOOT_SOURCELIST
 
 set(BOOT_LIBRARIES ${NUCLEO_MCU_LIBRARY} StratifyOS_boot StratifyOS_usbd)
 set(KERNEL_LIBRARIES
+	jansson_kernel
 	lwip
 	${NUCLEO_MCU_LIBRARY}
 	StratifyOS_sys

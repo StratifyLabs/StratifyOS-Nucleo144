@@ -1,11 +1,21 @@
 
-#include <jansson/jansson_api.h>
-#include <mbedtls_api.h>
 #include <sdk/api.h>
+
+#if INCLUDE_ETHERNET && _IS_BOOT != 0
+#include <jansson/jansson_api.h>
+#if INCLUDE_TLS
+#include <mbedtls_api.h>
+#endif
+#endif
+
 
 #include "config.h"
 
-int os_kernel_request(int req, void *arg) { return -1; }
+int os_kernel_request(int req, void *arg) {
+  MCU_UNUSED_ARGUMENT(req);
+  MCU_UNUSED_ARGUMENT(arg);
+  return -1;
+}
 
 const void *os_kernel_request_api(u32 request) {
   switch (request) {
