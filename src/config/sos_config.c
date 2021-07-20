@@ -110,8 +110,8 @@ const sos_config_t sos_config = {
             .mcu_git_hash = NULL,
             .id = SL_CONFIG_DOCUMENT_ID,
             .team_id = SL_CONFIG_TEAM_ID,
-            .secret_key_size = 32,
-            .secret_key_address = secret_key,
+            .secret_key_size = 0,
+            .secret_key_address = 0,
             .vector_table = (void *)(VECTOR_TABLE_ADDRESS),
             .pio_write = sys_pio_write,
             .pio_read = sys_pio_read,
@@ -120,6 +120,8 @@ const sos_config_t sos_config = {
 #if !_IS_BOOT
             .kernel_request = sys_kernel_request,
             .kernel_request_api = sys_kernel_request_api
+#else
+            .kernel_request_api = boot_kernel_request_api
 #endif
     },
 

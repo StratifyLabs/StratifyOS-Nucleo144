@@ -1,5 +1,8 @@
 
+#include <sdk/api.h>
 #include <stm32_config.h>
+
+#include <device/auth.h>
 
 #include "config.h"
 
@@ -35,6 +38,8 @@ const void *sys_kernel_request_api(u32 request) {
   case JANSSON_API_REQUEST:
     return &jansson_api; // about 20KB
 #endif
+  case CRYPT_RANDOM_ROOT_API_REQUEST:
+    return &random_root_api;
   }
   return 0;
 }
