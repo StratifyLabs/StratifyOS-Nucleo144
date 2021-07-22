@@ -48,7 +48,7 @@ list(APPEND NUCLEO_BOOT_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f446ze-rom.ld
 	)
 
-set(BOOT_LIBRARIES tinycrypt_kernel StratifyOS_stm32f446xx StratifyOS_boot StratifyOS_usbd)
+set(BOOT_LIBRARIES tinycrypt_kernel uECC_kernel StratifyOS_stm32f446xx StratifyOS_boot StratifyOS_usbd)
 set(KERNEL_LIBRARIES
 	StratifyOS_stm32f446xx
 	StratifyOS_sys

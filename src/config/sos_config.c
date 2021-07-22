@@ -42,7 +42,9 @@
 
 // Stratify OS Configuration-------------------------------------------
 
-SOS_DECLARE_SECRET_KEY_32(secret_key)
+#if _IS_BOOT
+SOS_DECLARE_PUBLIC_KEY_64(public_key)
+#endif
 
 const sos_config_t sos_config = {
 #if !_IS_BOOT
@@ -110,8 +112,13 @@ const sos_config_t sos_config = {
             .mcu_git_hash = NULL,
             .id = SL_CONFIG_DOCUMENT_ID,
             .team_id = SL_CONFIG_TEAM_ID,
+#if _IS_BOOT
+            .secret_key_size = 64,
+            .secret_key_address = public_key,
+#else
             .secret_key_size = 0,
             .secret_key_address = 0,
+#endif
             .vector_table = (void *)(VECTOR_TABLE_ADDRESS),
             .pio_write = sys_pio_write,
             .pio_read = sys_pio_read,

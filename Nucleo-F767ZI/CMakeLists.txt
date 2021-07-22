@@ -48,7 +48,12 @@ list(APPEND NUCLEO_BOOT_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
 	)
 
-set(BOOT_LIBRARIES ${NUCLEO_MCU_LIBRARY} StratifyOS_boot StratifyOS_usbd)
+set(BOOT_LIBRARIES ${NUCLEO_MCU_LIBRARY}
+	tinycrypt_kernel
+	uECC_kernel
+	StratifyOS_boot
+	StratifyOS_usbd)
+
 set(KERNEL_LIBRARIES
 	${NUCLEO_MCU_LIBRARY}
 	lwip

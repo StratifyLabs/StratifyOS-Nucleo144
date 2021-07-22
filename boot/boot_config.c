@@ -10,6 +10,7 @@
 #include <stm32_config.h>
 
 #include <tinycrypt_api.h>
+#include <micro_ecc_api.h>
 
 
 #include "boot_link_config.h"
@@ -46,6 +47,8 @@ const void *boot_kernel_request_api(u32 request) {
   switch (request) {
   case CRYPT_SHA256_ROOT_API_REQUEST:
     return &tinycrypt_sha256_root_api;
+  case CRYPT_ECC_ROOT_API_REQUEST:
+    return &micro_ecc_verify_root_api;
   }
   return 0;
 }

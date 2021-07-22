@@ -6,7 +6,7 @@
    "publisher": "Stratify Labs, Inc",
    "type": "os",
    "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
-   "version": "0.21",
+   "version": "0.27",
    "documentId": "FFxXbp1ExySM7DaLrBA4",
    "buildList": {
       "7nKGut9K5B70LDcohKFi": "0.10",
@@ -19,9 +19,15 @@
       "fvbk0Yh06D1iJJVT230g": "0.18",
       "qJ1PU5VKjdsd2ZKmp1MT": "0.19",
       "dF62mU79v3eKyhxNApIz": "0.20",
-      "g6D0GhFHkNwSkzPmn7OQ": "0.21"
+      "g6D0GhFHkNwSkzPmn7OQ": "0.21",
+      "DHuzTTB31O4mQtXHIBRl": "0.22",
+      "vgFfzOgSnqMiRaiTG4RL": "0.23",
+      "lasz2kucwYgBw2tAnUgm": "0.24",
+      "qcKb98wi0NlNblioW4Zw": "0.25",
+      "oq7VCtm3uAfaBilfODgd": "0.26",
+      "lYaRjIyIZ9Zb7uAhf7E9": "0.27"
    },
-   "timestamp": 1614703541,
+   "timestamp": 1626992265,
    "hardwareId": "0x00000008",
    "team": "",
    "tagList": [
