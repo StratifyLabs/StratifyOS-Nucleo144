@@ -25,5 +25,5 @@ set(SOS_ARCH_LIST "v7em_f5sh")
 
 add_subdirectory(SDK)
 add_subdirectory(Nucleo-F446ZE)
-add_subdirectory(Nucleo-F746ZG)
-add_subdirectory(Nucleo-F767ZI)
+#add_subdirectory(Nucleo-F746ZG)
+#add_subdirectory(Nucleo-F767ZI)

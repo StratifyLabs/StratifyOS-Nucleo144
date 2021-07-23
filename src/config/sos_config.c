@@ -63,11 +63,11 @@ const sos_config_t sos_config = {
               .microseconds = clock_microseconds,
               .nanoseconds = NULL},
 
-    .task = {
-        //.task_total = CONFIG_TASK_TOTAL,
-             .start_stack_size = 2048,
-             .start = sos_default_thread,
-             .start_args = &link_transport},
+    .task =
+        {//.task_total = CONFIG_TASK_TOTAL,
+         .start_stack_size = 2048,
+         .start = sos_default_thread,
+         .start_args = &link_transport},
 
     .sleep = {.idle = sleep_idle,
               .hibernate = sleep_hibernate,
@@ -105,7 +105,8 @@ const sos_config_t sos_config = {
             .get_serial_number = sys_get_serial_number,
             .os_mpu_text_mask = 0,
             .flags = SYS_FLAG_IS_STDIO_FIFO | SYS_FLAG_IS_TRACE |
-                     SYS_FLAG_IS_FIRST_THREAD_AUTHENTICATED | CONFIG_BOARD_FLAGS,
+                     SYS_FLAG_IS_FIRST_THREAD_AUTHENTICATED |
+                     CONFIG_BOARD_FLAGS,
             .name = SL_CONFIG_NAME,
             .version = SL_CONFIG_VERSION_STRING,
             .git_hash = SOS_GIT_HASH,
@@ -126,7 +127,8 @@ const sos_config_t sos_config = {
             .core_clock_frequency = SOS_BOARD_SYSTEM_CLOCK,
 #if !_IS_BOOT
             .kernel_request = sys_kernel_request,
-            .kernel_request_api = sys_kernel_request_api
+            .kernel_request_api = sys_kernel_request_api,
+            .get_public_key = sys_get_public_key
 #else
             .kernel_request_api = boot_kernel_request_api
 #endif
@@ -157,4 +159,3 @@ const sos_config_t sos_config = {
     .event_handler = os_event_handler,
 #endif
     .socket_api = SOCKET_API};
-

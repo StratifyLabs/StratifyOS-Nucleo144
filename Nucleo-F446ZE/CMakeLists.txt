@@ -50,6 +50,8 @@ list(APPEND NUCLEO_BOOT_SOURCELIST
 
 set(BOOT_LIBRARIES tinycrypt_kernel uECC_kernel StratifyOS_stm32f446xx StratifyOS_boot StratifyOS_usbd)
 set(KERNEL_LIBRARIES
+	tinycrypt_kernel
+	uECC_kernel
 	StratifyOS_stm32f446xx
 	StratifyOS_sys
 	StratifyOS_usbd
