@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.19)
 
-project(STM32H735G-DK-SDK)
+project(Nucleo144-SDK)
 
 set(API_IS_SDK TRUE CACHE INTERNAL "Build SDK projects")
 option(IS_PULL "Pull SDK projects" ON)
@@ -16,7 +16,7 @@ set(GIT_STATUS_DEPENDS "")
 
 macro(sdk_add_subdirectory NAME BRANCH INSTALL)
 
-	if(IS_PULL)
+	if(IS_PULL OR NOT EXISTS ${BASE_DIRECTORY}/${NAME})
 		sos_sdk_git_clone_or_pull_branch(${BASE_DIRECTORY} ${NAME} ssh://git@github.com/StratifyLabs/${NAME}.git ${BRANCH})
 	endif()
 
@@ -28,13 +28,6 @@ macro(sdk_add_subdirectory NAME BRANCH INSTALL)
 		add_subdirectory(${BASE_DIRECTORY}/${NAME} ${NAME} EXCLUDE_FROM_ALL)
 	endif()
 
-	set(GIT_STATUS_TARGET ${NAME}-git-status)
-
-	list(APPEND GIT_STATUS_DEPENDS ${GIT_STATUS_TARGET})
-	add_custom_target(${GIT_STATUS_TARGET}
-		COMMAND git status
-		WORKING_DIRECTORY ${BASE_DIRECTORY}/${NAME}
-		)
 endmacro()
 
 set(STRATIFYOS_LWIP_PATH
@@ -58,7 +51,6 @@ set(STM32_CONFIG_PATH ${CMAKE_CURRENT_SOURCE_DIR}/config CACHE INTERNAL "STM32 c
 
 set(STRATIFYOS_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/StratifyOS/include CACHE INTERNAL "Stratify OS include directory")
 
-
 set(BUILD_STM32F767 ON CACHE INTERNAL "ENABLE BUILDING OF F767")
 set(BUILD_STM32F446 ON CACHE INTERNAL "ENABLE BUILDING OF F446")
 set(BUILD_STM32F746 ON CACHE INTERNAL "ENABLE BUILDING OF F746")
@@ -68,12 +60,12 @@ sdk_add_subdirectory(StratifyOS-compiler-rt v1.0 OFF)
 sdk_add_subdirectory(StratifyOS-newlib v1.0 OFF)
 sdk_add_subdirectory(StratifyOS main ON)
 sdk_add_subdirectory(StratifyOS-mcu-stm32 main OFF)
-sdk_add_subdirectory(HalAPI v1.0 ON)
-sdk_add_subdirectory(SosAPI v1.0 ON)
-sdk_add_subdirectory(JsonAPI v1.0 ON)
-sdk_add_subdirectory(CryptoAPI v1.0 ON)
-sdk_add_subdirectory(InetAPI v1.0 ON)
-sdk_add_subdirectory(CloudAPI v1.0 ON)
+sdk_add_subdirectory(HalAPI main ON)
+sdk_add_subdirectory(SosAPI main ON)
+sdk_add_subdirectory(JsonAPI main ON)
+sdk_add_subdirectory(CryptoAPI main ON)
+sdk_add_subdirectory(InetAPI main ON)
+sdk_add_subdirectory(CloudAPI main ON)
 
 
 
