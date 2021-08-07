@@ -6,3 +6,4 @@
 cmake*_arm/
 *.user
 sl_report.txt
+apps/testsuite/
