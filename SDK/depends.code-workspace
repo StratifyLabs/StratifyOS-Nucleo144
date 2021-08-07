@@ -35,6 +35,9 @@
 		},
 		{
 			"path": "dependencies/StratifyOS-newlib"
+		},
+		{
+			"path": "../apps/testsuite"
 		}
 	]
 }

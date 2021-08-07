@@ -14,4 +14,8 @@ export CHIP=F446ZE
 sl os.install:build=debug,signkey=RhnmvxQ8D4tlh02L8693
 ```
 
+Running tests:
 
+```bash
+sl app.install:path=apps/testsuite/dhrystone,run,terminal,signkey=162ZEPiD33bF1T8diV0t,signkeypassword=4AC673981E969BBC9C33933800960A7F57EC0F9036CAABB2E1CF09402E9B391E
+```

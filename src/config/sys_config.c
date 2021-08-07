@@ -9,6 +9,7 @@
 
 #include "config.h"
 
+// use `sl keys.ping:id=162ZEPiD33bF1T8diV0t,code` to get the C style format
 const appfs_public_key_t public_keys[] = {
     {.index = 0,
      .id = "162ZEPiD33bF1T8diV0t",
@@ -18,7 +19,8 @@ const appfs_public_key_t public_keys[] = {
                0xd5, 0x71, 0x58, 0xf2, 0x28, 0xfe, 0x1a, 0xb5, 0xa8, 0x35, 0xfe,
                0xa5, 0x5a, 0xb9, 0x0d, 0x02, 0xc1, 0x32, 0x48, 0x3d, 0xea, 0x71,
                0x74, 0x14, 0x67, 0x50, 0xdd, 0xaa, 0x41, 0x2d, 0x2a},
-     .o_flags = APPFS_FLAG_IS_AUTHENTICATED}};
+     //allow all APPFS flags when installing: e.g. APPFS_FLAG_IS_AUTHENTICATED
+     .o_flags = 0xffffffff}};
 
 extern void SystemClock_Config();
 
@@ -58,7 +60,6 @@ const void *sys_kernel_request_api(u32 request) {
   case CRYPT_SHA256_API_REQUEST:
     return &tinycrypt_sha256_api;
 #endif
-
 
   case CRYPT_RANDOM_ROOT_API_REQUEST:
     return &random_root_api;

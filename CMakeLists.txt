@@ -27,3 +27,5 @@ add_subdirectory(SDK)
 add_subdirectory(Nucleo-F446ZE)
 #add_subdirectory(Nucleo-F746ZG)
 #add_subdirectory(Nucleo-F767ZI)
+
+add_subdirectory(apps)

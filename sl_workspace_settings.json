@@ -1,5 +1,5 @@
 {
-   "sdkDirectory": "StratifySDK",
+   "sdkDirectory": "SDK",
    "creationTimestamp": 1592969744,
    "shortcuts": {
       "buildInstallDebug": "fs.execute:command='touch src/board_config.c' fs.execute:directory=cmake_gcc9_arm,command='ninja all_?1_debug.elf' os.install:build=debug,path=?1 "
@@ -9,6 +9,11 @@
          "fs.execute:command='touch src/config/os_config.c'",
          "fs.execute:command='ninja',directory=cmake_arm",
          "os.install:build=debug"
+      ],
+      "runTests": [
+         "app.install:path=apps/testsuite/dhrystone,run,terminal,signkey=162ZEPiD33bF1T8diV0t,signkeypassword=4AC673981E969BBC9C33933800960A7F57EC0F9036CAABB2E1CF09402E9B391E",
+         "app.clean",
+         "app.install:path=apps/testsuite/posixtest,run,terminal,args='--api --sched',signkey=162ZEPiD33bF1T8diV0t,signkeypassword=4AC673981E969BBC9C33933800960A7F57EC0F9036CAABB2E1CF09402E9B391E"
       ]
    },
    "debugAnalyzeOs": "Nucleo-F746ZG/build_release/Nucleo-F746ZG_release.elf"
