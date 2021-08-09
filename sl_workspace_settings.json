@@ -20,6 +20,9 @@
       ],
       "installDebugOs": [
          "os.install:build=debug,signkey=RhnmvxQ8D4tlh02L8693"
+      ],
+      "installOs": [
+         "os.install:signkey=RhnmvxQ8D4tlh02L8693"
       ]
    },
    "debugAnalyzeOs": "Nucleo-F746ZG/build_release/Nucleo-F746ZG_release.elf"

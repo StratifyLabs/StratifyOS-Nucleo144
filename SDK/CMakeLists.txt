@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.19)
 project(Nucleo144-SDK)
 
 set(API_IS_SDK TRUE CACHE INTERNAL "Build SDK projects")
-option(IS_PULL "Pull SDK projects" ON)
+option(IS_PULL "Pull SDK projects" OFF)
 
 set(BASE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dependencies)
 file(MAKE_DIRECTORY ${BASE_DIRECTORY})
