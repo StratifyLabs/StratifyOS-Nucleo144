@@ -17,7 +17,7 @@ export ARCH=v7em_f5dh
 
 
 ```bash
-sl os.install:path=Nucleo-${CHIP},arch=${ARCH},build=boot_release,publickey=RhnmvxQ8D4tlh02L8693,dest=host@tmp
+sl os.install:path=Nucleo-${CHIP},build=boot_release,publickey=RhnmvxQ8D4tlh02L8693,key,dest=host@tmp
 ```
 
 ```bash
