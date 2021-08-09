@@ -6,3 +6,5 @@ cmake*_arm/
 *.user
 sl_report.txt
 apps/testsuite/
+apps/Blinky/
+apps/HelloWorld/
