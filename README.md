@@ -26,6 +26,16 @@ These commands will clone the code, install the tools (compiler and command line
 git clone https://github.com/StratifyLabs/StratifyOS-Nucleo144
 cmake -P bootstrap.cmake
 source profile.sh
+```
+
+You may need to update `sl` (the command line tool used with Stratify OS). This requires version `1.14` or above.
+
+```bash
+sl --update
+slu #if necessary
+```
+
+```
 cd cmake_arm
 cmake .. -GNinja -D${CHIP}=ON
 ninja
@@ -44,10 +54,10 @@ This installs an insecure public key used to validate the OS is signed.
 sl --prepareBootloader=${CHIP}
 ```
 
-Then copy the file `tmp/Nucleo-F446ZE_build_boot_release.bin` to the mbed drive. On MacOs, you can use:
+Then copy the file `tmp/Nucleo-${CHIP}_build_boot_release.bin` to the mbed drive. On MacOs, you can use:
 
 ```bash
-cp tmp/Nucleo-F446ZE_build_boot_release.bin /Volumes/NODE_${CHIP}
+cp tmp/Nucleo-${CHIP}_build_boot_release.bin /Volumes/NODE_${CHIP}
 ```
 
 # Installing the OS
@@ -79,3 +89,5 @@ export SIGN=signkey=162ZEPiD33bF1T8diV0t,signkeypassword=4AC673981E969BBC9C33933
 sl app.install:path=apps/HelloWorld,run,terminal,${SIGN}
 sl app.install:path=apps/Blinky,run,terminal,${SIGN},args='--pin=1.7'
 ```
+
+Please see `apps/testsuite/README.md` to run the test applications.

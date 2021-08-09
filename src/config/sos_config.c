@@ -20,6 +20,8 @@
 
 #include <stm32_config.h>
 
+#include <cortexm/mpu.h>
+
 #include "config.h"
 #if _IS_BOOT
 #include "../boot/boot_link_config.h"
@@ -30,6 +32,7 @@
 
 #define WRITE_BACK_NO_WRITE_ALLOCATE                                           \
   ((0 << 21) | (0 << 20) | (0 << 19) | (0 << 18) | (1 << 17) | (1 << 16))
+
 #define WRITE_BACK_READ_WRITE_ALLOCATE                                         \
   ((0 << 21) | (0 << 20) | (1 << 19) | (0 << 18) | (1 << 17) | (1 << 16))
 
@@ -61,7 +64,7 @@ const sos_config_t sos_config = {
               .set_channel = clock_set_channel,
               .get_channel = clock_get_channel,
               .microseconds = clock_microseconds,
-              .nanoseconds = NULL},
+              .nanoseconds = clock_nanoseconds},
 
     .task =
         {//.task_total = CONFIG_TASK_TOTAL,
@@ -88,13 +91,21 @@ const sos_config_t sos_config = {
               .clean_data = cache_clean_data,
               .clean_data_block = cache_clean_data_block,
               .external_sram_policy = SOS_CACHE_DEFAULT_POLICY,
+              .external_flash_policy = SOS_CACHE_DEFAULT_POLICY,
               .sram_policy = WRITE_BACK_READ_WRITE_ALLOCATE,
               .flash_policy = WRITE_BACK_NO_WRITE_ALLOCATE,
               .peripherals_policy = SOS_CACHE_PERIPHERALS_POLICY,
-              .lcd_policy = SOS_CACHE_PERIPHERALS_POLICY},
+              .lcd_policy = SOS_CACHE_PERIPHERALS_POLICY,
+              .tightly_coupled_data_policy = SOS_CACHE_PERIPHERALS_POLICY,
+              .tightly_coupled_instruction_policy = SOS_CACHE_PERIPHERALS_POLICY,
+              .os_code_mpu_type = MPU_MEMORY_FLASH,
+              .os_data_mpu_type = MPU_MEMORY_SRAM,
+              .os_system_data_mpu_type = MPU_MEMORY_TIGHTLY_COUPLED_DATA
+    },
 
     .mcu = {.interrupt_request_total = MCU_LAST_IRQ + 1,
             .interrupt_middle_priority = MCU_MIDDLE_IRQ_PRIORITY,
+            .task_mpu_region_offset = 0,
             .set_interrupt_priority = mcu_set_interrupt_priority,
             .reset_watchdog_timer = mcu_reset_watchdog_timer,
             .set_pin_function = mcu_set_pin_function},

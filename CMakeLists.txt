@@ -21,15 +21,19 @@ project(StratifyOS-Nucleo144 CXX C ASM)
 include(CTest)
 
 option(F446ZE "Enable F446ZE build" OFF)
-option(F746ZG "Enable F446ZE build" OFF)
-option(F767ZI "Enable F446ZE build" OFF)
+option(F746ZG "Enable F746ZG build" OFF)
+option(F767ZI "Enable F767ZI build" OFF)
+
+set(SOS_ARCH "")
+set(SOS_ARCH_LIST "")
 
 if(F446ZE)
+	message(STATUS "Adding F446ZE")
 	set(SOS_ARCH v7em_f4sh)
-	set(SOS_ARCH_LIST "")
 endif()
 
 if(F746ZG)
+	message(STATUS "Adding F746ZG")
 	if(NOT SOS_ARCH)
 		set(SOS_ARCH v7em_f5sh)
 	else()
@@ -38,6 +42,7 @@ if(F746ZG)
 endif()
 
 if(F767ZI)
+	message(STATUS "Adding F767ZI")
 	if(NOT SOS_ARCH)
 		set(SOS_ARCH v7em_f5dh)
 	else()
@@ -47,6 +52,11 @@ endif()
 
 message(STATUS "SOS ARCH is ${SOS_ARCH}")
 message(STATUS "SOS EXTRA ARCH is ${SOS_ARCH_LIST}")
+
+if(NOT F446ZE AND NOT F746ZG AND NOT F767ZI)
+	message(FATAL_ERROR "Please specify Board")
+endif()
+
 
 add_subdirectory(SDK)
 if(F446ZE)
@@ -60,6 +70,8 @@ endif()
 if(F767ZI)
 	add_subdirectory(Nucleo-F767ZI)
 endif()
+
+
 
 add_subdirectory(apps)
 

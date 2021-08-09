@@ -10,7 +10,7 @@ include(sos-sdk)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../nucleo.cmake)
 
-set(ARCH v7em_f5sh)
+set(ARCH v7em_f5dh)
 
 set(STM32_CHIP_FAMILY stm32f767xx)
 set(STM32_CHIP stm32f767zi)

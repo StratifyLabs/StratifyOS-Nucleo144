@@ -15,6 +15,8 @@
 // duration is in milliseconds
 #define CONFIG_SCHED_RR_DURATION 10
 
+#define CONFIG_TASK_MPU_REGION_OFFSET 0
+
 // Task options
 // total number of threads (system and application)
 // more tasks use require more sysmem

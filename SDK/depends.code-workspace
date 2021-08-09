@@ -38,6 +38,12 @@
 		},
 		{
 			"path": "../apps/testsuite"
+		},
+		{
+			"path": "../apps/HelloWorld"
+		},
+		{
+			"path": "../apps/Blinky"
 		}
 	]
 }
