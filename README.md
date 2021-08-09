@@ -8,6 +8,16 @@ This is a collection of Stratify OS board support packages for the STM32 Nucleo-
 
 ```bash
 export CHIP=F446ZE
+export ARCH=v7em_f4sh
+export CHIP=F746ZG
+export ARCH=v7em_f5sh
+export CHIP=F767ZI
+export ARCH=v7em_f5dh
+```
+
+
+```bash
+sl os.install:path=Nucleo-${CHIP},arch=${ARCH},build=boot_release,publickey=RhnmvxQ8D4tlh02L8693,dest=host@tmp
 ```
 
 ```bash

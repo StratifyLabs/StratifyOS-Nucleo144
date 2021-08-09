@@ -19,7 +19,7 @@
 // total number of threads (system and application)
 // more tasks use require more sysmem
 #define CONFIG_TASK_TOTAL 16
-#define CONFIG_TASK_PROCESS_TIMER_COUNT 2
+#define CONFIG_TASK_PROCESS_TIMER_COUNT 4
 #define CONFIG_TASK_DEFAULT_STACKGUARD_SIZE 128
 
 #define CONFIG_TASK_NUM_SIGNALS 32

@@ -14,6 +14,8 @@ message(STATUS "Base directory ${BASE_DIRECTORY}")
 
 set(GIT_STATUS_DEPENDS "")
 
+add_custom_target(pull_sdk)
+
 macro(sdk_add_subdirectory NAME BRANCH INSTALL)
 
 	if(IS_PULL OR NOT EXISTS ${BASE_DIRECTORY}/${NAME})
@@ -28,6 +30,11 @@ macro(sdk_add_subdirectory NAME BRANCH INSTALL)
 		add_subdirectory(${BASE_DIRECTORY}/${NAME} ${NAME} EXCLUDE_FROM_ALL)
 	endif()
 
+	add_custom_target(pull_${NAME}
+		COMMAND git pull
+		WORKING_DIRECTORY ${BASE_DIRECTORY}/${NAME}
+		)
+	add_dependencies(pull_sdk pull_${NAME})
 endmacro()
 
 set(STRATIFYOS_LWIP_PATH

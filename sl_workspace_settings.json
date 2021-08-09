@@ -14,6 +14,12 @@
          "app.install:path=apps/testsuite/dhrystone,run,terminal,signkey=162ZEPiD33bF1T8diV0t,signkeypassword=4AC673981E969BBC9C33933800960A7F57EC0F9036CAABB2E1CF09402E9B391E",
          "app.clean",
          "app.install:path=apps/testsuite/posixtest,run,terminal,args='--api --sched',signkey=162ZEPiD33bF1T8diV0t,signkeypassword=4AC673981E969BBC9C33933800960A7F57EC0F9036CAABB2E1CF09402E9B391E"
+      ],
+      "prepareBootloader": [
+         "os.install:path=Nucleo-?1,build=boot_release,publickey=RhnmvxQ8D4tlh02L8693,dest=host@tmp"
+      ],
+      "installDebugOs": [
+         "os.install:build=debug,signkey=RhnmvxQ8D4tlh02L8693"
       ]
    },
    "debugAnalyzeOs": "Nucleo-F746ZG/build_release/Nucleo-F746ZG_release.elf"

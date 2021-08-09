@@ -21,11 +21,17 @@ project(StratifyOS-Nucleo144 CXX C ASM)
 include(CTest)
 
 set(SOS_ARCH v7em_f4sh)
-set(SOS_ARCH_LIST "v7em_f5sh")
+set(SOS_ARCH_LIST v7em_f5sh v7em_f5dh)
 
 add_subdirectory(SDK)
 add_subdirectory(Nucleo-F446ZE)
-#add_subdirectory(Nucleo-F746ZG)
-#add_subdirectory(Nucleo-F767ZI)
+add_subdirectory(Nucleo-F746ZG)
+add_subdirectory(Nucleo-F767ZI)
 
 add_subdirectory(apps)
+
+add_custom_target(pull
+	COMMAND git pull
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	DEPENDS pull_apps pull_sdk
+	)

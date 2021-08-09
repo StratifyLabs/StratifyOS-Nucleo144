@@ -1,6 +1,8 @@
 
+#include <stm32_arch.h>
 
 #include "config.h"
+
 
 #if defined STM32F7 || defined STM32H7
 #define USE_CACHE 1
