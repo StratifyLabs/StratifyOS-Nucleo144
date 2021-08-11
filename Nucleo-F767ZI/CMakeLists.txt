@@ -22,7 +22,7 @@ add_custom_target(publish_header_F767ZI
 	)
 
 add_custom_target(publish_F767ZI
-	COMMAND sl os.publish:path=Nucleo-F767ZI
+	COMMAND sl os.publish:path=Nucleo-F767ZI,signkey=RhnmvxQ8D4tlh02L8693
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
 	)
 

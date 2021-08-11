@@ -81,6 +81,11 @@ endif()
 
 add_subdirectory(apps)
 
+add_custom_target(installOs
+	COMMAND sl os.install:signkey=RhnmvxQ8D4tlh02L8693
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	)
+
 add_custom_target(pull
 	COMMAND git pull
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
