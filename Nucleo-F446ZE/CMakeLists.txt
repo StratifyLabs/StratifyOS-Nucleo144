@@ -19,7 +19,7 @@ add_custom_target(publish_header_F446ZE
 	)
 
 add_custom_target(publish_F446ZE
-	COMMAND sl os.publish:path=Nucleo-F446ZE
+	COMMAND sl os.publish:path=Nucleo-F446ZE,signkey=RhnmvxQ8D4tlh02L8693
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
 	)
 

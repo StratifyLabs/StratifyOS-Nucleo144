@@ -22,7 +22,7 @@ add_custom_target(publish_header_F746ZG
 	)
 
 add_custom_target(publish_F746ZG
-	COMMAND sl os.publish:path=Nucleo-F746ZG
+	COMMAND sl os.publish:path=Nucleo-F746ZG,signkey=RhnmvxQ8D4tlh02L8693
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
 	)
 
