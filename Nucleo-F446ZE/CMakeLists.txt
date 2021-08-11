@@ -12,6 +12,12 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../nucleo.cmake)
 
 set(ARCH v7em_f4sh)
 
+add_custom_target(publish_header_F446ZE
+	COMMAND sl os.publish:path=Nucleo-F446ZE
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
+	DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
+	)
+
 get_filename_component(SOS_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${SOS_NAME} CXX C)
 
