@@ -15,6 +15,17 @@ set(ARCH v7em_f5dh)
 set(STM32_CHIP_FAMILY stm32f767xx)
 set(STM32_CHIP stm32f767zi)
 
+add_custom_target(publish_header_F767ZI
+	COMMAND sl os.publish:path=Nucleo-F767ZI,header
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
+	DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
+	)
+
+add_custom_target(publish_F767ZI
+	COMMAND sl os.publish:path=Nucleo-F767ZI
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
+	)
+
 get_filename_component(SOS_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${SOS_NAME} CXX C)
 

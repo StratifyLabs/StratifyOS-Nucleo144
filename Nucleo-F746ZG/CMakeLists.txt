@@ -15,6 +15,18 @@ set(ARCH v7em_f5sh)
 set(STM32_CHIP_FAMILY stm32f746xx)
 set(STM32_CHIP stm32f746zg)
 
+add_custom_target(publish_header_F746ZG
+	COMMAND sl os.publish:path=Nucleo-F746ZG,header
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
+	DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
+	)
+
+add_custom_target(publish_F746ZG
+	COMMAND sl os.publish:path=Nucleo-F746ZG
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
+	)
+
+
 
 get_filename_component(SOS_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${SOS_NAME} CXX C)

@@ -57,21 +57,27 @@ if(NOT F446ZE AND NOT F746ZG AND NOT F767ZI)
 	message(FATAL_ERROR "Please specify Board")
 endif()
 
+add_custom_target(publish_header)
+add_custom_target(publish)
 
 add_subdirectory(SDK)
 if(F446ZE)
 	add_subdirectory(Nucleo-F446ZE)
+	add_dependencies(publish_header publish_header_F446ZE)
+	add_dependencies(publish publish_F446ZE)
 endif()
 
 if(F746ZG)
 	add_subdirectory(Nucleo-F746ZG)
+	add_dependencies(publish_header publish_header_F746ZG)
+	add_dependencies(publish publish_F746ZG)
 endif()
 
 if(F767ZI)
 	add_subdirectory(Nucleo-F767ZI)
+	add_dependencies(publish_header publish_header_F767ZI)
+	add_dependencies(publish publish_F767ZI)
 endif()
-
-
 
 add_subdirectory(apps)
 
