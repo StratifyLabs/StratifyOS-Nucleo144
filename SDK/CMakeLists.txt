@@ -14,13 +14,9 @@ message(STATUS "Base directory ${BASE_DIRECTORY}")
 
 set(GIT_STATUS_DEPENDS "")
 
-add_custom_target(pull_sdk)
-
 macro(sdk_add_subdirectory NAME BRANCH INSTALL)
 
-	if(IS_PULL OR NOT EXISTS ${BASE_DIRECTORY}/${NAME})
-		sos_sdk_git_clone_or_pull_branch(${BASE_DIRECTORY} ${NAME} ssh://git@github.com/StratifyLabs/${NAME}.git ${BRANCH})
-	endif()
+	sos_sdk_git_clone_or_pull_branch(${BASE_DIRECTORY} ${NAME} ssh://git@github.com/StratifyLabs/${NAME}.git ${BRANCH})
 
 	if(${INSTALL})
 		message(STATUS "Adding ${NAME} to install target")
@@ -30,11 +26,6 @@ macro(sdk_add_subdirectory NAME BRANCH INSTALL)
 		add_subdirectory(${BASE_DIRECTORY}/${NAME} ${NAME} EXCLUDE_FROM_ALL)
 	endif()
 
-	add_custom_target(pull_${NAME}
-		COMMAND git pull
-		WORKING_DIRECTORY ${BASE_DIRECTORY}/${NAME}
-		)
-	add_dependencies(pull_sdk pull_${NAME})
 endmacro()
 
 set(STRATIFYOS_LWIP_PATH
@@ -48,7 +39,7 @@ set(LWIP_STRATIFYOS_PATH
 
 set(API_IS_SDK ON CACHE INTERNAL "API_IS_SDK disable include statemenets")
 
-sdk_add_subdirectory(API main ON)
+sdk_add_subdirectory(API v1.2 ON)
 include(${BASE_DIRECTORY}/API/libraries/API.cmake)
 
 set(MBEDTLS_CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/config/mbedtls/config.h CACHE INTERNAL "MBEDTLS config file")
@@ -63,16 +54,16 @@ set(BUILD_STM32F446 ${F446ZE} CACHE INTERNAL "ENABLE BUILDING OF F446")
 set(BUILD_STM32F746 ${F746ZG} CACHE INTERNAL "ENABLE BUILDING OF F746")
 set(BUILD_STM32_ALL OFF CACHE INTERNAL "DONT BUILD ALL STM32 BUILDS")
 
-sdk_add_subdirectory(StratifyOS-compiler-rt v1.0 OFF)
-sdk_add_subdirectory(StratifyOS-newlib v1.0 OFF)
-sdk_add_subdirectory(StratifyOS v4.1 ON)
-sdk_add_subdirectory(StratifyOS-mcu-stm32 v4.0 OFF)
-sdk_add_subdirectory(HalAPI v1.1 ON)
-sdk_add_subdirectory(SosAPI v1.1 ON)
-sdk_add_subdirectory(JsonAPI v1.1 ON)
-sdk_add_subdirectory(CryptoAPI v1.1 ON)
-sdk_add_subdirectory(InetAPI v1.1 ON)
-sdk_add_subdirectory(CloudAPI v1.0 ON)
+sdk_add_subdirectory(StratifyOS-compiler-rt main OFF)
+sdk_add_subdirectory(StratifyOS-newlib main OFF)
+sdk_add_subdirectory(StratifyOS main ON)
+sdk_add_subdirectory(StratifyOS-mcu-stm32 v4.1 OFF)
+sdk_add_subdirectory(HalAPI v1.2 ON)
+sdk_add_subdirectory(SosAPI v1.2 ON)
+sdk_add_subdirectory(JsonAPI v1.2 ON)
+sdk_add_subdirectory(CryptoAPI v1.2 ON)
+sdk_add_subdirectory(InetAPI v1.2 ON)
+sdk_add_subdirectory(CloudAPI v1.1 ON)
 
 
 

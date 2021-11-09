@@ -8,6 +8,8 @@
 #include <sos/sos.h>
 #include <string.h>
 
+#include "fs_config.h"
+
 #include "ethernet/lwip_config.h"
 
 #define TRACE_COUNT 16

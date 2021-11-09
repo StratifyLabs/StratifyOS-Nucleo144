@@ -5,7 +5,7 @@
 #include <stm32_config.h>
 #include <stm32_types.h>
 
-#include "config.h"
+#include "debug_config.h"
 
 #if ___debug
 static UART_HandleTypeDef m_huart3;
@@ -48,6 +48,8 @@ void debug_initialize() {
   m_huart3.Init.OverSampling = UART_OVERSAMPLING_16;
   HAL_UART_Init(&m_huart3);
 #endif
+  //debug_write("hey1\n", 5);
+  //sos_debug_printf("Hello %p\n", &sos_config);
 }
 
 void debug_write(const void *buf, int nbyte) {

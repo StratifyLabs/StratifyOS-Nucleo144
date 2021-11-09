@@ -23,6 +23,17 @@
 #include <cortexm/mpu.h>
 
 #include "config.h"
+
+#include "cache_config.h"
+#include "clock_config.h"
+#include "debug_config.h"
+#include "fs_config.h"
+#include "mcu_config.h"
+#include "os_config.h"
+#include "sleep_config.h"
+#include "sys_config.h"
+#include "usb_config.h"
+
 #if _IS_BOOT
 #include "../boot/boot_link_config.h"
 #else

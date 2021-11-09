@@ -9,7 +9,6 @@
 
 #include "config.h"
 
-
 void debug_initialize();
 void debug_write(const void *buf, int nbyte);
 void debug_enable_led();

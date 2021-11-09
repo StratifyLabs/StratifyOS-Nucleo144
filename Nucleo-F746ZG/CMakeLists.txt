@@ -1,13 +1,5 @@
 cmake_minimum_required (VERSION 3.12)
 
-if(NOT SOS_SDK_PATH)
-	set(SOS_SDK_PATH $ENV{SOS_SDK_PATH})
-endif()
-
-set(CMAKE_MODULE_PATH ${SOS_SDK_PATH}/cmake)
-set(CMAKE_TOOLCHAIN_FILE ${CMAKE_MODULE_PATH}/sos-toolchain.cmake)
-include(sos-sdk)
-
 include(${CMAKE_CURRENT_SOURCE_DIR}/../nucleo.cmake)
 
 set(ARCH v7em_f5sh)
@@ -25,8 +17,6 @@ add_custom_target(publish_F746ZG
 	COMMAND sl os.publish:path=Nucleo-F746ZG,signkey=RhnmvxQ8D4tlh02L8693
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
 	)
-
-
 
 get_filename_component(SOS_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${SOS_NAME} CXX C)

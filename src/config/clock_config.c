@@ -1,7 +1,7 @@
 
 #include <stm32_config.h>
 
-#include "config.h"
+#include "clock_config.h"
 
 void clock_initialize(
     int (*handle_match_channel0)(void *context, const mcu_event_t *data),

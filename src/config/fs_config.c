@@ -1,5 +1,6 @@
 
 #include "config.h"
+#include "fs_config.h"
 
 const devfs_device_t mem0 = DEVFS_DEVICE(
     "mem0", appfs_mem, 0, &appfs_mem_config, 0, 0666, SYSFS_ROOT, S_IFBLK);
@@ -9,7 +10,7 @@ const devfs_device_t mem0 = DEVFS_DEVICE(
 /*
  * This is the root filesystem that determines what is mounted at /.
  *
- * The default is /app (for installing and running applciations in RAM and
+ * The default is /app (for installing and running applications in RAM and
  * flash) and /dev which provides the device tree defined above.
  *
  * Additional filesystems (such as FatFs) can be added if the hardware and

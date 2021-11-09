@@ -1,12 +1,10 @@
 
 
 #include <device/device_fifo.h>
-#include <fcntl.h>
 #include <sos/debug.h>
 #include <sos/dev/pio.h>
 #include <sos/config.h>
 #include <string.h>
-#include <unistd.h>
 
 #include "config.h"
 #include "link_config.h"
