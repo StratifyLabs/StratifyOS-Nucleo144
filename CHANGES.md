@@ -4,5 +4,5 @@
 
 # v1.0.0
 
-Initial Release.
+Initial Release for Stratify OS v4.1
 
