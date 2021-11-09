@@ -12,9 +12,9 @@
 #include <sos/fs/appfs.h>
 
 #define CONFIG_DEBUG_FLAGS                                                     \
-  (SOS_DEBUG_INFO | SOS_DEBUG_SYS | SOS_DEBUG_SCHEDULER | SOS_DEBUG_USER0      \
+  (SOS_DEBUG_INFO | SOS_DEBUG_SYS | 0 | SOS_DEBUG_USER0      \
    | SOS_DEBUG_APPFS | SOS_DEBUG_DEVICE | SOS_DEBUG_SOCKET | SOS_DEBUG_USER2   \
-   | SOS_DEBUG_LINK)
+   | 0)
 
 #define CONFIG_USB_RX_BUFFER_SIZE 512
 #define CONFIG_STDIO_BUFFER_SIZE 512

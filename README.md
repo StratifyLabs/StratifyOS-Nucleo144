@@ -64,7 +64,7 @@ cp tmp/Nucleo-${CHIP}_build_boot_release.bin /Volumes/NODE_${CHIP}
 
 To install the debug build, use:
 
-> The debug build outputs a ASCII trace stream on the MBED virtual serial port at 115200,8,N,1.
+> The debug build outputs an ASCII trace stream on the MBED virtual serial port at 115200,8,N,1.
 
 ```bash
 sl --installDebugOs
@@ -86,8 +86,8 @@ export SIGN=signkey=162ZEPiD33bF1T8diV0t,signkeypassword=4AC673981E969BBC9C33933
 ```
 
 ```bash
-sl app.install:path=apps/HelloWorld,run,terminal,${SIGN}
-sl app.install:path=apps/Blinky,run,terminal,${SIGN},args='--pin=1.7'
+sl app.install:path=apps/HelloWorld,run,terminal,$SIGN
+sl app.install:path=apps/Blinky,run,terminal,$SIGN,args='--pin=1.7'
 ```
 
 Please see `apps/testsuite/README.md` to run the test applications.
