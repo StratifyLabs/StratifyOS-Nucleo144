@@ -12,6 +12,7 @@ include(CTest)
 
 # These options are mutually exclusive
 option(F446ZE "Enable F446ZE build" OFF)
+option(F413ZH "Enable F413ZH build" OFF)
 option(F746ZG "Enable F746ZG build" OFF)
 option(F767ZI "Enable F767ZI build" OFF)
 
@@ -22,24 +23,23 @@ add_custom_target(pull
 
 
 if(F446ZE)
-  message(STATUS "Adding F446ZE")
+  message(STATUS "Building for F446ZE")
   set(SOS_ARCH v7em_f4sh CACHE INTERNAL "Set Arch to v7em_f4sh for F446ZE")
 elseif(F746ZG)
-  message(STATUS "Adding F746ZG")
+  message(STATUS "Building for F746ZG")
   set(SOS_ARCH v7em_f5sh CACHE INTERNAL "Set Arch to v7em_f5sh for F746ZG")
 elseif(F767ZI)
-  message(STATUS "Adding F767ZI")
-  set(SOS_ARCH v7em_f5sh CACHE INTERNAL "Set Arch to v7em_f5sh for F767ZI")
+  message(STATUS "Building for F767ZI")
+  set(SOS_ARCH Building for CACHE INTERNAL "Set Arch to v7em_f5sh for F767ZI")
+elseif(F413ZH)
+  message(STATUS "Adding F413ZH")
+  set(SOS_ARCH v7em_f4sh CACHE INTERNAL "Set Arch to v7em_f5sh for F413ZH")
 else()
-  message(FATAL_ERROR "Must specify one of `F446ZE` | `F746ZG` | `F767ZI`")
+  message(FATAL_ERROR "Must specify one of `F446ZE` | `F746ZG` | `F767ZI` | `F413ZH`")
 endif()
 
 set(SOS_ARCH_LIST "" CACHE INTERNAL "No other architectures are enabled")
 message(STATUS "SOS ARCH is ${SOS_ARCH}")
-
-if(NOT F446ZE AND NOT F746ZG AND NOT F767ZI)
-  message(FATAL_ERROR "Please specify Board")
-endif()
 
 add_custom_target(publish_header)
 add_custom_target(publish)
@@ -61,6 +61,12 @@ if(F767ZI)
   add_subdirectory(Nucleo-F767ZI)
   add_dependencies(publish_header publish_header_F767ZI)
   add_dependencies(publish publish_F767ZI)
+endif()
+
+if(F413ZH)
+  add_subdirectory(Nucleo-F413ZH)
+  add_dependencies(publish_header publish_header_F413ZH)
+  add_dependencies(publish publish_F413ZH)
 endif()
 
 add_subdirectory(apps)

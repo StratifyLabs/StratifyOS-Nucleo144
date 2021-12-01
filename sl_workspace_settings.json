@@ -1,6 +1,7 @@
 {
    "sdkDirectory": "SDK",
    "creationTimestamp": 1592969744,
+   "signKey": "RhnmvxQ8D4tlh02L8693",
    "shortcuts": {
       "buildInstallDebug": "fs.execute:command='touch src/board_config.c' fs.execute:directory=cmake_gcc9_arm,command='ninja all_?1_debug.elf' os.install:build=debug,path=?1 "
    },
