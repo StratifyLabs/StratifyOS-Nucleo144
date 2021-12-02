@@ -16,6 +16,7 @@ First set your environment to build just what you need. Just copy and paste the 
 
 ```bash
 export CHIP=F446ZE
+export CHIP=F413ZH
 export CHIP=F746ZG
 export CHIP=F767ZI
 ```
