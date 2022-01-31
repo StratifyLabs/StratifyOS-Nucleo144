@@ -33,9 +33,12 @@ elseif(F767ZI)
   set(SOS_ARCH Building for CACHE INTERNAL "Set Arch to v7em_f5sh for F767ZI")
 elseif(F413ZH)
   message(STATUS "Adding F413ZH")
-  set(SOS_ARCH v7em_f4sh CACHE INTERNAL "Set Arch to v7em_f5sh for F413ZH")
+  set(SOS_ARCH v7em_f4sh CACHE INTERNAL "Set Arch to v7em_f4sh for F413ZH")
+elseif(F412ZG)
+  message(STATUS "Adding F412ZG")
+  set(SOS_ARCH v7em_f4sh CACHE INTERNAL "Set Arch to v7em_f4sh for F412ZG")
 else()
-  message(FATAL_ERROR "Must specify one of `F446ZE` | `F746ZG` | `F767ZI` | `F413ZH`")
+  message(FATAL_ERROR "Must specify one of `F446ZE` | `F746ZG` | `F767ZI` | `F413ZH` | `F412ZG`")
 endif()
 
 set(SOS_ARCH_LIST "" CACHE INTERNAL "No other architectures are enabled")
@@ -68,6 +71,13 @@ if(F413ZH)
   add_dependencies(publish_header publish_header_F413ZH)
   add_dependencies(publish publish_F413ZH)
 endif()
+
+if(F412ZG)
+  add_subdirectory(Nucleo-F412ZG)
+  add_dependencies(publish_header publish_header_F412ZG)
+  add_dependencies(publish publish_F412ZG)
+endif()
+
 
 add_subdirectory(apps)
 

@@ -1,58 +1,74 @@
-cmake_minimum_required (VERSION 3.6)
+cmake_minimum_required (VERSION 3.12)
 
-# Grab the SDK location
-if(NOT DEFINED SOS_SDK_PATH)
-	if(DEFINED ENV{SOS_SDK_PATH})
-		set(SOS_SDK_PATH $ENV{SOS_SDK_PATH})
-	elseif( ${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin" )
-		message(WARNING "default SDK locations are deprecated")
-		set(SOS_SDK_PATH /Applications/StratifyLabs-SDK)
-	elseif( ${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows" )
-		message(WARNING "default SDK locations are deprecated")
-		set(SOS_SDK_PATH C:/StratifyLabs-SDK)
-	elseif( ${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux" )
-		message(WARNING "default SDK locations are deprecated")
-		set(SOS_SDK_PATH /StratifyLabs-SDK)
-	endif()
-endif()
-if(NOT DEFINED SOS_SDK_PATH)
-	message(FATAL_ERROR "Please set environment variable SOS_SDK_PATH to location of the StratifyLabs-SDK directory")
-endif()
-set(SOS_TOOLCHAIN_CMAKE_PATH ${SOS_SDK_PATH}/Tools/gcc/arm-none-eabi/cmake)
-if( ${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux" )
-	set(SOS_TOOLCHAIN_CMAKE_PATH /StratifyLabs-SDK/Tools/gcc/arm-none-eabi/cmake)
-endif()
+include(${CMAKE_CURRENT_SOURCE_DIR}/../nucleo.cmake)
 
-include(${SOS_TOOLCHAIN_CMAKE_PATH}/sos-variables.cmake)
-include(${SOS_TOOLCHAIN_CMAKE_PATH}/sos-sdk.cmake)
+set(ARCH v7em_f4sh)
 
-set(CMAKE_TOOLCHAIN_FILE ${SOS_TOOLCHAIN_CMAKE_PATH}/sos-bsp-toolchain.cmake)
-get_filename_component(SOS_NAME ${CMAKE_SOURCE_DIR} NAME)
+add_custom_target(publish_header_F412ZG
+	COMMAND sl os.publish:path=Nucleo-F412ZG,header
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
+	DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
+	)
+
+add_custom_target(publish_F412ZG
+	COMMAND sl os.publish:path=Nucleo-F412ZG,signkey=RhnmvxQ8D4tlh02L8693
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
+	)
+
+get_filename_component(SOS_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${SOS_NAME} CXX C)
 
-#Add sources to the project
-sos_sdk_add_out_of_source_directory(SOS_KERNEL_SOURCELIST ../src src)
-list(APPEND SOS_KERNEL_SOURCELIST
-	${CMAKE_SOURCE_DIR}/src/sl_config.h
-	${CMAKE_SOURCE_DIR}/src/SystemClock_Config.c
-	${CMAKE_SOURCE_DIR}/sl_settings.json
+set(NUCLEO_KERNEL_START_ADDRESS 0x08040000)
+set(NUCLEO_BOOT_START_ADDRESS 0x08000000)
+set(NUCLEO_HARDWARE_ID 0x00000011)
+set(NUCLEO_DEFINITIONS
+	SOS_BOARD_SYSTEM_CLOCK=96000000
+	SYSTEM_MEMORY_SIZE=32768
+	)
+set(NUCLEO_LINKER_FILE stm32f412zg-rom.ld)
+set(NUCLEO_MCU_LIBRARY StratifyOS_stm32f412zx)
+
+
+#Add sources to the project list
+sos_sdk_add_out_of_source_directory(NUCLEO_KERNEL_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../src src)
+list(APPEND NUCLEO_KERNEL_SOURCELIST
+	${CMAKE_CURRENT_SOURCE_DIR}/src/sl_config.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/SystemClock_Config.c
+	${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32-common.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f4xx.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f412zg-rom.ld
 	)
 
-#Change to boot sources
-sos_sdk_add_out_of_source_directory(SOS_BOOT_SOURCELIST ../boot boot)
-list(APPEND SOS_BOOT_SOURCELIST
-	${CMAKE_SOURCE_DIR}/src/sl_config.h
-	${CMAKE_SOURCE_DIR}/src/SystemClock_Config.c
-	${CMAKE_SOURCE_DIR}/sl_settings.json
+#Change to boot sources list
+sos_sdk_add_out_of_source_directory(NUCLEO_BOOT_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../boot boot)
+list(APPEND NUCLEO_BOOT_SOURCELIST
+	${CMAKE_CURRENT_SOURCE_DIR}/src/sl_config.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/SystemClock_Config.c
+	${CMAKE_CURRENT_SOURCE_DIR}/sl_settings.json
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32-common.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f4xx.ld
+	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f412zg-rom.ld
 	)
 
-set(SOS_ARCH v7em_f4sh)
-set(SOS_DEVICE stm32f412zg)
-set(SOS_DEVICE_FAMILY stm32f412zx)
-set(SOS_HARDWARD_ID 0x00000011)
-set(SOS_LIBRARIES mbedtls_kernel)
-set(SOS_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/src ${TOOLCHAIN_INC_DIR}/mcu/arch/stm32/cmsis)
+set(BOOT_LIBRARIES tinycrypt_kernel uECC_kernel StratifyOS_stm32f412zx StratifyOS_boot StratifyOS_usbd)
+set(KERNEL_LIBRARIES
+	tinycrypt_kernel
+	uECC_kernel
+	StratifyOS_stm32f412zx
+	StratifyOS_sys
+	StratifyOS_usbd
+	newlib_libc
+	newlib_libm
+	StratifyOS_sys)
 
-set(SOS_KERNEL_START_ADDRESS 0x08040000)
-set(SOS_BOOT_START_ADDRESS 0x08000000)
-include(${SOS_TOOLCHAIN_CMAKE_PATH}/sos-bsp-std.cmake)
+nucleo_target(
+	${NUCLEO_BOOT_START_ADDRESS} "${NUCLEO_BOOT_SOURCELIST}" ${NUCLEO_LINKER_FILE} "${BOOT_LIBRARIES}"
+	${NUCLEO_KERNEL_START_ADDRESS} "${NUCLEO_KERNEL_SOURCELIST}" ${NUCLEO_LINKER_FILE} "${KERNEL_LIBRARIES}"
+	"${NUCLEO_DEFINITIONS}"
+	${NUCLEO_HARDWARE_ID}
+	${ARCH}
+)
+
+
+
