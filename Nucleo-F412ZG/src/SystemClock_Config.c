@@ -71,7 +71,7 @@ const appfs_mem_config_t appfs_mem_config = {
      .page_size = 64 * 1024UL,
      .address = FLASH_START + 4 * 16 * 1024UL},
     {.o_flags = MEM_FLAG_IS_FLASH,
-     .page_count = 7,
+     .page_count = 5,
      .page_size = 128 * 1024UL,
      .address = FLASH_START + 4 * 16 * 1024UL + 64 * 1024UL},
     // the last 2 128K flash pages are used for the OS

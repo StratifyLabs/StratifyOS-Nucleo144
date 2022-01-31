@@ -4,16 +4,22 @@
    "name": "Nucleo-F412ZG",
    "permissions": "public",
    "publisher": "Stratify Labs, Inc",
-   "tags": "stm32,arm,cortex-m4",
    "type": "os",
    "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
-   "version": "0.11",
+   "version": "1.0",
    "hardwareId": "0x00000011",
-   "timestamp": 1551496292,
+   "timestamp": 1643647357,
    "documentId": "Loy74Ukm6dVsLMqQ7T6g",
    "buildList": {
       "Gj1gC4Pfp4RL77AHXb2G": "0.9",
       "9x2ALOooWuBjstyeEXgA": "0.10",
-      "Sg5SHIi9LnbgQbyH6UjR": "0.11"
-   }
+      "Sg5SHIi9LnbgQbyH6UjR": "0.11",
+      "Fj4w0Q5RHAlHeBkxzxmB": "1.0"
+   },
+   "tagList": [
+      "stm32",
+      "arm",
+      "cortex-m4"
+   ],
+   "team": ""
 }
