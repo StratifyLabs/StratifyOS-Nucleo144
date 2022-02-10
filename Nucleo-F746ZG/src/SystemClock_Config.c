@@ -49,7 +49,7 @@ void SystemClock_Config() {
   HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
 }
 
-#define RAM_PAGES (256 - SYSTEM_MEMORY_SIZE / 1024UL)
+#define RAM_PAGES (240 - SYSTEM_MEMORY_SIZE / 1024UL)
 #define FLASH_START (0x08000000 + 2 * 16 * 1024UL)
 #define RAM_START (0x20010000 + SYSTEM_MEMORY_SIZE)
 

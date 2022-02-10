@@ -7,7 +7,7 @@
 #include "lwip_config.h"
 
 
-#define LWIP_MAX_PACKET_SIZE 1520
+#define LWIP_MAX_PACKET_SIZE 1536
 #define NETWORK_INTERFACE_COUNT 1
 
 extern const sysfs_t sysfs_list[];

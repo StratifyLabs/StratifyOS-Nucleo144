@@ -7,6 +7,14 @@
 #include <micro_ecc_api.h>
 #include <tinycrypt_api.h>
 
+#if INCLUDE_ETHERNET && !_IS_BOOT
+#include <jansson_api.h>
+
+#if INCLUDE_TLS
+#include <mbedtls_api.h>
+#endif
+#endif
+
 #include "config.h"
 
 // use `sl keys.ping:id=162ZEPiD33bF1T8diV0t,code` to get the C style format
@@ -56,11 +64,11 @@ const void *sys_kernel_request_api(u32 request) {
   case CRYPT_SHA256_API_REQUEST:
     return &mbedtls_crypt_sha256_api;
 #endif
-#if INCLUDE_ETHERNET && INCLUDE_TLS
+#if INCLUDE_ETHERNET && INCLUDE_TLS && !_IS_BOOT
   case MBEDTLS_API_REQUEST:
     return &mbedtls_api; // about 200KB
 #endif
-#if INCLUDE_JANSSON_API
+#if INCLUDE_ETHERNET && !_IS_BOOT
   case JANSSON_API_REQUEST:
     return &jansson_api; // about 20KB
 #endif

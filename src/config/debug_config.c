@@ -39,7 +39,7 @@ void debug_initialize() {
   HAL_GPIO_Init(GPIOD, &gpio_init);
 
   m_huart3.Instance = USART3;
-  m_huart3.Init.BaudRate = 115200;
+  m_huart3.Init.BaudRate = 400000;
   m_huart3.Init.WordLength = UART_WORDLENGTH_8B;
   m_huart3.Init.StopBits = UART_STOPBITS_1;
   m_huart3.Init.Parity = UART_PARITY_NONE;

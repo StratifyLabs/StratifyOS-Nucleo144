@@ -16,7 +16,7 @@ set(GIT_STATUS_DEPENDS "")
 
 macro(sdk_add_subdirectory NAME BRANCH INSTALL)
 
-	sos_sdk_git_clone_or_pull_branch(${BASE_DIRECTORY} ${NAME} ssh://git@github.com/StratifyLabs/${NAME}.git ${BRANCH})
+	sos_sdk_git_clone_or_pull_branch(${BASE_DIRECTORY} ${NAME} https://github.com/StratifyLabs/${NAME}.git ${BRANCH})
 
 	if(${INSTALL})
 		message(STATUS "Adding ${NAME} to install target")

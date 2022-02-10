@@ -66,6 +66,7 @@ void os_event_handler(int event, void *args) {
 
   case SOS_EVENT_START_LINK:
 
+
 #if INCLUDE_ETHERNET
     // start LWIP
     sos_debug_log_info(SOS_DEBUG_USER0, "Start LWIP");

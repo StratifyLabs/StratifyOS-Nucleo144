@@ -10,7 +10,6 @@
 #define STATE_CHIP_UP 1
 #define STATE_LINK_UP 2
 
-
 static int is_up(const devfs_handle_t *handle){
   // check if link is up
   mcu_channel_t eth_register;
@@ -183,7 +182,6 @@ int netif_lan8742a_read(const devfs_handle_t *handle, devfs_async_t *async) {
 }
 
 int netif_lan8742a_write(const devfs_handle_t *handle, devfs_async_t *async) {
-  sos_debug_printf("write to eth device\n");
   return mcu_eth_write(handle, async);
 }
 
