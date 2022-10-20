@@ -25,7 +25,7 @@ endmacro()
 
 if(APPS_IS_DEMO)
 	sdk_add_subdirectory(HelloWorld main)
-	#sdk_add_subdirectory(Blinky main)
+	sdk_add_subdirectory(Blinky main)
 endif()
 
 if(APPS_IS_TESTSUITE)
