@@ -32,11 +32,13 @@ function(nucleo_target)
   cmsdk2_bsp_add_executable(
     NAME ${PROJECT_NAME}
     CONFIG release
+    SUFFIX .elf
     ARCH ${ARGS_ARCH}
     TARGET RELEASE_TARGET)
   cmsdk2_bsp_add_executable(
     NAME ${PROJECT_NAME}
     CONFIG debug
+    SUFFIX .elf
     ARCH ${ARGS_ARCH}
     TARGET DEBUG_TARGET)
 
@@ -73,12 +75,14 @@ function(nucleo_target)
     NAME ${PROJECT_NAME}
     OPTION boot
     CONFIG release
+    SUFFIX .elf
     ARCH ${ARGS_ARCH}
     TARGET BOOT_RELEASE_TARGET)
   cmsdk2_bsp_add_executable(
     NAME ${PROJECT_NAME}
     OPTION boot
     CONFIG debug
+    SUFFIX .elf
     ARCH ${ARGS_ARCH}
     TARGET BOOT_DEBUG_TARGET)
 
