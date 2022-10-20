@@ -31,7 +31,7 @@ get_filename_component(SOS_NAME ${CMAKE_SOURCE_DIR} NAME)
 project(${SOS_NAME} CXX C)
 
 #Add sources to the project
-sos_sdk_add_out_of_source_directory(SOS_KERNEL_SOURCELIST ../src src)
+cmsdk_add_out_of_source_directory(SOS_KERNEL_SOURCELIST ../src src)
 list(APPEND SOS_KERNEL_SOURCELIST
 	${CMAKE_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_SOURCE_DIR}/src/SystemClock_Config.c
@@ -39,14 +39,14 @@ list(APPEND SOS_KERNEL_SOURCELIST
 	)
 
 #Change to boot sources
-sos_sdk_add_out_of_source_directory(SOS_BOOT_SOURCELIST ../boot boot)
+cmsdk_add_out_of_source_directory(SOS_BOOT_SOURCELIST ../boot boot)
 list(APPEND SOS_BOOT_SOURCELIST
 	${CMAKE_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_SOURCE_DIR}/src/SystemClock_Config.c
 	${CMAKE_SOURCE_DIR}/sl_settings.json
 	)
 
-set(SOS_ARCH v7em_f5sh)
+set(CMSDK_ARCH v7em_f5sh)
 set(SOS_DEVICE stm32f722ze)
 set(SOS_DEVICE_FAMILY stm32f722xx)
 set(SOS_HARDWARD_ID 0x00000018)

@@ -30,7 +30,7 @@ set(NUCLEO_MCU_LIBRARY StratifyOS_stm32f413xx)
 
 
 #Add sources to the project list
-sos_sdk_add_out_of_source_directory(NUCLEO_KERNEL_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../src src)
+cmsdk_add_out_of_source_directory(NUCLEO_KERNEL_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../src src)
 list(APPEND NUCLEO_KERNEL_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SystemClock_Config.c
@@ -41,7 +41,7 @@ list(APPEND NUCLEO_KERNEL_SOURCELIST
 	)
 
 #Change to boot sources list
-sos_sdk_add_out_of_source_directory(NUCLEO_BOOT_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../boot boot)
+cmsdk_add_out_of_source_directory(NUCLEO_BOOT_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../boot boot)
 list(APPEND NUCLEO_BOOT_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SystemClock_Config.c
@@ -51,7 +51,13 @@ list(APPEND NUCLEO_BOOT_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/ldscripts/stm32f413xh-rom.ld
 	)
 
-set(BOOT_LIBRARIES tinycrypt_kernel uECC_kernel StratifyOS_stm32f413xx StratifyOS_boot StratifyOS_usbd)
+set(BOOT_LIBRARIES
+	tinycrypt_kernel
+	uECC_kernel
+	StratifyOS_stm32f413xx
+	StratifyOS_boot
+	StratifyOS_usbd)
+
 set(KERNEL_LIBRARIES
 	tinycrypt_kernel
 	uECC_kernel

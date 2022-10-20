@@ -34,8 +34,8 @@ set(NUCLEO_MCU_LIBRARY StratifyOS_${STM32_CHIP_FAMILY})
 
 
 #Add sources to the project list
-sos_sdk_add_out_of_source_directory(NUCLEO_KERNEL_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../src src)
-sos_sdk_add_out_of_source_directory(ETHERNET_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../src/ethernet src/ethernet)
+cmsdk_add_out_of_source_directory(NUCLEO_KERNEL_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../src src)
+cmsdk_add_out_of_source_directory(ETHERNET_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../src/ethernet src/ethernet)
 list(APPEND NUCLEO_KERNEL_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SystemClock_Config.c
@@ -44,7 +44,7 @@ list(APPEND NUCLEO_KERNEL_SOURCELIST
 	)
 
 #Change to boot sources list
-sos_sdk_add_out_of_source_directory(NUCLEO_BOOT_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../boot boot)
+cmsdk_add_out_of_source_directory(NUCLEO_BOOT_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/../boot boot)
 list(APPEND NUCLEO_BOOT_SOURCELIST
 	${CMAKE_CURRENT_SOURCE_DIR}/src/sl_config.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SystemClock_Config.c

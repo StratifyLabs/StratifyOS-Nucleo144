@@ -10,6 +10,8 @@
 #define STATE_CHIP_UP 1
 #define STATE_LINK_UP 2
 
+static netif_ip_address_t m_ip_address MCU_SYS_MEM;
+
 static int is_up(const devfs_handle_t *handle){
   // check if link is up
   mcu_channel_t eth_register;
@@ -92,6 +94,12 @@ int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl) {
       return initialize_ethernet(handle);
     }
 
+    if( o_flags & NETIF_FLAG_SET_IP_ADDRESS ){
+      sos_debug_printf("Set ip address to 0x%08x\n", netif_attr->address.data[0]);
+      m_ip_address = netif_attr->address;
+      return 0;
+    }
+
     // restart after having been stopped
     if (o_flags & NETIF_FLAG_SET_LINK_UP) {
 
@@ -158,7 +166,10 @@ int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl) {
 
   case I_NETIF_GETINFO:
 
-    memset(netif_info, 0, sizeof(netif_info_t));
+  {
+    const netif_info_t zero_info = {};
+    *netif_info = zero_info;
+  }
     memcpy(netif_info->mac_address, eth_config->attr.mac_address, 6);
 
     netif_info->o_flags = NETIF_FLAG_INIT | NETIF_FLAG_DEINIT |
@@ -169,6 +180,7 @@ int netif_lan8742a_ioctl(const devfs_handle_t *handle, int request, void *ctl) {
     netif_info->o_events =
         MCU_EVENT_FLAG_DATA_READY | MCU_EVENT_FLAG_WRITE_COMPLETE;
     netif_info->mtu = 1500;
+    netif_info->address = m_ip_address;
 
     // get the system mac address
     return SYSFS_RETURN_SUCCESS;
