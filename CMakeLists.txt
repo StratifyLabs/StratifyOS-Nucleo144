@@ -16,7 +16,7 @@ option(F413ZH "Enable F413ZH build" OFF)
 option(F746ZG "Enable F746ZG build" OFF)
 option(F767ZI "Enable F767ZI build" OFF)
 
-set(SOS_SDK_PULL_TARGET pull)
+set(CMSDK_PULL_TARGET pull)
 add_custom_target(pull
   COMMAND git pull
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
