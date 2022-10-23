@@ -29,7 +29,7 @@ if(APPS_IS_DEMO)
 endif()
 
 if(APPS_IS_TESTSUITE)
-	#sdk_add_subdirectory(testsuite main)
+	sdk_add_subdirectory(testsuite main)
 endif()
 
 
