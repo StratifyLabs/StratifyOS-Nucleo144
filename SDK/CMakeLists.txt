@@ -39,7 +39,7 @@ set(LWIP_STRATIFYOS_PATH
 
 set(API_IS_SDK ON CACHE INTERNAL "API_IS_SDK disable include statemenets")
 
-sdk_add_subdirectory(API main ON)
+sdk_add_subdirectory(API v1.6 ON)
 include(${BASE_DIRECTORY}/API/libraries/API.cmake)
 
 set(MBEDTLS_CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/config/mbedtls/config.h CACHE INTERNAL "MBEDTLS config file")
@@ -56,17 +56,15 @@ set(BUILD_STM32F413 ${F413ZH} CACHE INTERNAL "ENABLE BUILDING OF F413ZH")
 set(BUILD_STM32F412 ${F412ZG} CACHE INTERNAL "ENABLE BUILDING OF F412ZG")
 set(BUILD_STM32_ALL OFF CACHE INTERNAL "DONT BUILD ALL STM32 BUILDS")
 
-sdk_add_subdirectory(StratifyOS-compiler-rt main OFF)
-sdk_add_subdirectory(StratifyOS-newlib main OFF)
-sdk_add_subdirectory(StratifyOS main ON)
-sdk_add_subdirectory(StratifyOS-mcu-stm32 main OFF)
-sdk_add_subdirectory(HalAPI main ON)
-sdk_add_subdirectory(SosAPI main ON)
-sdk_add_subdirectory(JsonAPI main ON)
-sdk_add_subdirectory(CryptoAPI main ON)
-sdk_add_subdirectory(InetAPI main ON)
-sdk_add_subdirectory(CloudAPI main ON)
-
-
+sdk_add_subdirectory(StratifyOS-compiler-rt v1.2 OFF)
+sdk_add_subdirectory(StratifyOS-newlib v1.2 OFF)
+sdk_add_subdirectory(StratifyOS v4.3 ON)
+sdk_add_subdirectory(StratifyOS-mcu-stm32 v4.2 OFF)
+sdk_add_subdirectory(JsonAPI v1.5 ON)
+sdk_add_subdirectory(CryptoAPI v1.4 ON)
+sdk_add_subdirectory(SosAPI v1.4 ON)
+sdk_add_subdirectory(HalAPI v1.3 ON)
+sdk_add_subdirectory(InetAPI v1.5 ON)
+sdk_add_subdirectory(CloudAPI v1.3 ON)
 
 add_custom_target(status DEPENDS ${GIT_STATUS_DEPENDS})
