@@ -359,11 +359,13 @@ FIFO_DECLARE_CONFIG_STATE(stdio_out, CONFIG_STDIO_BUFFER_SIZE);
 pio_state_t pio_state[8] MCU_SYS_MEM;
 const pio_config_t pio_config[8] = {{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}};
 
+#if MCU_RTC_PORTS > 0
 rtc_state_t rtc_state MCU_SYS_MEM;
 const rtc_config_t rtc_config = {
   .attr = { .o_flags = RTC_FLAG_ENABLE },
   .port = 0
 };
+#endif
 
 tmr_state_t tmr0_state MCU_SYS_MEM;
 const tmr_config_t tmr0_config = {

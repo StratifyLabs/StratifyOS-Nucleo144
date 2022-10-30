@@ -7,7 +7,11 @@ set(CMAKE_MODULE_PATH ${CMSDK_LOCAL_PATH}/cmake)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_MODULE_PATH}/cmsdk-toolchain.cmake)
 include(cmsdk)
 
-project(StratifyOS-Nucleo144 CXX C ASM)
+cmsdk2_minimum_required(2.1.2)
+
+project(StratifyOS-Nucleo144
+  LANGUAGES CXX C ASM
+  VERSION 1.2.0)
 include(CTest)
 
 # These options are mutually exclusive
@@ -30,7 +34,7 @@ elseif(F746ZG)
   set(CMSDK_ARCH v7em_f5sh CACHE INTERNAL "Set Arch to v7em_f5sh for F746ZG")
 elseif(F767ZI)
   message(STATUS "Building for F767ZI")
-  set(CMSDK_ARCH Building for CACHE INTERNAL "Set Arch to v7em_f5sh for F767ZI")
+  set(CMSDK_ARCH v7em_f5dh CACHE INTERNAL "Set Arch to v7em_f5sh for F767ZI")
 elseif(F413ZH)
   message(STATUS "Adding F413ZH")
   set(CMSDK_ARCH v7em_f4sh CACHE INTERNAL "Set Arch to v7em_f4sh for F413ZH")
