@@ -9,3 +9,4 @@ apps/testsuite/
 apps/Blinky/
 apps/HelloWorld/
 .idea/
+tmp/
